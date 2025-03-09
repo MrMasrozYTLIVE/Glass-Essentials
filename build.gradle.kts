@@ -19,7 +19,7 @@ version = project.properties["mod_version"] as String
 group = project.properties["maven_group"] as String
 
 loom {
-//	accessWidenerPath = file("src/main/resources/examplemod.accesswidener")
+	accessWidenerPath = file("src/main/resources/glassbrigadier.accesswidener")
 
 	runs {
 		// If you want to make a testmod for your mod, right click on src, and create a new folder with the same name as source() below.
@@ -42,6 +42,7 @@ repositories {
 	maven("https://maven.glass-launcher.net/releases/")
 	maven("https://maven.glass-launcher.net/babric")
 	maven("https://maven.minecraftforge.net/")
+	maven("https://libraries.minecraft.net/")
 	maven("https://jitpack.io/")
 	mavenCentral()
 	exclusiveContent {
@@ -85,7 +86,7 @@ dependencies {
 	// https://github.com/Glass-Series/Always-More-Items
 	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.properties["alwaysmoreitems_version"]}")
 
-	modImplementation("maven.modrinth:retrocommands:0.5.4")
+	implementation("com.mojang:brigadier:1.0.18")
 }
 
 tasks.withType<ProcessResources> {

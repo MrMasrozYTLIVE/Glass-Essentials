@@ -1,0 +1,53 @@
+package net.glasslauncher.glassbrigadier.impl.server.command;
+
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
+import net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinate;
+import net.glasslauncher.glassbrigadier.api.argument.tileid.TileId;
+import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
+import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.minecraft.util.math.Vec3i;
+
+import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
+import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
+import static net.glasslauncher.glassbrigadier.api.argument.coordinate.CoordinateArgumentType.getCoordinate;
+import static net.glasslauncher.glassbrigadier.api.argument.coordinate.CoordinateArgumentType.intCoordinate;
+import static net.glasslauncher.glassbrigadier.api.argument.tileid.TileIdArgumentType.getTileId;
+import static net.glasslauncher.glassbrigadier.api.argument.tileid.TileIdArgumentType.tileId;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
+import static net.glasslauncher.glassbrigadier.api.predicate.IsWorldly.isWorldly;
+
+public class SetTileCommand implements CommandProvider {
+    @Override
+    public LiteralArgumentBuilder<GlassCommandSource> get() {
+        return LiteralArgumentBuilder.<GlassCommandSource>literal("settile")
+                .requires(permission("command.settile"))
+                .requires(isWorldly())
+                .then(RequiredArgumentBuilder.<GlassCommandSource, Coordinate>argument("pos", intCoordinate())
+                        .then(RequiredArgumentBuilder.<GlassCommandSource, TileId>argument("id", tileId())
+                                .executes(this::placeBlock)
+                                .then(RequiredArgumentBuilder.<GlassCommandSource, Integer>argument("meta", integer())
+                                        .executes(this::placeBlockWithMeta)
+                                )
+                        )
+                );
+    }
+
+    public int placeBlock(CommandContext<GlassCommandSource> context) {
+        Vec3i pos = getCoordinate(context, "pos").getVec3i(context.getSource());
+        TileId tile = getTileId(context, "id");
+        (context.getSource()).getWorld().setBlock(pos.x, pos.y, pos.z, tile.numericId);
+        sendFeedbackAndLog(context.getSource(), "Set block at" + pos.x + " " + pos.y + " " + pos.z + " to " + tile.numericId);
+        return 0;
+    }
+
+    public int placeBlockWithMeta(CommandContext<GlassCommandSource> context) {
+        Vec3i pos = getCoordinate(context, "pos").getVec3i(context.getSource());
+        TileId tile = getTileId(context, "id");
+        int meta = getInteger(context, "meta");
+        (context.getSource()).getWorld().setBlock(pos.x, pos.y, pos.z, tile.numericId, meta);
+        sendFeedbackAndLog(context.getSource(), "Set block at" + pos.x + " " + pos.y + " " + pos.z + " to " + tile.numericId + ":" + meta);
+        return 0;
+    }
+}

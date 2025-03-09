@@ -1,0 +1,47 @@
+package net.glasslauncher.glassbrigadier.impl;
+
+import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import org.lwjgl.util.vector.Vector2f;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Set;
+
+public interface GlassCommandSource {
+
+    // Vanilla method, update with mappings.
+    void sendMessage(String message);
+
+    // Vanilla method, update with mappings.
+    String getName();
+
+    World getWorld();
+
+    Vec3d getPosition();
+
+    Vector2f getRotation();
+
+    Set<PermissionNode> getPermissions();
+
+    Set<PermissionNode> getAllPermissions();
+
+    boolean satisfiesNode(PermissionNode nodeToCheck);
+
+    Entity getEntity();
+
+    @Nullable
+    PlayerEntity getPlayer();
+
+    @Nullable
+    PlayerEntity getPlayerByName(String playerName);
+
+    boolean sendMessageToPlayer(String playerName, String message);
+
+    boolean sendMessageToPlayer(PlayerEntity player, String message);
+
+    List<PlayerEntity> getAllPlayers();
+}

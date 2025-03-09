@@ -6,7 +6,8 @@
   "name": "Glass Essentials",
   "description": "A mod that aims to add a bunch of \"essential\" admin and player commands, along with a robust permissions system.",
   "authors": [
-    "calmilamsy"
+    "calmilamsy",
+    "williambl"
   ],
   "contact": {
     "homepage": "https://glass-launcher.net/",
@@ -14,12 +15,12 @@
   },
 
   "license": "MIT",
-  "icon": "assets/glassessentials/icon.png",
+  "icon": "assets/glassbrigadier/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
-      "net.glasslauncher.mods.glassessentials.events.init.InitListener"
+      "net.glasslauncher.glassbrigadier.impl.GlassBrigadier"
     ],
     "stationapi:event_bus_client": [
     ],
@@ -27,11 +28,15 @@
     ]
   },
   "mixins": [
-    "glassessentials.mixins.json"
+    "glassbrigadier.mixins.json"
   ],
 
   "depends": {
-    "minecraft": "1.0.0-beta.7.3",
-    "retrocommands": "0.*"
+    "minecraft": "1.0.0-beta.7.3"
+  },
+
+  "custom": {
+    "loom:injected_interfaces": {
+    }
   }
 }

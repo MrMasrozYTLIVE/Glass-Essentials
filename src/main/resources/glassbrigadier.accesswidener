@@ -1,0 +1,7 @@
+accessWidener	v2	named
+
+accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/Minecraft;
+
+accessible field net/minecraft/entity/EntityRegistry idToClass Ljava/util/Map;
+accessible field net/minecraft/server/network/ServerPlayNetworkHandler player Lnet/minecraft/entity/player/ServerPlayerEntity;
+accessible field net/minecraft/server/network/ServerPlayNetworkHandler server Lnet/minecraft/server/MinecraftServer;
