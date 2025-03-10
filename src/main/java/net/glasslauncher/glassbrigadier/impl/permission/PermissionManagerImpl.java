@@ -17,14 +17,15 @@ public final class PermissionManagerImpl {
     @Getter
     private static final Map<String, Set<PermissionNode>> permissionsMap = new HashMap<>();
     private static final Gson GSON = new GsonBuilder().create();
-    private static final String permissionsFilePath = "config/legacybrigadier/permissions.json";
-    private static final TypeToken<Map<String, Set<String>>> string2StringSetType = new TypeToken<Map<String, Set<String>>>() {};
-    static {
-        setupPermissionManager();
-    }
+    private static final String permissionsFilePath = "config/" + GlassBrigadier.NAMESPACE + "/permissions.json";
+    private static final TypeToken<Map<String, Set<String>>> string2StringSetType = new TypeToken<>() {};
 
-    private static void setupPermissionManager() {
+    public static void setupPermissionManager() {
         final File permissionsFile = new File(permissionsFilePath);
+        if (!permissionsFile.getParentFile().exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            permissionsFile.getParentFile().mkdirs();
+        }
         try {
             loadPermissions(permissionsFile);
         } catch (FileNotFoundException e) {
@@ -41,6 +42,10 @@ public final class PermissionManagerImpl {
 
     public static boolean tryUpdatePermissionsFile() {
         final File permissionsFile = new File(permissionsFilePath);
+        if (!permissionsFile.getParentFile().exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            permissionsFile.getParentFile().mkdirs();
+        }
         try {
             savePermissions(permissionsFile);
             return true;

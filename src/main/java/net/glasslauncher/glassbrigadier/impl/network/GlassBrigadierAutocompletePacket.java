@@ -10,8 +10,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.client.mixinhooks.ChatScreenHooks;
-import net.glasslauncher.glassbrigadier.impl.mixinhooks.ServerPlayPacketHandlerHooks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.NetworkHandler;
@@ -37,20 +37,18 @@ public class GlassBrigadierAutocompletePacket extends Packet implements ManagedP
     public static final PacketType<GlassBrigadierAutocompletePacket> TYPE = PacketType.builder(true, true, GlassBrigadierAutocompletePacket::new).build();
 
     private String incompleteCommand;
+    private int cursorPos;
 
-    public GlassBrigadierAutocompletePacket(String incompleteCommand) {
+    public GlassBrigadierAutocompletePacket(String incompleteCommand, int cursorPos) {
+        this.incompleteCommand = incompleteCommand;
+        this.cursorPos = cursorPos;
+    }
+
+    private GlassBrigadierAutocompletePacket(String incompleteCommand) {
         this.incompleteCommand = incompleteCommand;
     }
 
-    public GlassBrigadierAutocompletePacket() {
-    }
-
-    public static void createAndSendToServer(String incompleteCommand) {
-        PacketHelper.send(new GlassBrigadierAutocompletePacket(incompleteCommand));
-    }
-
-    public static void createAndSendToPlayer(String incompleteCommand, PlayerEntity player) {
-        PacketHelper.sendTo(player, new GlassBrigadierAutocompletePacket(incompleteCommand));
+    private GlassBrigadierAutocompletePacket() {
     }
 
     private List<String> bytesToStrings(byte[] bytes) {
@@ -107,15 +105,16 @@ public class GlassBrigadierAutocompletePacket extends Packet implements ManagedP
         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
             List<String> completions = bytesToStrings(stream.readUTF().getBytes(StandardCharsets.UTF_8));
             Screen screen = Minecraft.INSTANCE.currentScreen;
-            if (screen instanceof ChatScreenHooks chatScreen) {
+            if (screen instanceof ChatScreen chatScreen) {
                 if (!completions.isEmpty()) {
-                    chatScreen.setMessage("/" + completions.get(0));
-                    chatScreen.glass_Essentials$setCompletions(completions);
+                    chatScreen.text = "/" + completions.get(0);
+                    ((ChatScreenHooks) chatScreen).glass_Essentials$setCompletions(completions);
                 }
             }
         }
         else {
             incompleteCommand = stream.readUTF();
+            cursorPos = stream.readInt();
         }
     }
 
@@ -123,6 +122,7 @@ public class GlassBrigadierAutocompletePacket extends Packet implements ManagedP
     @SneakyThrows
     public void write(DataOutputStream stream) {
         stream.writeUTF(incompleteCommand);
+        stream.writeInt(cursorPos);
     }
 
     @Override
@@ -140,13 +140,14 @@ public class GlassBrigadierAutocompletePacket extends Packet implements ManagedP
             ParseResults<GlassCommandSource> parseResults = GlassBrigadier.dispatcher.parse(incompleteCommand, (GlassCommandSource) serverPlayNetworkHandler);
             Suggestions suggestions;
             try {
-                suggestions = GlassBrigadier.dispatcher.getCompletionSuggestions(parseResults).get();
+                suggestions = GlassBrigadier.dispatcher.getCompletionSuggestions(parseResults, cursorPos).get();
             } catch (InterruptedException | ExecutionException e) {
                 GlassBrigadier.LOGGER.error(e);
                 return;
             }
-            if (!suggestions.getList().isEmpty())
-                PacketHelper.sendTo(((ServerPlayPacketHandlerHooks)networkHandler).getPlayer(), new GlassBrigadierAutocompletePacket(new String(stringsToBytes(applySuggestions(incompleteCommand, suggestions.getList())), StandardCharsets.UTF_8)));
+            if (!suggestions.getList().isEmpty()) {
+                PacketHelper.sendTo(serverPlayNetworkHandler.player, new GlassBrigadierAutocompletePacket(new String(stringsToBytes(applySuggestions(incompleteCommand, suggestions.getList())), StandardCharsets.UTF_8)));
+            }
         }
     }
 

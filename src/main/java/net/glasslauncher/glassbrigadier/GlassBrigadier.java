@@ -1,10 +1,11 @@
 package net.glasslauncher.glassbrigadier;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.glasslauncher.glassbrigadier.api.command.CommandRegistry;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
 import net.glasslauncher.glassbrigadier.impl.command.*;
+import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;
@@ -14,9 +15,7 @@ import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.util.Namespace;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GlassBrigadier {
@@ -30,44 +29,29 @@ public class GlassBrigadier {
 
     public static final CommandDispatcher<GlassCommandSource> dispatcher = new CommandDispatcher<>();
 
-    @EventListener(phase = InitEvent.PRE_INIT_PHASE)
-    public void init(InitEvent event) {
-        CommandRegistry.register(
-                new SetTileCommand(), "Set a tile"
-        );
-        CommandRegistry.register(
-                new SummonCommand(), "Spawn an entity"
-        );
-        CommandRegistry.register(
-                new HelpCommand(), "Show help"
-        );
-        CommandRegistry.register(
-                new MeCommand(), "Show a message in chat with the format '* [name] [message]'"
-        );
-        CommandRegistry.register(
-                new MsgCommand(), "Whisper something to a player"
-        );
-        CommandRegistry.register(
-                new GiveCommand(), "Give an item to a player"
-        );
-        CommandRegistry.register(
-                new TimeCommand(), "Set or get the time"
-        );
-        CommandRegistry.register(
-                new PermissionsCommand(), "Query or add permissions to players."
-        );
-        CommandRegistry.register(
-                new TeleportCommand(), "Teleport entities"
-        );
 
-        try {
-            Field helpMap = CommandRegistry.class.getDeclaredField("helpMap");
-            helpMap.setAccessible(true);
-            LOGGER.info(((HashMap<?, ?>) helpMap.get(null)).size());
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
+    @EventListener(phase = CommandRegisterEvent.INTERNAL_PHASE)
+    public void internalInit(CommandRegisterEvent event) {
+        PermissionManagerImpl.setupPermissionManager();
     }
+
+    @EventListener(phase = CommandRegisterEvent.VANILLA_PHASE)
+    public void vanillaInit(CommandRegisterEvent event) {
+        event.register(new HelpCommand());
+        event.register(new MeCommand());
+        event.register(new MsgCommand());
+        event.register(new GiveCommand());
+        event.register(new TimeCommand());
+        event.register(new TeleportCommand());
+    }
+
+    @EventListener
+    public void customInit(CommandRegisterEvent event) {
+        event.register(new SetTileCommand());
+        event.register(new SummonCommand());
+        event.register(new PermissionsCommand());
+    }
+
 
     @EventListener
     public void onInitialize(PacketRegisterEvent event) {

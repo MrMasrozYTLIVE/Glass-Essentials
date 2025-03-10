@@ -49,7 +49,7 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
                 if (!message.isEmpty() && message.charAt(0) == '/') {
                     message = message.substring(1);
                 }
-                PacketHelper.send(new GlassBrigadierAutocompletePacket(message));
+                PacketHelper.send(new GlassBrigadierAutocompletePacket(message, message.length()));
                 break;
 
             case Keyboard.KEY_UP:

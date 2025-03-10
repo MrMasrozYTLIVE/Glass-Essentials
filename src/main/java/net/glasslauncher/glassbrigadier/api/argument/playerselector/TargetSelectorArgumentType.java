@@ -33,10 +33,9 @@ public class TargetSelectorArgumentType implements ArgumentType<TargetSelector<?
         this.singleOnly = singleOnly;
     }
 
-    @SuppressWarnings("unchecked")
     private static List<String> getValidValues(CommandContext<GlassCommandSource> context) {
         List<String> validValues = new ArrayList<>();
-        List<PlayerEntity> players = context.getSource().getWorld().players;
+        List<PlayerEntity> players = context.getSource().getAllPlayers();
         players.forEach(it -> validValues.add(it.name));
         validValues.add("@a");
         validValues.add("@p");

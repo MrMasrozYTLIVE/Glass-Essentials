@@ -69,7 +69,8 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
 
     @Override
     public boolean satisfiesNode(PermissionNode nodeToCheck) {
-        return nodeToCheck.isSatisfiedBy(getPermissions());
+//        return nodeToCheck.isSatisfiedBy(getPermissions());
+        return true;
     }
 
     @Override
