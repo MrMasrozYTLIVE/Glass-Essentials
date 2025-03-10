@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.server.argument.GlassCommandBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -53,7 +54,14 @@ public final class CommandRegistry {
      * @return the built {@link CommandNode}.
      */
     public static CommandNode<GlassCommandSource> register(CommandProvider commandSupplier) {
-        return GlassBrigadier.dispatcher.register(commandSupplier.get());
+        LiteralArgumentBuilder<GlassCommandSource> commandBuilder = commandSupplier.get();
+        CommandNode<GlassCommandSource> commandNode = GlassBrigadier.dispatcher.register(commandBuilder);
+        if (commandBuilder instanceof GlassCommandBuilder builder) {
+            while (builder.hasAliases()) {
+                GlassBrigadier.dispatcher.register(commandBuilder);
+            }
+        }
+        return commandNode;
     }
 
     /**

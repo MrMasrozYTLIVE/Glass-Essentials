@@ -4,6 +4,7 @@ import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.argument.entityid.EntityType;
 import net.glasslauncher.glassbrigadier.api.utils.EntityUtils;
@@ -27,6 +28,7 @@ public class TargetSelector<E extends Entity> implements Predicate<Entity> {
     private static final SimpleCommandExceptionType INVALID_TARGET_SELECTOR = new SimpleCommandExceptionType(new LiteralMessage("Invalid Target Selector"));
     private static final SimpleCommandExceptionType INVALID_ENTITY_TYPE = new SimpleCommandExceptionType(new LiteralMessage("Invalid Entity Type"));
     private final Class<E> clazz;
+    @Getter
     private final String name;
     private final int limit;
     private final SortingMethod sortingMethod;

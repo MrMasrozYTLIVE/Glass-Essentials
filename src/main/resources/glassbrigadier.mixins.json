@@ -4,15 +4,16 @@
   "package": "net.glasslauncher.glassbrigadier.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "brigadierjank.FixRecursiveCheck"
   ],
   "server": [
     "CommandManagerMixin",
-    "commandsource.ExtendedDedicatedServerGUI",
-    "commandsource.ExtendedMinecraftServer",
-    "commandsource.ExtendedServerPlayNetworkHandler",
     "ServerConfigMixin",
     "ServerGUIAccessor",
-    "ServerPlayPacketHandlerAccessor"
+    "ServerPlayPacketHandlerAccessor",
+    "commandsource.ExtendedDedicatedServerGUI",
+    "commandsource.ExtendedMinecraftServer",
+    "commandsource.ExtendedServerPlayNetworkHandler"
   ],
   "client": [
     "ChatScreenMixin",

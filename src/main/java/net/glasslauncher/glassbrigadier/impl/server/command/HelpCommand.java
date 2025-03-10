@@ -5,12 +5,15 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.context.ParsedCommandNode;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.server.argument.DescriptiveLiteralCommandNode;
 
+import java.util.List;
 import java.util.Map;
 
 public class HelpCommand implements CommandProvider {
@@ -27,12 +30,23 @@ public class HelpCommand implements CommandProvider {
 
             return map.size();
         }).then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("command", StringArgumentType.greedyString()).executes((context) -> {
-            ParseResults<GlassCommandSource> parseResults = GlassBrigadier.dispatcher.parse(StringArgumentType.getString(context, "command"), (GlassCommandSource)context.getSource());
-            if (parseResults.getContext().getNodes().isEmpty()) {
+            String command = StringArgumentType.getString(context, "command");
+            ParseResults<GlassCommandSource> parseResults = GlassBrigadier.dispatcher.parse(command, context.getSource());
+            List<ParsedCommandNode<GlassCommandSource>> commandNodes = parseResults.getContext().getNodes();
+            if (!parseResults.getExceptions().isEmpty()) {
+                throw parseResults.getExceptions().values().stream().findFirst().get();
+            }
+            else if (commandNodes.isEmpty()) {
                 throw FAILED_EXCEPTION.create();
-            } else {
-                Map<CommandNode<GlassCommandSource>, String> map = GlassBrigadier.dispatcher.getSmartUsage(Iterables.getLast(parseResults.getContext().getNodes()).getNode(), context.getSource());
+            }
+            else {
+                CommandNode<GlassCommandSource> commandNode = Iterables.getLast(parseResults.getContext().getNodes()).getNode();
 
+                Map<CommandNode<GlassCommandSource>, String> map = GlassBrigadier.dispatcher.getSmartUsage(commandNode, context.getSource());
+
+                if (commandNode instanceof DescriptiveLiteralCommandNode<?> literalArgumentBuilder) {
+                    context.getSource().sendMessage(literalArgumentBuilder.getDescription());
+                }
                 for (String string : map.values()) {
                     context.getSource().sendMessage("/" + parseResults.getReader().getString() + " " + string);
                 }
