@@ -4,6 +4,7 @@ import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.impl.client.mixinhooks.ChatScreenHooks;
 import net.glasslauncher.glassbrigadier.impl.client.network.GlassBrigadierAutocompletePacket;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.input.Keyboard;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -53,7 +54,7 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
                 if (!message.isEmpty() && message.charAt(0) == '/') {
                     message = message.substring(1);
                 }
-                new GlassBrigadierAutocompletePacket(message);
+                PacketHelper.send(new GlassBrigadierAutocompletePacket(message));
                 break;
 
             case Keyboard.KEY_UP:

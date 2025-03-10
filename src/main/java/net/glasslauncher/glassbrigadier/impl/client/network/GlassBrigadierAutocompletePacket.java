@@ -1,15 +1,22 @@
 package net.glasslauncher.glassbrigadier.impl.client.network;
 
+import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.suggestion.Suggestion;
+import com.mojang.brigadier.suggestion.Suggestions;
 import lombok.SneakyThrows;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
+import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.client.mixinhooks.ChatScreenHooks;
+import net.glasslauncher.glassbrigadier.impl.server.mixinhooks.ServerPlayPacketHandlerHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.mod.entrypoint.EventBusPolicy;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
@@ -23,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Entrypoint(eventBus = @EventBusPolicy(registerInstance = false))
 public class GlassBrigadierAutocompletePacket extends Packet implements ManagedPacket<GlassBrigadierAutocompletePacket> {
@@ -119,18 +127,27 @@ public class GlassBrigadierAutocompletePacket extends Packet implements ManagedP
 
     @Override
     public void apply(NetworkHandler networkHandler) {
-//        if (networkHandler instanceof ServerPlayNetworkHandler serverPlayNetworkHandler) {
-//            ParseResults<GlassCommandSource> parseResults = LegacyBrigadier.dispatcher.parse(incompleteCommand, serverPlayNetworkHandler);
-//            Suggestions suggestions;
-//            try {
-//                suggestions = LegacyBrigadier.dispatcher.getCompletionSuggestions(parseResults).get();
-//            } catch (InterruptedException | ExecutionException e) {
-//                LegacyBrigadier.LOGGER.error(e);
-//                return;
-//            }
-//            if (!suggestions.getList().isEmpty())
-//                PacketHelper.sendTo(((ServerPlayPacketHandlerHooks)networkHandler).getPlayer(), new GlassBrigadierAutocompletePacket(new String(stringsToBytes(applySuggestions(incompleteCommand, suggestions.getList())), StandardCharsets.UTF_8)));
-//        }
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            return;
+        }
+
+        applyServer(networkHandler);
+    }
+
+    @Environment(EnvType.SERVER)
+    public void applyServer(NetworkHandler networkHandler) {
+        if (networkHandler instanceof ServerPlayNetworkHandler serverPlayNetworkHandler) {
+            ParseResults<GlassCommandSource> parseResults = GlassBrigadier.dispatcher.parse(incompleteCommand, (GlassCommandSource) serverPlayNetworkHandler);
+            Suggestions suggestions;
+            try {
+                suggestions = GlassBrigadier.dispatcher.getCompletionSuggestions(parseResults).get();
+            } catch (InterruptedException | ExecutionException e) {
+                GlassBrigadier.LOGGER.error(e);
+                return;
+            }
+            if (!suggestions.getList().isEmpty())
+                PacketHelper.sendTo(((ServerPlayPacketHandlerHooks)networkHandler).getPlayer(), new GlassBrigadierAutocompletePacket(new String(stringsToBytes(applySuggestions(incompleteCommand, suggestions.getList())), StandardCharsets.UTF_8)));
+        }
     }
 
     @Override
