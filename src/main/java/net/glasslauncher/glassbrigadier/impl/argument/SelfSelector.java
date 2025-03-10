@@ -1,7 +1,7 @@
-package net.glasslauncher.glassbrigadier.impl.server.argument;
+package net.glasslauncher.glassbrigadier.impl.argument;
 
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.minecraft.entity.Entity;
 
 import java.util.Collections;

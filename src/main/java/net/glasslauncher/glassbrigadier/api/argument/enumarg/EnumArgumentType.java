@@ -8,8 +8,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.impl.server.utils.UncheckedCaster;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.utils.UncheckedCaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;

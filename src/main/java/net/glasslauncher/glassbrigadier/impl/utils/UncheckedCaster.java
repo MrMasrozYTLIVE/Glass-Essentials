@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl.server.utils;
+package net.glasslauncher.glassbrigadier.impl.utils;
 
 import com.mojang.brigadier.context.CommandContext;
 

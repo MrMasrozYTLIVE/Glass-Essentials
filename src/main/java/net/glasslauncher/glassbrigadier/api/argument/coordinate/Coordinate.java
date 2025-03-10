@@ -1,6 +1,6 @@
 package net.glasslauncher.glassbrigadier.api.argument.coordinate;
 
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;

@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl.server.argument;
+package net.glasslauncher.glassbrigadier.impl.argument;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.RedirectModifier;

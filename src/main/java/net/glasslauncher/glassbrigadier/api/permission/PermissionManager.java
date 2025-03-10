@@ -1,7 +1,7 @@
 package net.glasslauncher.glassbrigadier.api.permission;
 
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.impl.server.permission.PermissionManagerImpl;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
 import net.minecraft.entity.player.PlayerEntity;
 
 import javax.annotation.Nonnull;

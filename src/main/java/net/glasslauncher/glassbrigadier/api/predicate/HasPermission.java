@@ -1,7 +1,7 @@
 package net.glasslauncher.glassbrigadier.api.predicate;
 
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 
 import java.util.function.Predicate;
 

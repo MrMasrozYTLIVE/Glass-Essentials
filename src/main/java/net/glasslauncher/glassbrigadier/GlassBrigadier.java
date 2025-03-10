@@ -1,9 +1,10 @@
-package net.glasslauncher.glassbrigadier.impl;
+package net.glasslauncher.glassbrigadier;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.glasslauncher.glassbrigadier.api.command.CommandRegistry;
-import net.glasslauncher.glassbrigadier.impl.client.network.GlassBrigadierAutocompletePacket;
-import net.glasslauncher.glassbrigadier.impl.server.command.*;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
+import net.glasslauncher.glassbrigadier.impl.command.*;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.mod.InitEvent;

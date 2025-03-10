@@ -20,11 +20,14 @@
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
-      "net.glasslauncher.glassbrigadier.impl.GlassBrigadier"
+      "net.glasslauncher.glassbrigadier.GlassBrigadier"
     ],
     "stationapi:event_bus_client": [
     ],
     "stationapi:event_bus_server": [
+    ],
+    "gcapi3": [
+      "net.glasslauncher.glassbrigadier.GlassBrigadierConfig"
     ]
   },
   "mixins": [

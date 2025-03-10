@@ -2,9 +2,8 @@ package net.glasslauncher.glassbrigadier.api.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
-import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.impl.server.argument.GlassCommandBuilder;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;

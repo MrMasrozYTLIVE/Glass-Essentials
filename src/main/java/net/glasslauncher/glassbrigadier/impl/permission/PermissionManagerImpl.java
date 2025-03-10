@@ -1,11 +1,11 @@
-package net.glasslauncher.glassbrigadier.impl.server.permission;
+package net.glasslauncher.glassbrigadier.impl.permission;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
-import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
 
 import java.io.*;
 import java.util.HashMap;

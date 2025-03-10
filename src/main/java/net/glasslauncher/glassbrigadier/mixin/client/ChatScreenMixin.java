@@ -1,13 +1,14 @@
 package net.glasslauncher.glassbrigadier.mixin.client;
 
-import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.impl.client.mixinhooks.ChatScreenHooks;
-import net.glasslauncher.glassbrigadier.impl.client.network.GlassBrigadierAutocompletePacket;
+import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.input.Keyboard;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,14 +19,8 @@ import java.util.List;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin implements ChatScreenHooks {
-    @Override
-    @Accessor("text")
-    public abstract String getMessage();
 
-    @Override
-    @Accessor("text")
-    public abstract void setMessage(String newMessage);
-
+    @Shadow protected String text;
     @Unique
     private int currentMessageIndex = -1;
     @Unique
@@ -47,10 +42,10 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
 
             case Keyboard.KEY_TAB:
                 if (completions != null) {
-                    setMessage("/" + completions.get((currentCompletion) % completions.size()));
+                    text = "/" + completions.get((currentCompletion) % completions.size());
                     currentCompletion++;
                 }
-                String message = getMessage();
+                String message = text;
                 if (!message.isEmpty() && message.charAt(0) == '/') {
                     message = message.substring(1);
                 }
@@ -60,8 +55,8 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
             case Keyboard.KEY_UP:
                 if (GlassBrigadier.previousMessages.size() > currentMessageIndex+1) {
                     if (currentMessageIndex == -1)
-                        currentMessage = getMessage();
-                    setMessage(GlassBrigadier.previousMessages.get(++currentMessageIndex));
+                        currentMessage = text;
+                    text  = GlassBrigadier.previousMessages.get(++currentMessageIndex);
                     invalidateSuggestions();
                 }
                 break;
@@ -69,9 +64,9 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
             case Keyboard.KEY_DOWN:
                 if (currentMessageIndex == 0) {
                     currentMessageIndex = -1;
-                    setMessage(currentMessage);
+                    text = currentMessage;
                 } else if (currentMessageIndex > 0) {
-                    setMessage(GlassBrigadier.previousMessages.get(--currentMessageIndex));
+                    text = GlassBrigadier.previousMessages.get(--currentMessageIndex);
                     invalidateSuggestions();
                 }
                 break;
@@ -92,6 +87,6 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
 
     @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ClientPlayerEntity;sendChatMessage(Ljava/lang/String;)V"))
     void addMessageToQueue(char c, int i, CallbackInfo ci) {
-        GlassBrigadier.previousMessages.add(0, getMessage().trim());
+        GlassBrigadier.previousMessages.add(0, text.trim());
     }
 }

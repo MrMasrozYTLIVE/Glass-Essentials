@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl.server.command;
+package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.google.common.collect.Iterables;
 import com.mojang.brigadier.ParseResults;
@@ -9,9 +9,9 @@ import com.mojang.brigadier.context.ParsedCommandNode;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
-import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.impl.server.argument.DescriptiveLiteralCommandNode;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.DescriptiveLiteralCommandNode;
 
 import java.util.List;
 import java.util.Map;

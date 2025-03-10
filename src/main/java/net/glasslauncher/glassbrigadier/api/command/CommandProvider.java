@@ -1,8 +1,7 @@
 package net.glasslauncher.glassbrigadier.api.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
 
 import java.util.function.Supplier;
 

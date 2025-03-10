@@ -1,10 +1,10 @@
-package net.glasslauncher.glassbrigadier.impl.server.argument;
+package net.glasslauncher.glassbrigadier.impl.argument;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import lombok.Getter;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;

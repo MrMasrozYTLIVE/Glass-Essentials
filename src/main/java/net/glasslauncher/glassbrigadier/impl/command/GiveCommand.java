@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl.server.command;
+package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -7,8 +7,8 @@ import net.glasslauncher.glassbrigadier.api.argument.itemid.ItemId;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.impl.server.argument.GlassCommandBuilder;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
 

@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl.client.network;
+package net.glasslauncher.glassbrigadier.impl.network;
 
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.suggestion.Suggestion;
@@ -7,10 +7,10 @@ import lombok.SneakyThrows;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
-import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
-import net.glasslauncher.glassbrigadier.impl.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.client.mixinhooks.ChatScreenHooks;
-import net.glasslauncher.glassbrigadier.impl.server.mixinhooks.ServerPlayPacketHandlerHooks;
+import net.glasslauncher.glassbrigadier.impl.mixinhooks.ServerPlayPacketHandlerHooks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;

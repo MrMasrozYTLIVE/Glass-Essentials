@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl;
+package net.glasslauncher.glassbrigadier.api.command;
 
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.minecraft.entity.Entity;
