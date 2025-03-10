@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.mixin;
+package net.glasslauncher.glassbrigadier.mixin.client;
 
 import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.impl.client.mixinhooks.ChatScreenHooks;

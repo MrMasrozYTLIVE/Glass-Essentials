@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.mixin;
+package net.glasslauncher.glassbrigadier.mixin.server;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.glasslauncher.glassbrigadier.impl.GlassBrigadier;

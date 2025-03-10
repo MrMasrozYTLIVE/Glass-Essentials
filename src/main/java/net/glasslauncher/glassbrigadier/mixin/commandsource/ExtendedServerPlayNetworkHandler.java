@@ -20,12 +20,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(ServerPlayNetworkHandler.class)
 public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSource {
 
-    @Shadow private ServerPlayerEntity player;
+    @Shadow public ServerPlayerEntity player;
 
-    @Shadow private MinecraftServer server;
+    @Shadow public MinecraftServer server;
 
     @Override
     public World getWorld() {

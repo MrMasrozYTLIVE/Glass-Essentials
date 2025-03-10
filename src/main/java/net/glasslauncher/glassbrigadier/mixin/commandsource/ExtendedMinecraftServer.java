@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(MinecraftServer.class)
 public abstract class ExtendedMinecraftServer implements GlassCommandSource {
 
