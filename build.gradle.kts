@@ -86,7 +86,7 @@ dependencies {
 	// https://github.com/Glass-Series/Always-More-Items
 	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.properties["alwaysmoreitems_version"]}")
 
-	implementation("com.mojang:brigadier:1.0.18")
+	implementation("com.mojang:brigadier:1.3.10")
 }
 
 tasks.withType<ProcessResources> {
