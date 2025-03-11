@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl.command;
+package net.glasslauncher.glassbrigadier.impl.command.vanilla;
 
 import com.google.common.collect.Iterables;
 import com.mojang.brigadier.ParseResults;

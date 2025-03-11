@@ -1,14 +1,16 @@
 package net.glasslauncher.glassbrigadier;
 
 import com.mojang.brigadier.CommandDispatcher;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
+import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
 import net.glasslauncher.glassbrigadier.impl.command.*;
 import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
@@ -45,13 +47,19 @@ public class GlassBrigadier {
         event.register(new TeleportCommand());
     }
 
+    @Environment(EnvType.SERVER)
+    @EventListener(phase = CommandRegisterEvent.VANILLA_PHASE)
+    public void vanillaServerInit(CommandRegisterEvent event) {
+        event.register(new OpCommand());
+        event.register(new DeopCommand());
+    }
+
     @EventListener
     public void customInit(CommandRegisterEvent event) {
         event.register(new SetTileCommand());
         event.register(new SummonCommand());
         event.register(new PermissionsCommand());
     }
-
 
     @EventListener
     public void onInitialize(PacketRegisterEvent event) {
