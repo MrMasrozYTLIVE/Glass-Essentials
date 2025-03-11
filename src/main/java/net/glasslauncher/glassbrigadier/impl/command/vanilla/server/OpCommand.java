@@ -1,9 +1,10 @@
-package net.glasslauncher.glassbrigadier.impl.command.vanilla;
+package net.glasslauncher.glassbrigadier.impl.command.vanilla.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
+import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -20,8 +21,9 @@ public class OpCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.create("op", "Give the specified player operator status. This is effectively the same as giving them all permissions.")
                 .requires(permission("command.op"))
-                .then(RequiredArgumentBuilder.argument("player", TargetSelectorArgumentType.player()))
-                .executes(this::opPlayer);
+                .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", TargetSelectorArgumentType.entity())
+                        .executes(this::opPlayer)
+                );
     }
 
     public int opPlayer(CommandContext<GlassCommandSource> context) {
@@ -33,7 +35,7 @@ public class OpCommand implements CommandProvider {
                 return;
             }
 
-            playerManager.removeFromOperators(player.name);
+            playerManager.addToOperators(player.name);
             sendFeedbackAndLog(context.getSource(), "Opping " + player.name + ".");
             player.sendMessage(Formatting.YELLOW + "You are now op!");
         });

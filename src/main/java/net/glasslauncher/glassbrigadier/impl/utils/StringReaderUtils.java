@@ -1,9 +1,16 @@
 package net.glasslauncher.glassbrigadier.impl.utils;
 
 import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinate;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
+import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.*;
 
@@ -61,13 +68,29 @@ public final class StringReaderUtils {
                 options = "";
             }
             return TargetSelector.create(selectorType, options);
-        } else {
-            while (reader.canRead() && isAllowedInTargetSelector(reader.peek())) {
-                reader.skip();
-            }
-
-            return TargetSelector.literal(reader.getString().substring(start, reader.getCursor()));
         }
+
+        while (reader.canRead() && isAllowedInTargetSelector(reader.peek())) {
+            reader.skip();
+        }
+
+        String playerName = reader.getString().substring(start, reader.getCursor());
+
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            if (Minecraft.INSTANCE.player.name.equalsIgnoreCase(playerName)) {
+                return TargetSelector.player(playerName);
+            }
+        }
+        else if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            //noinspection deprecation
+            MinecraftServer minecraftServer = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
+            PlayerEntity player = minecraftServer.playerManager.getPlayer(playerName);
+            if (player != null) {
+                return TargetSelector.player(playerName);
+            }
+        }
+
+        return TargetSelector.literal(playerName);
     }
 
     public static Map<String, String> readTargetSelectorOptions(StringReader reader) throws CommandSyntaxException {

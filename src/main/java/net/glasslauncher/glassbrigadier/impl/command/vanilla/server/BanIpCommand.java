@@ -1,24 +1,21 @@
-package net.glasslauncher.glassbrigadier.impl.command.vanilla;
+package net.glasslauncher.glassbrigadier.impl.command.vanilla.server;
 
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
-import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.modificationstation.stationapi.api.util.Formatting;
-import org.checkerframework.checker.regex.qual.Regex;
 import org.intellij.lang.annotations.RegExp;
-
-import javax.annotation.RegEx;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
-import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class BanIpCommand implements CommandProvider {
@@ -28,8 +25,9 @@ public class BanIpCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.create("ban-ip", "Ban an IP.")
                 .requires(permission("command.banip"))
-                .then(RequiredArgumentBuilder.argument("ip", word()))
-                .executes(this::banIp);
+                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("ip", word())
+                        .executes(this::banIp)
+                );
     }
 
     public int banIp(CommandContext<GlassCommandSource> context) {

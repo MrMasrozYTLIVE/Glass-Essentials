@@ -26,7 +26,7 @@ public class PermissionNodeArgumentType implements ArgumentType<PermissionNode> 
     }
 
     @Override
-    public PermissionNode parse(StringReader reader) throws CommandSyntaxException {
+    public PermissionNode parse(StringReader reader) {
         String id = StringReaderUtils.readPermissionNode(reader);
         return new PermissionNode(id);
     }

@@ -28,6 +28,8 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
 
     @Shadow public MinecraftServer server;
 
+    @Shadow public abstract String getName();
+
     @Override
     public World getWorld() {
         if (getPlayer() != null) {
@@ -62,8 +64,10 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
 
     @Override
     public boolean satisfiesNode(PermissionNode nodeToCheck) {
-//        return nodeToCheck.isSatisfiedBy(getPermissions());
-        return true;
+        if (server.playerManager.isOperator(getName())) {
+            return true;
+        }
+        return nodeToCheck.isSatisfiedBy(getPermissions());
     }
 
     @Override

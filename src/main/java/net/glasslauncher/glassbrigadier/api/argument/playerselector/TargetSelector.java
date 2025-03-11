@@ -44,28 +44,20 @@ public class TargetSelector<E extends Entity> implements Predicate<Entity> {
         return new TargetSelector<>(Entity.class, name, 1, SortingMethod.RANDOM);
     }
 
+    public static TargetSelector<?> player(String name) throws CommandSyntaxException {
+        return new TargetSelector<>(PlayerEntity.class, name, 1, SortingMethod.RANDOM);
+    }
+
     public static TargetSelector<?> create(char selectorType, String optionsString) throws CommandSyntaxException {
         final Options options = new Options(StringReaderUtils.readTargetSelectorOptions(new StringReader(optionsString)));
-        switch (selectorType) {
-            case 'a': {
-                return new TargetSelector<>(PlayerEntity.class, options.name(), options.limit(), options.sort());
-            }
-            case 'p': {
-                return new TargetSelector<>(PlayerEntity.class, options.name(), 1, SortingMethod.NEAREST);
-            }
-            case 'r': {
-                return new TargetSelector<>(PlayerEntity.class, options.name(), 1, SortingMethod.RANDOM);
-            }
-            case 'e': {
-                return new TargetSelector<>(options.clazz(), options.name(), options.limit(), options.sort());
-            }
-            case 's': {
-                return new SelfSelector();
-            }
-            default: {
-                throw INVALID_TARGET_SELECTOR.create();
-            }
-        }
+        return switch (selectorType) {
+            case 'a' -> new TargetSelector<>(PlayerEntity.class, options.name(), options.limit(), options.sort());
+            case 'p' -> new TargetSelector<>(PlayerEntity.class, options.name(), 1, SortingMethod.NEAREST);
+            case 'r' -> new TargetSelector<>(PlayerEntity.class, options.name(), 1, SortingMethod.RANDOM);
+            case 'e' -> new TargetSelector<>(options.clazz(), options.name(), options.limit(), options.sort());
+            case 's' -> new SelfSelector();
+            default -> throw INVALID_TARGET_SELECTOR.create();
+        };
     }
 
     public boolean isPlayerOnly() {

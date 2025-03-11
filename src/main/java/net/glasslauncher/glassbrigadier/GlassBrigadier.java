@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
+import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
 import net.glasslauncher.glassbrigadier.impl.command.*;
 import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
@@ -41,17 +42,26 @@ public class GlassBrigadier {
     public void vanillaInit(CommandRegisterEvent event) {
         event.register(new HelpCommand());
         event.register(new MeCommand());
-        event.register(new MsgCommand());
         event.register(new GiveCommand());
         event.register(new TimeCommand());
         event.register(new TeleportCommand());
+        event.register(new SayCommand());
     }
 
     @Environment(EnvType.SERVER)
     @EventListener(phase = CommandRegisterEvent.VANILLA_PHASE)
     public void vanillaServerInit(CommandRegisterEvent event) {
+        event.register(new MsgCommand());
         event.register(new OpCommand());
         event.register(new DeopCommand());
+        event.register(new BanCommand());
+        event.register(new BanIpCommand());
+        event.register(new PardonCommand());
+        event.register(new PardonIpCommand());
+        event.register(new SaveOffCommand());
+        event.register(new SaveOnCommand());
+        event.register(new SaveAllCommand());
+        event.register(new StopCommand());
     }
 
     @EventListener
