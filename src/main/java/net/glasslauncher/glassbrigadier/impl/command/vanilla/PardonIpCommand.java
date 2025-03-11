@@ -12,31 +12,36 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
+import static net.glasslauncher.glassbrigadier.impl.command.vanilla.BanIpCommand.IP_REGEX;
 
-public class OpCommand implements CommandProvider {
+public class PardonIpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("op", "Give the specified player operator status. This is effectively the same as giving them all permissions.")
-                .requires(permission("command.op"))
+        return GlassCommandBuilder.create("pardon-ip", "Unban an IP.")
+                .alias("unban-ip")
+                .requires(permission("command.pardonip"))
                 .then(RequiredArgumentBuilder.argument("player", TargetSelectorArgumentType.player()))
                 .executes(this::opPlayer);
     }
 
     public int opPlayer(CommandContext<GlassCommandSource> context) {
-        getPlayers(context, "player").getEntities(context.getSource()).forEach(player -> {
-            //noinspection deprecation
-            PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
-            if (playerManager.isOperator(player.name)) {
-                context.getSource().sendMessage(Formatting.RED + player.name + " is already an op!");
-                return;
-            }
+        String ip = getString(context, "ip").toLowerCase().strip();
+        if (!ip.matches(IP_REGEX)) {
+            context.getSource().sendMessage(Formatting.RED + ip + " isn't a valid IP address!");
+            return 0;
+        }
+        //noinspection deprecation
+        PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
+        if (!playerManager.bannedIps.contains(ip)) {
+            context.getSource().sendMessage(Formatting.RED + ip + " isn't banned!");
+            return 0;
+        }
 
-            playerManager.removeFromOperators(player.name);
-            sendFeedbackAndLog(context.getSource(), "Opping " + player.name + ".");
-            player.sendMessage(Formatting.YELLOW + "You are now op!");
-        });
+        playerManager.unbanIp(ip);
+        sendFeedbackAndLog(context.getSource(), "Unbanned " + ip + ".");
         return 0;
     }
 }

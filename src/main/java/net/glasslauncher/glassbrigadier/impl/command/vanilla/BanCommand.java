@@ -15,27 +15,25 @@ import net.modificationstation.stationapi.api.util.Formatting;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
-public class OpCommand implements CommandProvider {
+public class BanCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("op", "Give the specified player operator status. This is effectively the same as giving them all permissions.")
-                .requires(permission("command.op"))
+        return GlassCommandBuilder.create("ban", "Ban a given player.")
+                .requires(permission("command.ban"))
                 .then(RequiredArgumentBuilder.argument("player", TargetSelectorArgumentType.player()))
-                .executes(this::opPlayer);
+                .executes(this::banPlayer);
     }
 
-    public int opPlayer(CommandContext<GlassCommandSource> context) {
+    public int banPlayer(CommandContext<GlassCommandSource> context) {
         getPlayers(context, "player").getEntities(context.getSource()).forEach(player -> {
             //noinspection deprecation
             PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
-            if (playerManager.isOperator(player.name)) {
-                context.getSource().sendMessage(Formatting.RED + player.name + " is already an op!");
+            if (playerManager.bannedPlayers.contains(player.name.toLowerCase().strip())) {
+                context.getSource().sendMessage(Formatting.RED + player.name + " is already banned!");
                 return;
             }
-
-            playerManager.removeFromOperators(player.name);
-            sendFeedbackAndLog(context.getSource(), "Opping " + player.name + ".");
-            player.sendMessage(Formatting.YELLOW + "You are now op!");
+            playerManager.banPlayer(player.name);
+            sendFeedbackAndLog(context.getSource(), "Banned " + player.name + ".");
         });
         return 0;
     }

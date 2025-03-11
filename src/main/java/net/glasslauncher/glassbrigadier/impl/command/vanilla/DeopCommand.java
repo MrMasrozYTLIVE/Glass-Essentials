@@ -9,6 +9,8 @@ import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
+import net.modificationstation.stationapi.api.util.Formatting;
 
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
@@ -19,14 +21,20 @@ public class DeopCommand implements CommandProvider {
         return GlassCommandBuilder.create("deop", "Remove operator status from a player.")
                 .requires(permission("command.deop"))
                 .then(RequiredArgumentBuilder.argument("player", TargetSelectorArgumentType.player()))
-                .executes(this::opPlayer);
+                .executes(this::deopPlayer);
     }
 
-    public int opPlayer(CommandContext<GlassCommandSource> context) {
+    public int deopPlayer(CommandContext<GlassCommandSource> context) {
         getPlayers(context, "player").getEntities(context.getSource()).forEach(player -> {
             //noinspection deprecation
-            ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager.removeFromOperators(player.name);
-            sendFeedbackAndLog(context.getSource(), "Deopping " + player.name);
+            PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
+            if (!playerManager.isOperator(player.name)) {
+                context.getSource().sendMessage(Formatting.RED + player.name + " isn't an op!");
+                return;
+            }
+
+            playerManager.removeFromOperators(player.name);
+            sendFeedbackAndLog(context.getSource(), "Deopping " + player.name + ".");
         });
         return 0;
     }
