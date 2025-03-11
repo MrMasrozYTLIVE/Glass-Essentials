@@ -57,13 +57,6 @@ public abstract class ExtendedMinecraft implements GlassCommandSource {
     }
 
     @Override
-    public Set<PermissionNode> getAllPermissions() {
-        Set<PermissionNode> set = new HashSet<>();
-        set.add(PermissionNode.ROOT);
-        return set;
-    }
-
-    @Override
     public boolean satisfiesNode(PermissionNode nodeToCheck) {
         return true;
     }
@@ -85,24 +78,22 @@ public abstract class ExtendedMinecraft implements GlassCommandSource {
     }
 
     @Override
-    public boolean sendMessageToPlayer(String playerName, String message) {
+    public void sendMessageToPlayer(String playerName, String message) {
         PlayerEntity player = getPlayerByName(playerName);
         if (player == null) {
-            return false;
+            return;
         }
 
         player.sendMessage(message);
-        return true;
     }
 
     @Override
-    public boolean sendMessageToPlayer(@Nullable PlayerEntity player, String message) {
+    public void sendMessageToPlayer(@Nullable PlayerEntity player, String message) {
         if (player == null) {
-            return false;
+            return;
         }
 
         player.sendMessage(message);
-        return true;
 
     }
 

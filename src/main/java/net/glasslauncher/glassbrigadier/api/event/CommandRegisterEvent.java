@@ -46,11 +46,11 @@ public class CommandRegisterEvent extends Event {
      */
     public CommandNode<GlassCommandSource> register(CommandProvider commandSupplier) {
         LiteralArgumentBuilder<GlassCommandSource> commandBuilder = commandSupplier.get();
-        CommandNode<GlassCommandSource> commandNode = GlassBrigadier.dispatcher.register(commandBuilder);
+        CommandNode<GlassCommandSource> commandNode = commandDispatcher.register(commandBuilder);
         // This is ultra cursed, but easy aliases are a must.
         if (commandBuilder instanceof GlassCommandBuilder builder) {
             while (builder.hasAliases()) {
-                GlassBrigadier.dispatcher.register(commandBuilder);
+                commandDispatcher.register(commandBuilder);
             }
         }
         return commandNode;

@@ -27,9 +27,9 @@ public interface GlassCommandSource {
 
     Set<PermissionNode> getPermissions();
 
-    Set<PermissionNode> getAllPermissions();
-
-    boolean satisfiesNode(PermissionNode nodeToCheck);
+    default boolean satisfiesNode(PermissionNode nodeToCheck) {
+        return nodeToCheck.isSatisfiedBy(getPermissions());
+    }
 
     Entity getEntity();
 
@@ -39,9 +39,17 @@ public interface GlassCommandSource {
     @Nullable
     PlayerEntity getPlayerByName(String playerName);
 
-    boolean sendMessageToPlayer(String playerName, String message);
+    default void sendMessageToPlayer(String playerName, String message) {
+        sendMessageToPlayer(getPlayerByName(playerName), message);
+    }
 
-    boolean sendMessageToPlayer(PlayerEntity player, String message);
+    default void sendMessageToPlayer(@Nullable PlayerEntity player, String message) {
+        if (player == null) {
+            return;
+        }
+
+        player.sendMessage(message);
+    }
 
     List<PlayerEntity> getAllPlayers();
 }

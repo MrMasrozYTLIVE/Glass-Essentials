@@ -7,7 +7,7 @@
     "brigadierjank.FixRecursiveCheck"
   ],
   "server": [
-    "server.CommandManagerMixin",
+    "server.ServerCommandHandlerMixin",
     "commandsource.ExtendedDedicatedServerGUI",
     "commandsource.ExtendedMinecraftServer",
     "commandsource.ExtendedServerPlayNetworkHandler"

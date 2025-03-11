@@ -24,7 +24,7 @@ public final class PermissionManager {
     /**
      * Get the permission nodes for a command source.
      * @param source the source to check.
-     * @return a list of the source's permission nodes.
+     * @return a set of the source's permission nodes.
      */
     @Nonnull
     public static Set<PermissionNode> getNodesForCommandSource(@Nonnull GlassCommandSource source) {
@@ -34,7 +34,7 @@ public final class PermissionManager {
     /**
      * Get the permission nodes for a (player) name.
      * @param name the name to check.
-     * @return a list of the permission nodes.
+     * @return a set of the permission nodes.
      */
     @Nonnull
     public static Set<PermissionNode> getNodesForName(@Nonnull String name) {

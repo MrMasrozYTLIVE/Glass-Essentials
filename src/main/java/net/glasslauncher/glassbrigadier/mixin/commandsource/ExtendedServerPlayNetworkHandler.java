@@ -57,14 +57,7 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
 
     @Override
     public Set<PermissionNode> getPermissions() {
-        return PermissionManager.getNodesForCommandSource((GlassCommandSource) this);
-    }
-
-    @Override
-    public Set<PermissionNode> getAllPermissions() {
-        Set<PermissionNode> set = new HashSet<>();
-        set.add(PermissionNode.ROOT);
-        return set;
+        return PermissionManager.getNodesForCommandSource(this);
     }
 
     @Override
@@ -87,28 +80,6 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
     @Override
     public @Nullable PlayerEntity getPlayerByName(String playerName) {
         return server.playerManager.getPlayer(playerName);
-    }
-
-    @Override
-    public boolean sendMessageToPlayer(String playerName, String message) {
-        PlayerEntity player = getPlayerByName(playerName);
-        if (player == null) {
-            return false;
-        }
-
-        player.sendMessage(message);
-        return true;
-    }
-
-    @Override
-    public boolean sendMessageToPlayer(@Nullable PlayerEntity player, String message) {
-        if (player == null) {
-            return false;
-        }
-
-        player.sendMessage(message);
-        return true;
-
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class PermissionNode {
-
     private final String path;
 
     public PermissionNode(String path) {
