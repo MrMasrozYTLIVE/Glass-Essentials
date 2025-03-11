@@ -33,12 +33,15 @@ public class TargetSelectorArgumentType implements ArgumentType<TargetSelector<?
         this.singleOnly = singleOnly;
     }
 
-    private static List<String> getValidValues(CommandContext<GlassCommandSource> context) {
+    private List<String> getValidValues(CommandContext<GlassCommandSource> context) {
         List<String> validValues = new ArrayList<>();
         List<PlayerEntity> players = context.getSource().getAllPlayers();
         players.forEach(it -> validValues.add(it.name));
-        validValues.add("@a");
         validValues.add("@p");
+        if (singleOnly) {
+            return validValues;
+        }
+        validValues.add("@a");
         validValues.add("@e");
         return validValues;
     }
