@@ -8,7 +8,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.registry.DimensionContainer;
+import net.modificationstation.stationapi.api.registry.DimensionRegistry;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.Namespace;
 import org.lwjgl.util.vector.Vector2f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,12 +29,12 @@ public abstract class ExtendedMinecraftServer implements GlassCommandSource {
 
     @Shadow public PlayerManager playerManager;
 
+    @Shadow public abstract ServerWorld getWorld(int dimensionId);
+
     @Override
     public World getWorld() {
-        if (getPlayer() != null) {
-            return getPlayer().world;
-        }
-        return null;
+        //noinspection DataFlowIssue
+        return getWorld(DimensionRegistry.INSTANCE.get(Identifier.of(Namespace.MINECRAFT, "overworld")).getLegacyID());
     }
 
     @Override
@@ -53,7 +58,7 @@ public abstract class ExtendedMinecraftServer implements GlassCommandSource {
 
     @Override
     public Set<PermissionNode> getPermissions() {
-        return PermissionManager.getNodesForCommandSource((GlassCommandSource) this);
+        return PermissionManager.getNodesForCommandSource(this);
     }
 
     @Override
