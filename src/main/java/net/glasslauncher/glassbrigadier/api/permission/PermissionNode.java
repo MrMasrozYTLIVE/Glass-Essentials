@@ -1,14 +1,33 @@
 package net.glasslauncher.glassbrigadier.api.permission;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import lombok.Getter;
+import net.modificationstation.stationapi.api.util.Namespace;
+import org.jetbrains.annotations.NotNull;
+
 import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
+@Getter
 public class PermissionNode {
+    private static final @NotNull Cache<@NotNull String, @NotNull PermissionNode> CACHE = Caffeine.newBuilder().softValues().build();
+    private static final @NotNull Function<@NotNull String, @NotNull PermissionNode> PERMISSION_NODE_FACTORY = PermissionNode::new;
+
     private final String path;
 
-    public PermissionNode(String path) {
+    private PermissionNode(String path) {
         this.path = path;
+        CACHE.put(path, this);
+    }
+
+    /**
+     * Get the permission node object relevant to the provided string.
+     */
+    public static PermissionNode of(String path) {
+        return CACHE.get(path, PERMISSION_NODE_FACTORY);
     }
 
     /**

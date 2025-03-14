@@ -59,7 +59,7 @@ public final class PermissionManagerImpl {
         final Map<String, Set<String>> stringMap = GSON.fromJson(new FileReader(file), string2StringSetType.getType());
         permissionsMap.clear();
         stringMap.forEach((names, perms) ->
-                permissionsMap.put(names, perms.stream().map(PermissionNode::new).collect(Collectors.toSet()))
+                permissionsMap.put(names, perms.stream().map(PermissionNode::of).collect(Collectors.toSet()))
         );
     }
 

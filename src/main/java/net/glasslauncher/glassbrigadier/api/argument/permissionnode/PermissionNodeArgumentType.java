@@ -27,14 +27,11 @@ public class PermissionNodeArgumentType implements ArgumentType<PermissionNode> 
     @Override
     public PermissionNode parse(StringReader reader) {
         String id = StringReaderUtils.readPermissionNode(reader);
-        return new PermissionNode(id);
+        return PermissionNode.of(id);
     }
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        if ("minecraft.operator".startsWith(builder.getRemaining()))
-            builder.suggest("minecraft.operator");
-
         if (builder.getRemaining().endsWith("."))
             builder.suggest(builder.getRemaining() + "*");
         else

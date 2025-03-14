@@ -19,7 +19,7 @@ public class HasPermission implements Predicate<GlassCommandSource> {
      * @return the predicate.
      */
     public static HasPermission permission(String nodePath) {
-        return new HasPermission(new PermissionNode(nodePath));
+        return new HasPermission(PermissionNode.of(nodePath));
     }
 
     @Override
