@@ -7,13 +7,15 @@
     "brigadierjank.FixRecursiveCheck"
   ],
   "server": [
-    "server.ServerCommandHandlerMixin",
     "commandsource.ExtendedDedicatedServerGUI",
     "commandsource.ExtendedMinecraftServer",
-    "commandsource.ExtendedServerPlayNetworkHandler"
+    "commandsource.ExtendedServerPlayNetworkHandler",
+    "server.ServerCommandHandlerMixin"
   ],
   "client": [
     "client.ChatScreenMixin",
+    "client.vanillajank.ExtendTextRenderer",
+    "client.vanillajank.FixFuckedLinebreaks",
     "commandsource.ExtendedMinecraft"
   ],
   "injectors": {

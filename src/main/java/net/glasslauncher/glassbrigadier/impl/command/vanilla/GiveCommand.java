@@ -18,14 +18,14 @@ import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static net.glasslauncher.glassbrigadier.api.argument.itemid.ItemIdArgumentType.getItemId;
 import static net.glasslauncher.glassbrigadier.api.argument.itemid.ItemIdArgumentType.itemId;
-import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
+import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.entity;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class GiveCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("give", "Gives the specified player the specified item.")
+        return GlassCommandBuilder.create("give", "Gives the specified player the specified item.", "Gives the specified player the specified item. Loooong long long description way over 129 lets go weee wooo weeeeee aaaaaaa aaaaasddd \nForced linebreak")
                 .alias("g")
                 .requires(permission("command.give"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", entity())

@@ -8,3 +8,4 @@ accessible field net/minecraft/server/network/ServerPlayNetworkHandler server Ln
 accessible field net/minecraft/client/gui/screen/ChatScreen text Ljava/lang/String;
 accessible field net/minecraft/server/PlayerManager bannedIps Ljava/util/Set;
 accessible field net/minecraft/server/PlayerManager bannedPlayers Ljava/util/Set;
+accessible field net/minecraft/world/storage/AlphaWorldStorage playerDataDir Ljava/io/File;
