@@ -12,6 +12,7 @@ import net.glasslauncher.glassbrigadier.impl.command.SummonCommand;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
+import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteResponsePacket;
 import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -21,6 +22,7 @@ import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.util.Namespace;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,9 @@ public class GlassBrigadier {
 
     public static final CommandDispatcher<GlassCommandSource> dispatcher = new CommandDispatcher<>();
 
+    public static File getConfigFile(String... path) {
+        return new File("config/" + NAMESPACE, String.join("/", path));
+    }
 
     @EventListener(phase = CommandRegisterEvent.INTERNAL_PHASE)
     public void internalInit(CommandRegisterEvent event) {
@@ -72,11 +77,17 @@ public class GlassBrigadier {
     public void customInit(CommandRegisterEvent event) {
         event.register(new SetTileCommand());
         event.register(new SummonCommand());
+    }
+
+    @Environment(EnvType.SERVER)
+    @EventListener
+    public void customServerInit(CommandRegisterEvent event) {
         event.register(new PermissionsCommand());
     }
 
     @EventListener
     public void onInitialize(PacketRegisterEvent event) {
         Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete"), GlassBrigadierAutocompletePacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocompleteresponse"), GlassBrigadierAutocompleteResponsePacket.TYPE);
     }
 }

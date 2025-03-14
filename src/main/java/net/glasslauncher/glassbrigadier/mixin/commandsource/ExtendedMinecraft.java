@@ -4,6 +4,7 @@ import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,9 +20,28 @@ import java.util.Set;
 
 @SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(Minecraft.class)
-public abstract class ExtendedMinecraft implements GlassCommandSource {
+public class ExtendedMinecraft implements GlassCommandSource {
 
     @Shadow public ClientPlayerEntity player;
+
+    @Shadow public InGameHud inGameHud;
+
+    @Override
+    public void sendMessage(String message) {
+        PlayerEntity playerEntity = getPlayer();
+        if (playerEntity != null) {
+            playerEntity.sendMessage(message);
+        }
+    }
+
+    @Override
+    public String getName() {
+        PlayerEntity playerEntity = getPlayer();
+        if (playerEntity != null) {
+            return playerEntity.name;
+        }
+        return "Minecraft";
+    }
 
     @Override
     public World getWorld() {

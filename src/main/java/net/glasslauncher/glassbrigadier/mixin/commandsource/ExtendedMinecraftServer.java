@@ -10,7 +10,6 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.registry.DimensionContainer;
 import net.modificationstation.stationapi.api.registry.DimensionRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;

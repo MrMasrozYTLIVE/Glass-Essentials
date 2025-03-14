@@ -2,12 +2,16 @@ package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Set;
 
 import static net.glasslauncher.glassbrigadier.api.argument.permissionnode.PermissionNodeArgumentType.getPermissionNode;
@@ -84,6 +88,30 @@ public class PermissionsCommand implements CommandProvider {
                                         })
                                 )
                         )
+                )
+                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("printtofile")
+                        .executes(context -> {
+                            sendFeedbackAndLog(context.getSource(), "Printing permissions to file...");
+                            File permissionsFile = GlassBrigadier.getConfigFile("permissionsOutput.txt");
+                            if (permissionsFile.exists()) {
+                                permissionsFile.delete();
+                            }
+                            try {
+                                permissionsFile.createNewFile();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            try (FileOutputStream outputStream = new FileOutputStream(permissionsFile)) {
+//                                for (Iterator<PermissionNode> it = GlassBrigadier.getAllPermissions(); it.hasNext(); ) {
+//                                    PermissionNode node = it.next();
+//                                    outputStream.write(node.getFullPath().getBytes(StandardCharsets.UTF_8));
+//                                }
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            return 0;
+                        })
                 );
     }
 }

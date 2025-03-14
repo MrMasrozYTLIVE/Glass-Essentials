@@ -3,7 +3,6 @@ package net.glasslauncher.glassbrigadier.api.permission;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.Getter;
-import net.modificationstation.stationapi.api.util.Namespace;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
