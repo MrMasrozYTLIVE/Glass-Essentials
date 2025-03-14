@@ -30,7 +30,7 @@ public class PardonIpCommand implements CommandProvider {
 
     public int pardonIp(CommandContext<GlassCommandSource> context) {
         String ip = getString(context, "ip").toLowerCase().strip();
-        if (!ip.matches(IP_REGEX)) {
+        if (!IP_REGEX.matcher(ip).matches()) {
             context.getSource().sendMessage(Formatting.RED + ip + " isn't a valid IP address!");
             return 0;
         }
