@@ -52,7 +52,6 @@ public class BanIpCommand implements CommandProvider {
 
         //noinspection unchecked
         for (ServerPlayerEntity player : new ArrayList<ServerPlayerEntity>(playerManager.players)) {
-            GlassBrigadier.LOGGER.info(((InetSocketAddress) player.networkHandler.connection.getAddress()).getHostString());
             if (((InetSocketAddress) player.networkHandler.connection.getAddress()).getHostString().equals(ip)) {
                 player.networkHandler.disconnect(Formatting.RED + "Banned by admin.");
             }
