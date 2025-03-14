@@ -20,7 +20,6 @@ public class PermissionNode {
 
     private PermissionNode(String path) {
         this.path = path;
-        CACHE.put(path, this);
     }
 
     /**
