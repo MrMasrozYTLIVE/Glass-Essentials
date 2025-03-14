@@ -1,13 +1,11 @@
 package net.glasslauncher.glassbrigadier.impl.utils;
 
 import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinate;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
-import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
