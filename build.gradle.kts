@@ -76,17 +76,18 @@ dependencies {
 
 	// StAPI itself.
 	// transitiveImplementation tells babric loom that you want this dependency to be pulled into other mod's development workspaces. Best used ONLY for required dependencies.
-	modImplementation("net.modificationstation:StationAPI:${project.properties["stationapi_version"]}")
+	transitiveImplementation(modImplementation("net.modificationstation:StationAPI:${project.properties["stationapi_version"]}") as Dependency)
 
 	// Extra mods.
 	// https://github.com/calmilamsy/glass-config-api
-	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.properties["gcapi_version"]}")
+	transitiveImplementation(modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.properties["gcapi_version"]}") as Dependency)
 	// https://github.com/calmilamsy/modmenu
 	modImplementation("net.glasslauncher.mods:ModMenu:${project.properties["modmenu_version"]}")
 	// https://github.com/Glass-Series/Always-More-Items
 	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.properties["alwaysmoreitems_version"]}")
 
-	implementation("com.mojang:brigadier:1.3.10")
+	transitiveImplementation(implementation("com.mojang:brigadier:1.3.10") as Dependency)
+	include(implementation(files("libs/jansi-2.4.0.jar")) as Dependency)
 }
 
 tasks.withType<ProcessResources> {
