@@ -9,11 +9,11 @@ import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelect
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.modificationstation.stationapi.api.util.Formatting;
 
-import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class DeopCommand implements CommandProvider {
@@ -27,17 +27,20 @@ public class DeopCommand implements CommandProvider {
     }
 
     public int deopPlayer(CommandContext<GlassCommandSource> context) {
-        getPlayers(context, "player").getEntities(context.getSource()).forEach(player -> {
-            //noinspection deprecation
-            PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
-            if (!playerManager.isOperator(player.name)) {
-                context.getSource().sendMessage(Formatting.RED + player.name + " isn't an op!");
-                return;
-            }
+        String player = context.getArgument("player", String.class);
+        //noinspection deprecation
+        PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
+        if (!playerManager.isOperator(player)) {
+            context.getSource().sendMessage(Formatting.RED + player + " isn't an op!");
+            return 0;
+        }
 
-            playerManager.removeFromOperators(player.name);
-            sendFeedbackAndLog(context.getSource(), "Deopping " + player.name + ".");
-        });
+        playerManager.removeFromOperators(player);
+        sendFeedbackAndLog(context.getSource(), "Deopping " + player + ".");
+        PlayerEntity playerEntity = context.getSource().getPlayerByName(player);
+        if (playerEntity != null) {
+            playerEntity.sendMessage(Formatting.YELLOW + "You are no longer op.");
+        }
         return 0;
     }
 }

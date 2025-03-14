@@ -11,9 +11,11 @@ import java.util.function.Predicate;
 @Getter
 public class DescriptiveLiteralCommandNode<S> extends LiteralCommandNode<S> implements DescriptiveNode {
     private final String description;
+    private final String shortDescription;
     
-    public DescriptiveLiteralCommandNode(String literal, String description, Command<S> command, Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, boolean forks) {
+    public DescriptiveLiteralCommandNode(String literal, String shortDescription, String description, Command<S> command, Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, boolean forks) {
         super(literal, command, requirement, redirect, modifier, forks);
         this.description = description;
+        this.shortDescription = shortDescription;
     }
 }

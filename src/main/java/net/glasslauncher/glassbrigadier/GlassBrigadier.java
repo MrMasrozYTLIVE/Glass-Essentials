@@ -3,12 +3,15 @@ package net.glasslauncher.glassbrigadier;
 import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
+import net.glasslauncher.glassbrigadier.impl.command.PermissionsCommand;
+import net.glasslauncher.glassbrigadier.impl.command.SetTileCommand;
+import net.glasslauncher.glassbrigadier.impl.command.SummonCommand;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
-import net.glasslauncher.glassbrigadier.impl.command.*;
 import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -29,6 +32,7 @@ public class GlassBrigadier {
     @SuppressWarnings("UnstableApiUsage")
     public static final Namespace NAMESPACE = Namespace.resolve();
     public static final Logger LOGGER = NAMESPACE.getLogger("Glass Brigadier");
+    public static final boolean AMI_LOADED = FabricLoader.getInstance().isModLoaded("alwaysmoreitems");
 
     public static final CommandDispatcher<GlassCommandSource> dispatcher = new CommandDispatcher<>();
 

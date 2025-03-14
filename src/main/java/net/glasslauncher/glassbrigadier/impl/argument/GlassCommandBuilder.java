@@ -15,16 +15,22 @@ public class GlassCommandBuilder extends LiteralArgumentBuilder<GlassCommandSour
     private final List<String> aliases = new ArrayList<>();
     private final String literal;
     private final String description;
+    private final String shortDescription;
     private boolean built = false;
 
-    protected GlassCommandBuilder(final String literal, String description) {
+    protected GlassCommandBuilder(final String literal, String shortDescription, String description) {
         super(literal);
         this.literal = literal;
+        this.shortDescription = shortDescription;
         this.description = description;
     }
 
-    public static GlassCommandBuilder create(final String name, final String description) {
-        return new GlassCommandBuilder(name, description);
+    public static GlassCommandBuilder create(final String name, final String shortDescription) {
+        return new GlassCommandBuilder(name, shortDescription, shortDescription);
+    }
+
+    public static GlassCommandBuilder create(final String name, final String shortDescription, final String description) {
+        return new GlassCommandBuilder(name, shortDescription, description);
     }
 
     @Override
@@ -36,7 +42,7 @@ public class GlassCommandBuilder extends LiteralArgumentBuilder<GlassCommandSour
         else {
             literal = aliases.remove(0);
         }
-        final LiteralCommandNode<GlassCommandSource> result = new DescriptiveLiteralCommandNode<>(literal, getDescription(), getCommand(), getRequirement(), getRedirect(), getRedirectModifier(), isFork());
+        final LiteralCommandNode<GlassCommandSource> result = new DescriptiveLiteralCommandNode<>(literal, getShortDescription(), getDescription(), getCommand(), getRequirement(), getRedirect(), getRedirectModifier(), isFork());
 
         for (final CommandNode<GlassCommandSource> argument : getArguments()) {
             result.addChild(argument);
