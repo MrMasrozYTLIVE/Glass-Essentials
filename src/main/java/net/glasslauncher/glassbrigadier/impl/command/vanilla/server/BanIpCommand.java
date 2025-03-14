@@ -23,9 +23,8 @@ import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class BanIpCommand implements CommandProvider {
-    @RegExp
-    public static final String IP_REGEX = "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
-    public static final Pattern IP_REGEX_PATTERN = Pattern.compile(IP_REGEX);
+    public static final Pattern IP_REGEX = Pattern.compile("(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)");
+
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.create("ban-ip", "Ban an IP.")
@@ -38,7 +37,7 @@ public class BanIpCommand implements CommandProvider {
     public int banIp(CommandContext<GlassCommandSource> context) {
         String ip = getString(context, "ip").toLowerCase().strip();
 
-        if (!ip.matches(IP_REGEX)) {
+        if (!IP_REGEX.matcher(ip).matches()) {
             context.getSource().sendMessage(Formatting.RED + ip + " isn't a valid IP address!");
             return 0;
         }
