@@ -11,7 +11,7 @@ import net.glasslauncher.glassbrigadier.impl.command.SetTileCommand;
 import net.glasslauncher.glassbrigadier.impl.command.SummonCommand;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
-import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompletePacket;
+import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteRequestPacket;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteResponsePacket;
 import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
@@ -87,7 +87,7 @@ public class GlassBrigadier {
 
     @EventListener
     public void onInitialize(PacketRegisterEvent event) {
-        Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete"), GlassBrigadierAutocompletePacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocompleteresponse"), GlassBrigadierAutocompleteResponsePacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete_request"), GlassBrigadierAutocompleteRequestPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete_response"), GlassBrigadierAutocompleteResponsePacket.TYPE);
     }
 }

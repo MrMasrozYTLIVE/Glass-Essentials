@@ -21,18 +21,18 @@ import java.io.DataOutputStream;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class GlassBrigadierAutocompletePacket extends Packet implements ManagedPacket<GlassBrigadierAutocompletePacket> {
-    public static final PacketType<GlassBrigadierAutocompletePacket> TYPE = PacketType.builder(false, true, GlassBrigadierAutocompletePacket::new).build();
+public class GlassBrigadierAutocompleteRequestPacket extends Packet implements ManagedPacket<GlassBrigadierAutocompleteRequestPacket> {
+    public static final PacketType<GlassBrigadierAutocompleteRequestPacket> TYPE = PacketType.builder(false, true, GlassBrigadierAutocompleteRequestPacket::new).build();
 
     private String incompleteCommand;
     private int cursorPos;
 
-    public GlassBrigadierAutocompletePacket(String incompleteCommand, int cursorPos) {
+    public GlassBrigadierAutocompleteRequestPacket(String incompleteCommand, int cursorPos) {
         this.incompleteCommand = incompleteCommand;
         this.cursorPos = cursorPos;
     }
 
-    private GlassBrigadierAutocompletePacket() {
+    private GlassBrigadierAutocompleteRequestPacket() {
     }
 
     private List<String> applySuggestions(String input, List<Suggestion> suggestions) {
@@ -40,7 +40,7 @@ public class GlassBrigadierAutocompletePacket extends Packet implements ManagedP
     }
 
     @Override
-    public @NotNull PacketType<GlassBrigadierAutocompletePacket> getType() {
+    public @NotNull PacketType<GlassBrigadierAutocompleteRequestPacket> getType() {
         return TYPE;
     }
 
