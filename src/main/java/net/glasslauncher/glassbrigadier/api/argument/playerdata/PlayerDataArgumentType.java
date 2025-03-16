@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.api.argument.profile;
+package net.glasslauncher.glassbrigadier.api.argument.playerdata;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
