@@ -24,6 +24,9 @@ public abstract class MakeClientPlayerSendMessages extends PlayerEntity {
 
     @Inject(method = "sendChatMessage", at = @At("HEAD"))
     void test(String message, CallbackInfo ci) {
+        if (world.isRemote) {
+            return;
+        }
         if (message.startsWith("/")) {
             try {
                 GlassBrigadier.dispatcher.execute(message.substring(1), (GlassCommandSource) minecraft);
