@@ -61,72 +61,31 @@ public class TpaCommand implements CommandProvider {
     }
 
     public int tpYes(CommandContext<GlassCommandSource> context) {
-        Optional<PlayerEntity> playerEntity;
+        TpaData tpaData = getTpaData(context);
 
-        try {
-            playerEntity = getPlayers(context, "player").getEntities(context.getSource()).stream().findFirst();
-        } catch (IllegalArgumentException ignored) {
-            playerEntity = Optional.empty();
-        }
-
-        Optional<TpaRequest> maybeRequest;
-        maybeRequest = playerEntity.flatMap(player -> Optional.of(TPA_REQUESTS_FROM.get(player.name))).or(() -> TPA_REQUESTS_TO.get(context.getSource().getName()).stream().reduce(((tpaRequest, tpaRequest2) -> tpaRequest2)));
-
-        if (maybeRequest.isEmpty()) {
-            return invalid(context);
-        }
-
-        TpaRequest tpaRequest = maybeRequest.get();
-        if (tpaRequest.requestTime() < ((System.currentTimeMillis() / 1000L) - 15)) {
-            return invalid(context);
-        }
-
-        ServerPlayerEntity realPlayer = (ServerPlayerEntity) context.getSource().getPlayerByName(tpaRequest.sourceName());
-        if (realPlayer == null) {
+        if (tpaData == null) {
             return invalid(context);
         }
 
         context.getSource().sendMessage(Formatting.AQUA + "TPA request accepted.");
-        realPlayer.sendMessage(Formatting.AQUA + "Your TPA request was accepted.");
+        tpaData.playerEntity().sendMessage(Formatting.AQUA + "Your TPA request was accepted.");
         Vec3d pos = context.getSource().getPosition();
         Vector2f rotation = context.getSource().getRotation();
-        realPlayer.networkHandler.teleport(pos.x, pos.y, pos.z, rotation.x, rotation.y);
-        tpaRequest.delete();
+        tpaData.playerEntity().networkHandler.teleport(pos.x, pos.y, pos.z, rotation.x, rotation.y);
+        tpaData.tpaRequest().delete();
         return 0;
     }
 
     public int tpNo(CommandContext<GlassCommandSource> context) {
-        Optional<PlayerEntity> playerEntity;
+        TpaData tpaData = getTpaData(context);
 
-        try {
-            playerEntity = getPlayers(context, "player").getEntities(context.getSource()).stream().findFirst();
-        } catch (IllegalArgumentException ignored) {
-            playerEntity = Optional.empty();
-        }
-
-        Optional<TpaRequest> maybeRequest;
-        maybeRequest = playerEntity.flatMap(player -> Optional.of(TPA_REQUESTS_FROM.get(player.name))).or(() -> TPA_REQUESTS_TO.get(context.getSource().getName()).stream().reduce(((tpaRequest, tpaRequest2) -> tpaRequest2)));
-
-        if (maybeRequest.isEmpty()) {
+        if (tpaData == null) {
             return invalid(context);
         }
 
-        TpaRequest tpaRequest = maybeRequest.get();
-        if (tpaRequest.requestTime() < ((System.currentTimeMillis() / 1000L) - 15)) {
-            return invalid(context);
-        }
-
-        if (playerEntity.isPresent()) {
-            playerEntity.get().sendMessage(Formatting.RED + "Your TPA request was denied.");
-        }
-        else {
-            PlayerEntity player = context.getSource().getPlayerByName(tpaRequest.sourceName());
-            if (player != null) {
-                player.sendMessage(Formatting.RED + "Your TPA request was denied.");
-            }
-        }
-
-        tpaRequest.delete();
+        context.getSource().sendMessage("Denied TPA from " + tpaData.tpaRequest().sourceName());
+        tpaData.playerEntity().sendMessage(Formatting.RED + "Your TPA request was denied.");
+        tpaData.tpaRequest.delete();
         return 0;
     }
 
@@ -149,10 +108,42 @@ public class TpaCommand implements CommandProvider {
         return 0;
     }
 
+    private TpaData getTpaData(CommandContext<GlassCommandSource> context) {
+
+        Optional<PlayerEntity> playerEntity;
+
+        try {
+            playerEntity = getPlayers(context, "player").getEntities(context.getSource()).stream().findFirst();
+        } catch (IllegalArgumentException ignored) {
+            playerEntity = Optional.empty();
+        }
+
+        Optional<TpaRequest> maybeRequest;
+        maybeRequest = playerEntity.flatMap(player -> Optional.of(TPA_REQUESTS_FROM.get(player.name))).or(() -> TPA_REQUESTS_TO.get(context.getSource().getName()).stream().reduce(((tpaRequest, tpaRequest2) -> tpaRequest2)));
+
+        if (maybeRequest.isEmpty()) {
+            return null;
+        }
+
+        TpaRequest tpaRequest = maybeRequest.get();
+        if (tpaRequest.requestTime() < ((System.currentTimeMillis() / 1000L) - 15)) {
+            return null;
+        }
+
+        PlayerEntity player = playerEntity.orElseGet(() -> context.getSource().getPlayerByName(tpaRequest.sourceName));
+        if (player == null) {
+            return null;
+        }
+
+        return new TpaData((ServerPlayerEntity) player, tpaRequest);
+    }
+
     public int invalid(CommandContext<GlassCommandSource> context) {
         context.getSource().sendMessage("No valid TPA request found.");
         return 0;
     }
+
+    private record TpaData(ServerPlayerEntity playerEntity, TpaRequest tpaRequest) {}
 
     public record TpaRequest(String targetName, String sourceName, long requestTime) {
 
