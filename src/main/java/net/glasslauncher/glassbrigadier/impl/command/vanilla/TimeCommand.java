@@ -13,7 +13,6 @@ import java.util.function.Function;
 import static com.mojang.brigadier.arguments.LongArgumentType.getLong;
 import static com.mojang.brigadier.arguments.LongArgumentType.longArg;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
-import static net.glasslauncher.glassbrigadier.api.predicate.IsWorldly.isWorldly;
 
 public class TimeCommand implements CommandProvider {
 
@@ -21,7 +20,6 @@ public class TimeCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return LiteralArgumentBuilder.<GlassCommandSource>literal("time")
                 .requires(permission("command.time"))
-                .requires(isWorldly())
                 .then(
                         LiteralArgumentBuilder.<GlassCommandSource>literal("set")
                                 .then(RequiredArgumentBuilder.<GlassCommandSource, Long>argument("time", longArg(0))
@@ -58,7 +56,7 @@ public class TimeCommand implements CommandProvider {
     public Command<GlassCommandSource> setTime(Function<CommandContext<GlassCommandSource>, Long> time) {
         return context -> {
             long timeValue = time.apply(context);
-            ( context.getSource()).getWorld().setTime(timeValue);
+            context.getSource().getWorld().setTime(timeValue);
             sendFeedbackAndLog(context.getSource(), "Set time to " + timeValue);
             return 0;
         };

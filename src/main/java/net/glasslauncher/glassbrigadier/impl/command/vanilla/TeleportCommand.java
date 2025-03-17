@@ -18,18 +18,19 @@ import static net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinat
 import static net.glasslauncher.glassbrigadier.api.argument.coordinate.CoordinateArgumentType.getCoordinate;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
-import static net.glasslauncher.glassbrigadier.api.predicate.IsWorldly.isWorldly;
+import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
 public class TeleportCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return LiteralArgumentBuilder.<GlassCommandSource>literal("tp")
                 .requires(permission("command.tp"))
-                .requires(isWorldly())
                 .then(RequiredArgumentBuilder.<GlassCommandSource, Coordinate>argument("pos", coordinate())
+                        .requires(isPlayer())
                         .executes(this::teleportToPosition)
                 )
                 .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("target", entity())
+                        .requires(isPlayer())
                         .executes(this::teleportToEntity)
                 )
                 .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("teleportees", entities())

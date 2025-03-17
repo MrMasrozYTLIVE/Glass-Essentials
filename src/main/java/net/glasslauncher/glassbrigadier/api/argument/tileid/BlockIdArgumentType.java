@@ -19,11 +19,11 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class TileIdArgumentType implements ArgumentType<TileId> {
+public class BlockIdArgumentType implements ArgumentType<BlockId> {
 
     private static final Collection<String> EXAMPLES = Arrays.asList("minecraft:dirt", "2", "32");
 
-    private static final SimpleCommandExceptionType NOT_VALID_ID = new SimpleCommandExceptionType(new LiteralMessage("Invalid Tile ID"));
+    private static final SimpleCommandExceptionType NOT_VALID_ID = new SimpleCommandExceptionType(new LiteralMessage("Invalid block ID"));
 
     private static Set<String> validValues;
     private static Map<Integer, String> intId2Id;
@@ -46,23 +46,23 @@ public class TileIdArgumentType implements ArgumentType<TileId> {
         return intId2Id;
     }
 
-    public static TileIdArgumentType tileId() {
-        return new TileIdArgumentType();
+    public static BlockIdArgumentType tileId() {
+        return new BlockIdArgumentType();
     }
 
-    public static TileId getTileId(final CommandContext<?> context, final String name) {
-        return context.getArgument(name, TileId.class);
+    public static BlockId getTileId(final CommandContext<?> context, final String name) {
+        return context.getArgument(name, BlockId.class);
     }
 
     @Override
-    public TileId parse(StringReader reader) throws CommandSyntaxException {
+    public BlockId parse(StringReader reader) throws CommandSyntaxException {
         int cursor = reader.getCursor();
         String id = StringReaderUtils.readId(reader);
         if (!getValidValues().contains(id)) {
             reader.setCursor(cursor);
             throw NOT_VALID_ID.createWithContext(reader);
         }
-        return new TileId(id);
+        return new BlockId(id);
     }
 
     @Override
