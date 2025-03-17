@@ -3,6 +3,7 @@ package net.glasslauncher.glassbrigadier.mixin.commandsource;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.api.playerstorage.PlayerStorageFile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.Entity;
@@ -119,5 +120,10 @@ public class ExtendedMinecraft implements GlassCommandSource {
     @Override
     public List<PlayerEntity> getAllPlayers() {
         return List.of(player);
+    }
+
+    @Override
+    public PlayerStorageFile getStorage() {
+        return PlayerStorageFile.of(getPlayer());
     }
 }

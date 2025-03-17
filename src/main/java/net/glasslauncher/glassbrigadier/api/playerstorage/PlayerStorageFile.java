@@ -21,7 +21,19 @@ public class PlayerStorageFile extends YamlFile {
     public static final Configuration PLAYER_DATA_DEFAULTS = new MemoryConfiguration();
 
     private static final @NotNull Cache<@NotNull String, @NotNull PlayerStorageFile> CACHE = Caffeine.newBuilder().softValues().build();
-    private static final @NotNull Function<@NotNull String, @NotNull PlayerStorageFile> PLAYER_STORAGE_FILE_FACTORY = (playerName) -> new PlayerStorageFile(StorageUtils.getPlayerStorageFile(playerName));
+    private static final @NotNull Function<@NotNull String, @NotNull PlayerStorageFile> PLAYER_STORAGE_FILE_FACTORY = (playerName) -> {
+        PlayerStorageFile file = new PlayerStorageFile(StorageUtils.getPlayerStorageFile(playerName));
+        try {
+            file.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return file;
+    };
+
+    public static void invalidateAll() {
+        CACHE.invalidateAll();
+    }
 
     public static PlayerStorageFile of(PlayerEntity player) {
         return of(player.name);
