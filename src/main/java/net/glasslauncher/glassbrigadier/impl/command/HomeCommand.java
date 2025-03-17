@@ -8,12 +8,9 @@ import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.playerstorage.PlayerStorageFile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.math.Vec3d;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.simpleyaml.configuration.MemorySection;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;

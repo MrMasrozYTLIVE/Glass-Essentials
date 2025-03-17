@@ -3,7 +3,7 @@ package net.glasslauncher.glassbrigadier.api.playerstorage;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.configuration.file.YamlFileWrapper;
 
-import java.util.*;
+import java.util.Objects;
 
 // Also yoinked from GCAPI
 // And so the code crimes continue.

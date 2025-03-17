@@ -6,17 +6,12 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.playerstorage.PlayerStorageFile;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import org.simpleyaml.configuration.MemorySection;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;

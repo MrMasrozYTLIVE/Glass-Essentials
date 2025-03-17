@@ -14,7 +14,9 @@ import net.minecraft.util.math.Vec3d;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.player;
