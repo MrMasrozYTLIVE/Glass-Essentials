@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.impl.command;
+package net.glasslauncher.glassbrigadier.impl.command.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
