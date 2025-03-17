@@ -58,6 +58,6 @@ public class HomeCommand implements CommandProvider {
             player.setPositionAndAnglesKeepPrevAngles(homeLoc.get(0), homeLoc.get(1), homeLoc.get(2), player.yaw, player.pitch);
         }
 
-        context.getSource().sendMessage("Set home \"" + name + "\".");
+        context.getSource().sendMessage("Teleported to home \"" + name + "\".");
     }
 }
