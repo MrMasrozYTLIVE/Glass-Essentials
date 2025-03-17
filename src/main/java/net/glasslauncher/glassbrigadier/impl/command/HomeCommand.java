@@ -9,6 +9,7 @@ import net.glasslauncher.glassbrigadier.api.playerstorage.PlayerStorageFile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
+import net.modificationstation.stationapi.api.util.Formatting;
 import org.simpleyaml.configuration.MemorySection;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class HomeCommand implements CommandProvider {
         List<Double> homeLoc = homes.getDoubleList(name);
 
         if (homeLoc == null) {
-            context.getSource().sendMessage("Nope");
+            context.getSource().sendMessage(Formatting.RED + "No home named \"" + name + "\".");
             return;
         }
 
