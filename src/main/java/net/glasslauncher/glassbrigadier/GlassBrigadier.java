@@ -9,6 +9,7 @@ import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
 import net.glasslauncher.glassbrigadier.impl.command.PermissionsCommand;
 import net.glasslauncher.glassbrigadier.impl.command.SetTileCommand;
 import net.glasslauncher.glassbrigadier.impl.command.SummonCommand;
+import net.glasslauncher.glassbrigadier.impl.command.TpaCommand;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteRequestPacket;
@@ -83,6 +84,7 @@ public class GlassBrigadier {
     @EventListener
     public void customServerInit(CommandRegisterEvent event) {
         event.register(new PermissionsCommand());
+        event.register(new TpaCommand());
     }
 
     @EventListener
