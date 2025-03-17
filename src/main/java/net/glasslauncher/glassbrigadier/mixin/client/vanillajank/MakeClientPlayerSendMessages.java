@@ -27,7 +27,7 @@ public abstract class MakeClientPlayerSendMessages extends PlayerEntity {
         if (world.isRemote) {
             return;
         }
-        if (message.startsWith("/")) {
+        if (GlassBrigadier.CONFIG.singlePlayerCommands && message.startsWith("/")) {
             try {
                 GlassBrigadier.dispatcher.execute(message.substring(1), (GlassCommandSource) minecraft);
             } catch (CommandSyntaxException e) {

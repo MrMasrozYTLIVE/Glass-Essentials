@@ -15,12 +15,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftMixin {
 
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;isWorldRemote()Z", ordinal = 0))
-    boolean test(Minecraft instance, Operation<Boolean> original) {
-        return true;
+    boolean allowChatScreenInSP(Minecraft instance, Operation<Boolean> original) {
+        return GlassBrigadier.CONFIG.singlePlayerChat;
     }
 
     @Inject(method = "init", at = @At("RETURN"))
-    void test2(CallbackInfo ci) {
+    void registerCommands(CallbackInfo ci) {
         GlassBrigadier.LOGGER.info("Initializing commands...");
         StationAPI.EVENT_BUS.post(CommandRegisterEvent.builder().commandDispatcher(GlassBrigadier.dispatcher).build());
         GlassBrigadier.LOGGER.info("Registered {} commands.", GlassBrigadier.dispatcher.getRoot().getChildren().size());

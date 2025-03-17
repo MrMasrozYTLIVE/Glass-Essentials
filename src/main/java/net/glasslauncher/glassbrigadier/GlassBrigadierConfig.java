@@ -4,11 +4,18 @@ import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
 public class GlassBrigadierConfig {
     @ConfigEntry(
-            name = "Old Help Display",
-            description = "This is server-sided, specify the command for extended help text.",
-            nameKey = "config.glassbrigadier.oldDisplay.name",
-            descriptionKey= "config.glassbrigadier.oldDisplay.desc",
-            multiplayerSynced = true
+            name = "Singleplayer Commands",
+            description = "Allows you to run most commands in singleplayer.",
+            nameKey = "config.glassbrigadier.spc.name",
+            descriptionKey= "config.glassbrigadier.spc.desc"
     )
-    public Boolean oldDisplay = true;
+    public Boolean singlePlayerCommands = true;
+
+    @ConfigEntry(
+            name = "Singleplayer Chat",
+            description = "Allows you to chat in singleplayer. Disables SPC if you turn this off.",
+            nameKey = "config.glassbrigadier.spChat.name",
+            descriptionKey= "config.glassbrigadier.spChat.desc"
+    )
+    public Boolean singlePlayerChat = true;
 }
