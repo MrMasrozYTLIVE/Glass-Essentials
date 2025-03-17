@@ -6,6 +6,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
+import net.glasslauncher.glassbrigadier.impl.command.HomeCommand;
+import net.glasslauncher.glassbrigadier.impl.command.SetHomeCommand;
 import net.glasslauncher.glassbrigadier.impl.command.server.PermissionsCommand;
 import net.glasslauncher.glassbrigadier.impl.command.SetTileCommand;
 import net.glasslauncher.glassbrigadier.impl.command.SummonCommand;
@@ -78,6 +80,8 @@ public class GlassBrigadier {
     public void customInit(CommandRegisterEvent event) {
         event.register(new SetTileCommand());
         event.register(new SummonCommand());
+        event.register(new SetHomeCommand());
+        event.register(new HomeCommand());
     }
 
     @Environment(EnvType.SERVER)
