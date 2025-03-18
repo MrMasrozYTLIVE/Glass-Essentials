@@ -25,19 +25,24 @@ public class TimeCommand implements CommandProvider {
                                 .then(RequiredArgumentBuilder.<GlassCommandSource, Long>argument("time", longArg(0))
                                         .executes(setTime(context -> getLong(context, "time")))
                                 ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("day")
-                                        .executes(setTime(a -> 0L))
+                                        .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 0)))
                                 ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("noon")
-                                        .executes(setTime(a -> 6000L))
+                                        .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 6000L)))
                                 ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("night")
-                                        .executes(setTime(a -> 12000L))
+                                        .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 12000L)))
                                 ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("midnight")
-                                        .executes(setTime(a -> 18000L))
+                                        .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 18000L)))
                                 )
                 )
                 .then(
                         LiteralArgumentBuilder.<GlassCommandSource>literal("get")
                                 .executes(context -> {
-                                    sendFeedbackAndLog(context.getSource(), Long.toString((context.getSource().getWorld().getTime())));
+                                    long time = context.getSource().getWorld().getTime();
+
+                                    long hours = ((time / 1000) + 6) % 24;
+                                    long minutes = (time % 1000) * 60 / 1000;
+
+                                    context.getSource().sendMessage("It is day " + (int) Math.floor((double) time / 24000L) + " at " + hours + ":" + (String.valueOf(minutes).length() == 1 ? "0" + minutes : minutes) + ".");
                                     return 0;
                                 })
                 )
@@ -55,10 +60,21 @@ public class TimeCommand implements CommandProvider {
 
     public Command<GlassCommandSource> setTime(Function<CommandContext<GlassCommandSource>, Long> time) {
         return context -> {
+            logWarn("Time was " + context.getSource().getWorld().getTime());
             long timeValue = time.apply(context);
             context.getSource().getWorld().setTime(timeValue);
             sendFeedbackAndLog(context.getSource(), "Set time to " + timeValue);
             return 0;
         };
+    }
+
+    long nextDayIfPast(long time, long targetTimeOfDay) {
+        long remainder = time % 24000;
+
+        if (remainder > targetTimeOfDay) {
+            return time + 24000 - remainder + targetTimeOfDay;
+        }
+
+        return time - remainder + targetTimeOfDay;
     }
 }

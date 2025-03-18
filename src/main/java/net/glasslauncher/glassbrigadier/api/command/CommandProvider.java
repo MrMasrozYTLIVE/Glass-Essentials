@@ -21,4 +21,16 @@ public interface CommandProvider extends Supplier<LiteralArgumentBuilder<GlassCo
         source.sendMessageToPlayer(playerName, message);
         GlassBrigadier.LOGGER.info(message);
     }
+
+    default void log(String message) {
+        GlassBrigadier.LOGGER.info(message);
+    }
+
+    default void logError(String message) {
+        GlassBrigadier.LOGGER.error(message);
+    }
+
+    default void logWarn( String message) {
+        GlassBrigadier.LOGGER.warn(message);
+    }
 }
