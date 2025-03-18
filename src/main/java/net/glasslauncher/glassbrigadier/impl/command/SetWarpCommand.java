@@ -8,11 +8,14 @@ import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.minecraft.util.math.Vec3d;
+import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.MemorySection;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
@@ -24,17 +27,32 @@ public class SetWarpCommand implements CommandProvider {
                 .requires(source -> isPlayer().test(source) && permission("command.setwarp").test(source))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("name", word())
                         .executes(this::setWarp)
+                        .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("description", greedyString())
+                                .executes(this::setWarpWithDesc)
+                        )
                 );
     }
 
     public int setWarp(CommandContext<GlassCommandSource> context) {
+        return setWarp(context, null);
+    }
+
+    public int setWarpWithDesc(CommandContext<GlassCommandSource> context) {
+        return setWarp(context, context.getArgument("description", String.class));
+    }
+
+    public int setWarp(CommandContext<GlassCommandSource> context, String description) {
         String name = context.getArgument("name", String.class);
+
         WorldModStorageFile serverStorage = WorldModStorageFile.of(GlassBrigadier.NAMESPACE.id("warps"));
         MemorySection warps = (MemorySection) serverStorage.get("warps", serverStorage.createSection("warps"));
 
         Vec3d position = context.getSource().getPosition();
-        warps.set(name, new ArrayList<Double>() {{add(position.x); add(position.y); add(position.z);}});
-        serverStorage.set("warps", warps);
+
+        ConfigurationSection warp = warps.createSection(name, new HashMap<>());
+        warp.set("location", new ArrayList<Double>() {{add(position.x); add(position.y); add(position.z);}});
+        warp.set("description", description);
+
         try {
             serverStorage.save();
         } catch (IOException e) {

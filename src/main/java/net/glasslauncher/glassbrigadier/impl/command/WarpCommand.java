@@ -10,6 +10,8 @@ import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.MemoryConfiguration;
 import org.simpleyaml.configuration.MemorySection;
 
 import java.util.List;
@@ -34,12 +36,14 @@ public class WarpCommand implements CommandProvider {
 
         WorldModStorageFile serverStorage = WorldModStorageFile.of(GlassBrigadier.NAMESPACE.id("warps"));
         MemorySection warps = (MemorySection) serverStorage.get("warps");
-        List<Double> warpLoc = warps.getDoubleList(name);
+        ConfigurationSection warp = (ConfigurationSection) warps.get(name);
 
-        if (warpLoc == null) {
+        if (warp == null) {
             context.getSource().sendMessage(Formatting.RED + "No warp named \"" + name + "\".");
             return 0;
         }
+
+        List<Double> warpLoc = warp.getDoubleList("location");
 
         if (context.getSource().getPlayer() instanceof ServerPlayerEntity serverPlayerEntity) {
             serverPlayerEntity.networkHandler.teleport(warpLoc.get(0), warpLoc.get(1), warpLoc.get(2), serverPlayerEntity.yaw, serverPlayerEntity.pitch);

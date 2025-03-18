@@ -81,6 +81,7 @@ public class GlassBrigadier {
         event.register(new HomeCommand());
         event.register(new SetWarpCommand());
         event.register(new WarpCommand());
+        event.register(new WarpsCommand());
     }
 
     @Environment(EnvType.SERVER)
