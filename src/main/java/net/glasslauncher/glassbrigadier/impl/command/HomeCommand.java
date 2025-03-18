@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.api.playerstorage.PlayerStorageFile;
+import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;

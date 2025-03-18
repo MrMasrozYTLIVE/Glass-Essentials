@@ -8,7 +8,7 @@ import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.argument.entityid.EntityType;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.api.utils.EntityUtils;
+import net.glasslauncher.glassbrigadier.api.entity.EntityUtils;
 import net.glasslauncher.glassbrigadier.impl.argument.SelfSelector;
 import net.glasslauncher.glassbrigadier.impl.utils.StringReaderUtils;
 import net.glasslauncher.glassbrigadier.impl.utils.UncheckedCaster;

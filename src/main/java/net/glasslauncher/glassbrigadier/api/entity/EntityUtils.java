@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.api.utils;
+package net.glasslauncher.glassbrigadier.api.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;

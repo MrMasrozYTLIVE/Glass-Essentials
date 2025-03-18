@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.api.utils;
+package net.glasslauncher.glassbrigadier.api.storage;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -21,6 +21,14 @@ public class StorageUtils {
 
     public static File getPlayerStorageFile(PlayerEntity player) {
         return new File(getPlayersDir(), player.name + "." + GlassBrigadier.NAMESPACE + ".yaml");
+    }
+
+    public static File getModStorageFile(Identifier identifier) {
+        return new File(getWorldDir(), identifier.namespace + "/" + identifier.path + ".yaml");
+    }
+
+    public static File getDefaultModStorageFile(Namespace namespace) {
+        return new File(getWorldDir(), namespace + "/storage.yaml");
     }
 
     public static File getPlayersDir() {

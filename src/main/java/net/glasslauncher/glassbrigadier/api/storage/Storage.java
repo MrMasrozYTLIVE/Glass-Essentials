@@ -1,4 +1,4 @@
-package net.glasslauncher.glassbrigadier.api.playerstorage;
+package net.glasslauncher.glassbrigadier.api.storage;
 
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.configuration.file.YamlFileWrapper;
@@ -7,12 +7,12 @@ import java.util.Objects;
 
 // Also yoinked from GCAPI
 // And so the code crimes continue.
-public class PlayerStorage extends YamlFileWrapper {
-    public PlayerStorage(YamlFile configuration, String path) {
+public class Storage extends YamlFileWrapper {
+    public Storage(YamlFile configuration, String path) {
         super(configuration, path);
     }
 
-    protected PlayerStorage(YamlFile configuration, String path, YamlFileWrapper parent) {
+    protected Storage(YamlFile configuration, String path, YamlFileWrapper parent) {
         super(configuration, path, parent);
     }
 
@@ -25,8 +25,8 @@ public class PlayerStorage extends YamlFileWrapper {
     }
 
     @Override
-    public PlayerStorage path(String path) {
+    public Storage path(String path) {
         // Fixes some fuckery with comments.
-        return new PlayerStorage(this.configuration, path, Objects.equals(this.path, "") ? null : this);
+        return new Storage(this.configuration, path, Objects.equals(this.path, "") ? null : this);
     }
 }

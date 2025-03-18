@@ -1,7 +1,7 @@
 package net.glasslauncher.glassbrigadier.api.command;
 
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
-import net.glasslauncher.glassbrigadier.api.playerstorage.PlayerStorageFile;
+import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;

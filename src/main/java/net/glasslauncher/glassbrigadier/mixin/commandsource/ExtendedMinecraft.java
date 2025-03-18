@@ -3,7 +3,7 @@ package net.glasslauncher.glassbrigadier.mixin.commandsource;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
-import net.glasslauncher.glassbrigadier.api.playerstorage.PlayerStorageFile;
+import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.Entity;
