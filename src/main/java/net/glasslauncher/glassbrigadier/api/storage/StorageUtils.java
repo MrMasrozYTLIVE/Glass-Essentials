@@ -24,7 +24,7 @@ public class StorageUtils {
     }
 
     public static File getModStorageFile(Identifier identifier) {
-        return new File(getWorldDir(), identifier.namespace + "/" + identifier.path + ".yaml");
+        return new File(getWorldDir(), GlassBrigadier.NAMESPACE + "_storages/" + identifier.namespace + "/" + identifier.path + ".yaml");
     }
 
     public static File getDefaultModStorageFile(Namespace namespace) {

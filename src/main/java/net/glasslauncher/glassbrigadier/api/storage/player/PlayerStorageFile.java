@@ -21,7 +21,9 @@ public class PlayerStorageFile extends StorageFile {
     private static final @NotNull Function<@NotNull String, @NotNull PlayerStorageFile> PLAYER_STORAGE_FILE_FACTORY = (playerName) -> {
         PlayerStorageFile file = new PlayerStorageFile(StorageUtils.getPlayerStorageFile(playerName));
         try {
-            file.load();
+            if (file.exists()) {
+                file.load();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -32,11 +34,11 @@ public class PlayerStorageFile extends StorageFile {
         CACHE.invalidateAll();
     }
 
-    public static StorageFile of(PlayerEntity player) {
+    public static PlayerStorageFile of(PlayerEntity player) {
         return of(player.name);
     }
 
-    public static StorageFile of(String playerName) {
+    public static PlayerStorageFile of(String playerName) {
         return CACHE.get(playerName, PLAYER_STORAGE_FILE_FACTORY);
     }
 
@@ -47,5 +49,7 @@ public class PlayerStorageFile extends StorageFile {
                  PLAYER DATA FILE
                 DO NOT EDIT WITHOUT BACKING UP FIRST
                 """);
+
+        setDefaults(PLAYER_DATA_DEFAULTS);
     }
 }

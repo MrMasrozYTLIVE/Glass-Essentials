@@ -1,7 +1,7 @@
 package net.glasslauncher.glassbrigadier.api.event;
 
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
-import net.glasslauncher.glassbrigadier.api.storage.server.ServerStorageFile;
+import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.mine_diver.unsafeevents.Event;
 import org.simpleyaml.configuration.Configuration;
 
@@ -28,20 +28,20 @@ public class GlassBrigadierDefaultsEvent extends Event {
         return PlayerStorageFile.PLAYER_DATA_DEFAULTS;
     }
 
-    public void addServerDefault(String key, Object entry) {
-        ServerStorageFile.SERVER_DATA_DEFAULTS.addDefault(key, entry);
+    public void addWorldDefault(String key, Object entry) {
+        WorldModStorageFile.WORLD_DATA_DEFAULTS.addDefault(key, entry);
     }
 
-    public void addServerDefaults(Map<String, Object> map) {
-        ServerStorageFile.SERVER_DATA_DEFAULTS.addDefaults(map);
+    public void addWorldDefaults(Map<String, Object> map) {
+        WorldModStorageFile.WORLD_DATA_DEFAULTS.addDefaults(map);
     }
 
-    public void addServerDefaults(Configuration defaults) {
-        ServerStorageFile.SERVER_DATA_DEFAULTS.addDefaults(defaults);
+    public void addWorldDefaults(Configuration defaults) {
+        WorldModStorageFile.WORLD_DATA_DEFAULTS.addDefaults(defaults);
     }
 
-    public Configuration getServerDefaults() {
-        return ServerStorageFile.SERVER_DATA_DEFAULTS;
+    public Configuration getWorldDefaults() {
+        return WorldModStorageFile.WORLD_DATA_DEFAULTS;
     }
     
     

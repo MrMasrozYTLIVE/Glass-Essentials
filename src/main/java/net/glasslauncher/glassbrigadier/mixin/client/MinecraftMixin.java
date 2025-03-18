@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
+import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
@@ -36,6 +37,7 @@ public class MinecraftMixin {
     void resetPlayerDataCache(World message, String player, PlayerEntity par3, CallbackInfo ci) {
         if (world == null) {
             PlayerStorageFile.invalidateAll();
+            WorldModStorageFile.invalidateAll();
         }
     }
 }
