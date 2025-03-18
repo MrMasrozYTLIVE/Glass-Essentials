@@ -6,10 +6,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
-import net.glasslauncher.glassbrigadier.impl.command.HomeCommand;
-import net.glasslauncher.glassbrigadier.impl.command.SetHomeCommand;
-import net.glasslauncher.glassbrigadier.impl.command.SetTileCommand;
-import net.glasslauncher.glassbrigadier.impl.command.SummonCommand;
+import net.glasslauncher.glassbrigadier.impl.command.*;
 import net.glasslauncher.glassbrigadier.impl.command.server.PermissionsCommand;
 import net.glasslauncher.glassbrigadier.impl.command.server.TpaCommand;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
@@ -82,6 +79,8 @@ public class GlassBrigadier {
         event.register(new SummonCommand());
         event.register(new SetHomeCommand());
         event.register(new HomeCommand());
+        event.register(new SetWarpCommand());
+        event.register(new WarpCommand());
     }
 
     @Environment(EnvType.SERVER)
