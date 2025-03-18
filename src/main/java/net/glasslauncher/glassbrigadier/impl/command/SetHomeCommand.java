@@ -39,7 +39,7 @@ public class SetHomeCommand implements CommandProvider {
 
     public void setHome(CommandContext<GlassCommandSource> context, String name) {
         PlayerStorageFile playerStorage = context.getSource().getStorage();
-        MemorySection homes = (MemorySection) playerStorage.get("homes");
+        MemorySection homes = (MemorySection) playerStorage.get("homes", playerStorage.createSection("homes"));
 
         Vec3d position = context.getSource().getPosition();
         homes.set(name, new ArrayList<Double>() {{add(position.x); add(position.y); add(position.z);}});

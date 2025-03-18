@@ -40,7 +40,7 @@ public class HomeCommand implements CommandProvider {
 
     public void home(CommandContext<GlassCommandSource> context, String name) {
         PlayerStorageFile playerStorage = context.getSource().getStorage();
-        MemorySection homes = (MemorySection) playerStorage.get("homes");
+        MemorySection homes = (MemorySection) playerStorage.get("homes", playerStorage.createSection("homes"));
         List<Double> homeLoc = homes.getDoubleList(name);
 
         if (homeLoc == null) {
