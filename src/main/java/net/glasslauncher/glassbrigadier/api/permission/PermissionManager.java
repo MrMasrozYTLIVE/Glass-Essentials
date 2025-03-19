@@ -17,8 +17,8 @@ public final class PermissionManager {
      * @return a list of the player's permission nodes.
      */
     @Nonnull
-    public static Set<PermissionNode> getNodesForPlayer(@Nonnull PlayerEntity player) {
-        return getNodesForName(player.name);
+    public static Set<PermissionNode> getNodes(@Nonnull PlayerEntity player) {
+        return getNodes(player.name);
     }
 
     /**
@@ -27,8 +27,8 @@ public final class PermissionManager {
      * @return a set of the source's permission nodes.
      */
     @Nonnull
-    public static Set<PermissionNode> getNodesForCommandSource(@Nonnull GlassCommandSource source) {
-        return getNodesForName(source.getName());
+    public static Set<PermissionNode> getNodes(@Nonnull GlassCommandSource source) {
+        return getNodes(source.getName());
     }
 
     /**
@@ -37,7 +37,7 @@ public final class PermissionManager {
      * @return a set of the permission nodes.
      */
     @Nonnull
-    public static Set<PermissionNode> getNodesForName(@Nonnull String name) {
+    public static Set<PermissionNode> getNodes(@Nonnull String name) {
         final Set<PermissionNode> nodes = PermissionManagerImpl.getPermissionsMap().get(name);
         if (nodes == null)
             return Collections.emptySet();
@@ -50,8 +50,8 @@ public final class PermissionManager {
      * @param node the node to add.
      * @return whether the node was successfully added.
      */
-    public static boolean addNodeToPlayer(@Nonnull PlayerEntity player, @Nonnull PermissionNode node) {
-        return addNodeToName(player.name, node);
+    public static boolean addNode(@Nonnull PlayerEntity player, @Nonnull PermissionNode node) {
+        return addNode(player.name, node);
     }
 
     /**
@@ -60,8 +60,8 @@ public final class PermissionManager {
      * @param node the node to add.
      * @return whether the node was successfully added.
      */
-    public static boolean addNodeToCommandSource(@Nonnull GlassCommandSource source, @Nonnull PermissionNode node) {
-        return addNodeToName(source.getName(), node);
+    public static boolean addNode(@Nonnull GlassCommandSource source, @Nonnull PermissionNode node) {
+        return addNode(source.getName(), node);
     }
 
     /**
@@ -70,7 +70,7 @@ public final class PermissionManager {
      * @param node the node to add.
      * @return whether the node was successfully added.
      */
-    public static boolean addNodeToName(@Nonnull String name, @Nonnull PermissionNode node) {
+    public static boolean addNode(@Nonnull String name, @Nonnull PermissionNode node) {
         final Set<PermissionNode> nodes = PermissionManagerImpl.getPermissionsMap().get(name);
         if (nodes == null) {
             final Set<PermissionNode> newNodes = new HashSet<>();
@@ -88,8 +88,8 @@ public final class PermissionManager {
      * @param node the node to remove.
      * @return whether the node was successfully removed.
      */
-    public static boolean removeNodeFromPlayer(@Nonnull PlayerEntity player, @Nonnull PermissionNode node) {
-        return removeNodeFromName(player.name, node);
+    public static boolean removeNode(@Nonnull PlayerEntity player, @Nonnull PermissionNode node) {
+        return removeNode(player.name, node);
     }
 
     /**
@@ -98,8 +98,8 @@ public final class PermissionManager {
      * @param node the node to remove.
      * @return whether the node was successfully removed.
      */
-    public static boolean removeNodeFromCommandSource(@Nonnull GlassCommandSource source, @Nonnull PermissionNode node) {
-        return removeNodeFromName(source.getName(), node);
+    public static boolean removeNode(@Nonnull GlassCommandSource source, @Nonnull PermissionNode node) {
+        return removeNode(source.getName(), node);
     }
 
     /**
@@ -108,7 +108,7 @@ public final class PermissionManager {
      * @param node the node to remove.
      * @return whether the node was successfully removed.
      */
-    public static boolean removeNodeFromName(@Nonnull String name, @Nonnull PermissionNode node) {
+    public static boolean removeNode(@Nonnull String name, @Nonnull PermissionNode node) {
         final Set<PermissionNode> nodes = PermissionManagerImpl.getPermissionsMap().get(name);
         if (nodes == null) {
             final Set<PermissionNode> newNodes = new HashSet<>();

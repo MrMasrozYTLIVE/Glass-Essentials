@@ -73,7 +73,7 @@ public class ExtendedMinecraft implements GlassCommandSource {
 
     @Override
     public Set<PermissionNode> getPermissions() {
-        return PermissionManager.getNodesForCommandSource(this);
+        return PermissionManager.getNodes(this);
     }
 
     @Override

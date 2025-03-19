@@ -59,7 +59,7 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
 
     @Override
     public Set<PermissionNode> getPermissions() {
-        return PermissionManager.getNodesForCommandSource(this);
+        return PermissionManager.getNodes(this);
     }
 
     @Override

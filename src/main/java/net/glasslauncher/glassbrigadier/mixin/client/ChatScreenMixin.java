@@ -52,10 +52,10 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
                 break;
 
             case Keyboard.KEY_UP:
-                if (GlassBrigadier.previousMessages.size() > currentMessageIndex+1) {
+                if (GlassBrigadier.PREVIOUS_MESSAGES.size() > currentMessageIndex+1) {
                     if (currentMessageIndex == -1)
                         currentMessage = text;
-                    text  = GlassBrigadier.previousMessages.get(++currentMessageIndex);
+                    text  = GlassBrigadier.PREVIOUS_MESSAGES.get(++currentMessageIndex);
                     invalidateSuggestions();
                 }
                 break;
@@ -65,7 +65,7 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
                     currentMessageIndex = -1;
                     text = currentMessage;
                 } else if (currentMessageIndex > 0) {
-                    text = GlassBrigadier.previousMessages.get(--currentMessageIndex);
+                    text = GlassBrigadier.PREVIOUS_MESSAGES.get(--currentMessageIndex);
                     invalidateSuggestions();
                 }
                 break;
@@ -86,6 +86,6 @@ public abstract class ChatScreenMixin implements ChatScreenHooks {
 
     @Inject(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ClientPlayerEntity;sendChatMessage(Ljava/lang/String;)V"))
     void addMessageToQueue(char c, int i, CallbackInfo ci) {
-        GlassBrigadier.previousMessages.add(0, text.trim());
+        GlassBrigadier.PREVIOUS_MESSAGES.add(0, text.trim());
     }
 }

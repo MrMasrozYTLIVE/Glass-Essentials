@@ -12,6 +12,7 @@ import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 import static net.glasslauncher.glassbrigadier.api.argument.permissionnode.PermissionNodeArgumentType.getPermissionNode;
@@ -30,7 +31,7 @@ public class PermissionsCommand implements CommandProvider {
                                 .executes(context -> {
                                     final StringBuilder builder = new StringBuilder();
                                     for (String playerName : getEntities(context, "player").getNames(context.getSource())) {
-                                        final Set<PermissionNode> nodes = PermissionManager.getNodesForName(playerName);
+                                        final Set<PermissionNode> nodes = PermissionManager.getNodes(playerName);
                                         builder.append(playerName);
                                         builder.append(" has permissions:");
                                         for (PermissionNode node : nodes) {
@@ -52,7 +53,7 @@ public class PermissionsCommand implements CommandProvider {
                                             final StringBuilder builder = new StringBuilder();
                                             final PermissionNode node = getPermissionNode(context, "node");
                                             for (String playerName : getPlayers(context, "player").getNames(context.getSource())) {
-                                                final boolean success = PermissionManager.addNodeToName(playerName, node);
+                                                final boolean success = PermissionManager.addNode(playerName, node);
                                                 builder.append(success ? "Added" : "Failed to add");
                                                 builder.append(" node ");
                                                 builder.append(node);
@@ -74,7 +75,7 @@ public class PermissionsCommand implements CommandProvider {
                                             final StringBuilder builder = new StringBuilder();
                                             final PermissionNode node = getPermissionNode(context, "node");
                                             for (String playerName : getPlayers(context, "player").getNames(context.getSource())) {
-                                                final boolean success = PermissionManager.removeNodeFromName(playerName, node);
+                                                final boolean success = PermissionManager.removeNode(playerName, node);
                                                 builder.append(success ? "Removed" : "Failed to remove");
                                                 builder.append(" node ");
                                                 builder.append(node);

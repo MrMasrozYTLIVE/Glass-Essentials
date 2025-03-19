@@ -30,7 +30,7 @@ public class GlassBrigadier {
     @ConfigRoot(value = "config", visibleName = "Config", nameKey = "config.glassbrigadier.config.name")
     public static final GlassBrigadierConfig CONFIG = new GlassBrigadierConfig();
 
-    public static final List<String> previousMessages = new ArrayList<>();
+    public static final List<String> PREVIOUS_MESSAGES = new ArrayList<>();
     @SuppressWarnings("UnstableApiUsage")
     public static final Namespace NAMESPACE = Namespace.resolve();
     public static final Logger LOGGER = NAMESPACE.getLogger("Glass Brigadier");
