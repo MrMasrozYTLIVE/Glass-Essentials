@@ -14,7 +14,7 @@ public final class PermissionManager {
     /**
      * Get the permission nodes for a given player.
      * @param player the player to check.
-     * @return a list of the player's permission nodes.
+     * @return a set of the player's permission nodes.
      */
     @Nonnull
     public static Set<PermissionNode> getNodes(@Nonnull PlayerEntity player) {

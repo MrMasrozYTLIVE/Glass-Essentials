@@ -13,6 +13,7 @@ import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteRequestPacket;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteResponsePacket;
+import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierPermissionsExportPacket;
 import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -96,5 +97,6 @@ public class GlassBrigadier {
     public void onInitialize(PacketRegisterEvent event) {
         Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete_request"), GlassBrigadierAutocompleteRequestPacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete_response"), GlassBrigadierAutocompleteResponsePacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("permissions_export"), GlassBrigadierPermissionsExportPacket.TYPE);
     }
 }

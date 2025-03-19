@@ -8,6 +8,8 @@ import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierPermissionsExportPacket;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,6 +21,7 @@ import static net.glasslauncher.glassbrigadier.api.argument.permissionnode.Permi
 import static net.glasslauncher.glassbrigadier.api.argument.permissionnode.PermissionNodeArgumentType.permissionNode;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
+import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
 public class PermissionsCommand implements CommandProvider {
 
@@ -90,14 +93,16 @@ public class PermissionsCommand implements CommandProvider {
                                 )
                         )
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("printtofile")
+                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("export")
                         .executes(context -> {
                             sendFeedbackAndLog(context.getSource(), "Printing permissions to file...");
                             File permissionsFile = GlassBrigadier.getConfigFile("permissionsOutput.txt");
                             if (permissionsFile.exists()) {
+                                //noinspection ResultOfMethodCallIgnored
                                 permissionsFile.delete();
                             }
                             try {
+                                //noinspection ResultOfMethodCallIgnored
                                 permissionsFile.createNewFile();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
@@ -110,6 +115,19 @@ public class PermissionsCommand implements CommandProvider {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
+                            return 0;
+                        })
+                )
+                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("exportlocal")
+                        .requires(isPlayer())
+                        .executes(context -> {
+                            sendFeedbackAndLog(context.getSource(), "Sending permissions to " + context.getSource().getName() + "...");
+
+                                StringBuilder permissions = new StringBuilder();
+                                for (String node : GlassBrigadier.ALL_PERMISSIONS) {
+                                    permissions.append(node).append("\n");
+                                }
+                            PacketHelper.sendTo(context.getSource().getPlayer(), new GlassBrigadierPermissionsExportPacket(permissions.toString()));
                             return 0;
                         })
                 );
