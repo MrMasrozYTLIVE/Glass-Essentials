@@ -29,6 +29,7 @@ import java.util.List;
 public class GlassBrigadier {
     @ConfigRoot(value = "config", visibleName = "Config", nameKey = "config.glassbrigadier.config.name")
     public static final GlassBrigadierConfig CONFIG = new GlassBrigadierConfig();
+    public static final List<String> ALL_PERMISSIONS = new ArrayList<>();
 
     public static final List<String> PREVIOUS_MESSAGES = new ArrayList<>();
     @SuppressWarnings("UnstableApiUsage")

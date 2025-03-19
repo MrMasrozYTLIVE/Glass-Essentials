@@ -104,10 +104,9 @@ public class PermissionsCommand implements CommandProvider {
                             }
 
                             try (FileOutputStream outputStream = new FileOutputStream(permissionsFile)) {
-//                                for (Iterator<PermissionNode> it = GlassBrigadier.getAllPermissions(); it.hasNext(); ) {
-//                                    PermissionNode node = it.next();
-//                                    outputStream.write(node.getFullPath().getBytes(StandardCharsets.UTF_8));
-//                                }
+                                for (String node : GlassBrigadier.ALL_PERMISSIONS) {
+                                    outputStream.write((node + "\n").getBytes(StandardCharsets.UTF_8));
+                                }
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }

@@ -1,5 +1,6 @@
 package net.glasslauncher.glassbrigadier.api.predicate;
 
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 
@@ -19,6 +20,7 @@ public class HasPermission implements Predicate<GlassCommandSource> {
      * @return the predicate.
      */
     public static HasPermission permission(String nodePath) {
+        GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
         return new HasPermission(PermissionNode.of(nodePath));
     }
 
