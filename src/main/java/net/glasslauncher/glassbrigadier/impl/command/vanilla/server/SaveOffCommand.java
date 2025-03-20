@@ -15,7 +15,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class SaveOffCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("save-off", "Turn off server saving until turned back on, or next reboot.")
+        return GlassCommandBuilder.literal("save-off", "Turn off server saving until turned back on, or next reboot.")
                 .requires(permission("command.saveoff"))
                 .executes(this::saveOff);
     }

@@ -19,7 +19,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class PardonCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("pardon", "Unban a player.")
+        return GlassCommandBuilder.literal("pardon", "Unban a player.")
                 .alias("unban")
                 .requires(permission("command.pardon"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", TargetSelectorArgumentType.entity())

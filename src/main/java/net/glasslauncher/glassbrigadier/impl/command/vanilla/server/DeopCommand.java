@@ -19,7 +19,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class DeopCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("deop", "Remove operator status from a player.")
+        return GlassCommandBuilder.literal("deop", "Remove operator status from a player.")
                 .requires(permission("command.deop"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", TargetSelectorArgumentType.entity())
                         .executes(this::deopPlayer)

@@ -14,7 +14,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class StopCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("stop", "Stop the server.")
+        return GlassCommandBuilder.literal("stop", "Stop the server.")
                 .requires(permission("command.stop"))
                 .executes(this::stop);
     }

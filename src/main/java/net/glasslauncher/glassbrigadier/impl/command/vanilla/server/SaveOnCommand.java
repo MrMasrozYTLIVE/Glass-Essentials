@@ -17,7 +17,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class SaveOnCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("deop", "Remove operator status from a player.")
+        return GlassCommandBuilder.literal("deop", "Remove operator status from a player.")
                 .requires(permission("command.deop"))
                 .then(RequiredArgumentBuilder.argument("player", TargetSelectorArgumentType.player()))
                 .executes(this::saveOn);

@@ -25,7 +25,7 @@ public class BanIpCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("ban-ip", "Ban an IP.")
+        return GlassCommandBuilder.literal("ban-ip", "Ban an IP.")
                 .requires(permission("command.banip"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("ip", word())
                         .executes(this::banIp)

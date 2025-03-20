@@ -15,7 +15,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class SayCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("say", "Say a message as the server.")
+        return GlassCommandBuilder.literal("say", "Say a message as the server.")
                 .requires(permission("command.say"))
                 .then(RequiredArgumentBuilder.argument("message", greedyString()))
                 .executes(this::say);

@@ -25,11 +25,11 @@ public class GlassCommandBuilder extends LiteralArgumentBuilder<GlassCommandSour
         this.description = description;
     }
 
-    public static GlassCommandBuilder create(final String name, final String shortDescription) {
+    public static GlassCommandBuilder literal(final String name, final String shortDescription) {
         return new GlassCommandBuilder(name, shortDescription, shortDescription);
     }
 
-    public static GlassCommandBuilder create(final String name, final String shortDescription, final String description) {
+    public static GlassCommandBuilder literal(final String name, final String shortDescription, final String description) {
         return new GlassCommandBuilder(name, shortDescription, description);
     }
 

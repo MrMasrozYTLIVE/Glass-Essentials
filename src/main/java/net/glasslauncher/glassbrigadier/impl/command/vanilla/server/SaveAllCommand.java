@@ -15,7 +15,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class SaveAllCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("save-all", "Forces a save of all the loaded levels in the world.")
+        return GlassCommandBuilder.literal("save-all", "Forces a save of all the loaded levels in the world.")
                 .requires(permission("command.saveall"))
                 .executes(this::saveAll);
     }

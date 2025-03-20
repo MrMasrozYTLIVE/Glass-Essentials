@@ -18,7 +18,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class BanCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("ban", "Ban a given player.")
+        return GlassCommandBuilder.literal("ban", "Ban a given player.")
                 .requires(permission("command.ban"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("player", StringArgumentType.word())
                         .executes(this::banPlayer)

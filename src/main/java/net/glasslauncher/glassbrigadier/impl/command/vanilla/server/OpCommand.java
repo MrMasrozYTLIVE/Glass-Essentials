@@ -18,7 +18,7 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class OpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("op", "Give the specified player operator status.", "Give the specified player operator status. This is effectively the same as giving them all permissions.")
+        return GlassCommandBuilder.literal("op", "Give the specified player operator status.", "Give the specified player operator status. This is effectively the same as giving them all permissions.")
                 .requires(permission("command.op"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("player", PlayerDataArgumentType.offlinePlayers())
                         .executes(this::opPlayer)

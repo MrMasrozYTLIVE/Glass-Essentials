@@ -20,7 +20,7 @@ import static net.glasslauncher.glassbrigadier.impl.command.vanilla.server.BanIp
 public class PardonIpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.create("pardon-ip", "Unban an IP.")
+        return GlassCommandBuilder.literal("pardon-ip", "Unban an IP.")
                 .alias("unban-ip")
                 .requires(permission("command.pardonip"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", TargetSelectorArgumentType.entity())
