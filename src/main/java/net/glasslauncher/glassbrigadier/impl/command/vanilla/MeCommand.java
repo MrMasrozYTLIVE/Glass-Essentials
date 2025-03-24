@@ -15,7 +15,7 @@ public class MeCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassCommandBuilder.<GlassCommandSource>create("me", "Emote in chat. Shown as \"* <player> <text>\"")
+        return GlassCommandBuilder.literal("me", "Emote in chat. Shown as \"* <player> <text>\"")
                 .requires(permission("command.me"))
                 .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("message", greedyString())
                                 .executes(this::sendMeMessage)
