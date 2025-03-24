@@ -15,6 +15,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Function;
 
+/**
+ * This is used instead of using StAPI's persistent data system because:
+ * <br>
+ * 1. NBT is shit in beta, actually awful. I need to make an *extensive* API to fix this.
+ * <br>
+ * 2. NBT files are not easily read and edited. Yes, I know there are programs, but being able to just open a text file is much easier.
+ * <br>
+ * 3. This way makes it fall in line with {@link net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile}.
+ *
+ */
 public class WorldModStorageFile extends StorageFile {
     public static final Configuration WORLD_DATA_DEFAULTS = new MemoryConfiguration();
 
@@ -51,7 +61,7 @@ public class WorldModStorageFile extends StorageFile {
         super(file);
 
         setHeader(GlassBrigadier.NAMESPACE.getName().toUpperCase() + """
-                 PLAYER DATA FILE
+                 WORLD STORAGE FILE
                 DO NOT EDIT WITHOUT BACKING UP FIRST
                 """);
 

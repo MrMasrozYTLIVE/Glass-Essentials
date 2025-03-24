@@ -14,6 +14,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.Function;
 
+/**
+ * This is used instead of attaching to player NBT because:
+ * <br>
+ * 1. NBT is shit in beta, actually awful. I need to make an *extensive* API to fix this.
+ * <br>
+ * 2. NBT files are not easily read and edited. Yes, I know there are programs, but being able to just open a text file is much easier.
+ * <br>
+ * 3. Invasive mixins could entirely break the NBT approach and cause data corruption. This *needs* to be as reliable as possible.
+ */
 public class PlayerStorageFile extends StorageFile {
     public static final Configuration PLAYER_DATA_DEFAULTS = new MemoryConfiguration();
 
@@ -46,7 +55,7 @@ public class PlayerStorageFile extends StorageFile {
         super(file);
 
         setHeader(GlassBrigadier.NAMESPACE.getName().toUpperCase() + """
-                 PLAYER DATA FILE
+                 PLAYER STORAGE FILE
                 DO NOT EDIT WITHOUT BACKING UP FIRST
                 """);
 
