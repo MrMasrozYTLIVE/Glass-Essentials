@@ -27,9 +27,6 @@ public class StorageUtils {
         return new File(getWorldDir(), GlassBrigadier.NAMESPACE + "_storages/" + identifier.namespace + "/" + identifier.path + ".yaml");
     }
 
-    public static File getDefaultModStorageFile(Namespace namespace) {
-        return new File(getWorldDir(), namespace + "/storage.yaml");
-    }
 
     public static File getPlayersDir() {
         return getWorldStorage().playerDataDir;
