@@ -11,11 +11,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.simpleyaml.configuration.ConfigurationSection;
-import org.simpleyaml.configuration.MemoryConfiguration;
 import org.simpleyaml.configuration.MemorySection;
 
 import java.util.List;
-import java.util.Set;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;

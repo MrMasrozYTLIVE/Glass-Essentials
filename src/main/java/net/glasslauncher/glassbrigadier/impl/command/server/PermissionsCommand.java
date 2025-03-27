@@ -8,6 +8,7 @@ import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierPermissionsExportPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 
@@ -27,7 +28,7 @@ public class PermissionsCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("permissions")
+        return GlassCommandBuilder.literal("permissions", "Set permissions on a role.")
                 .requires(permission("command.permissions"))
                 .then(LiteralArgumentBuilder.<GlassCommandSource>literal("get")
                         .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", players())
@@ -43,7 +44,7 @@ public class PermissionsCommand implements CommandProvider {
                                         }
                                         builder.append("\n");
                                     }
-                                    builder.deleteCharAt(builder.length()-1); // Remove last newline
+                                    builder.deleteCharAt(builder.length() - 1); // Remove last newline
                                     context.getSource().sendMessage(builder.toString());
                                     return 0;
                                 })

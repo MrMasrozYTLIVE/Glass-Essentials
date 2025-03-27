@@ -3,30 +3,20 @@ package net.glasslauncher.glassbrigadier.impl.command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.CommandNode;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
-import net.glasslauncher.glassbrigadier.impl.argument.DescriptiveLiteralCommandNode;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.MemorySection;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
-import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
-import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 import static net.glasslauncher.glassbrigadier.impl.utils.AMIFormatting.BOLD;
 import static net.modificationstation.stationapi.api.util.Formatting.*;
-import static net.modificationstation.stationapi.api.util.Formatting.GOLD;
 
 public class WarpsCommand implements CommandProvider {
     @Override
