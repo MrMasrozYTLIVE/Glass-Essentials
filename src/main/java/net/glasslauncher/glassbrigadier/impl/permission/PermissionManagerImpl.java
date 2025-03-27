@@ -1,57 +1,43 @@
 package net.glasslauncher.glassbrigadier.impl.permission;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
+import org.simpleyaml.configuration.ConfigurationSection;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public final class PermissionManagerImpl {
     @Getter
     private static final Map<String, Set<PermissionNode>> permissionsMap = new HashMap<>();
-    private static final Gson GSON = new GsonBuilder().create();
-    private static final File permissionsFile = GlassBrigadier.getConfigFile("permissions.json");
-    private static final TypeToken<Map<String, Set<String>>> string2StringSetType = new TypeToken<>() {};
+    private static final WorldModStorageFile permissionsFile = WorldModStorageFile.of(GlassBrigadier.NAMESPACE.id("user_permissions"));
 
     // This should never throw a FileNotFound exception.
     @SneakyThrows
     public static void setupPermissionManager() {
-        if (!permissionsFile.getParentFile().exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            permissionsFile.getParentFile().mkdirs();
-        }
-
         if (permissionsFile.exists()) {
             loadPermissions();
             return;
         }
 
         try {
-            final FileWriter writer = new FileWriter(permissionsFile);
-            writer.write("{}");
-            writer.close();
+            permissionsFile.save();
             GlassBrigadier.LOGGER.info("Created perms file.");
         } catch (IOException ex) {
-            GlassBrigadier.LOGGER.error("Couldn't create perms file!", ex);
+            GlassBrigadier.LOGGER.error("Couldn't create perms file!");
+            throw new RuntimeException(ex);
         }
     }
 
-    public static boolean tryUpdatePermissionsFile() {
-        if (!permissionsFile.getParentFile().exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            permissionsFile.getParentFile().mkdirs();
-        }
-
+    public static boolean trySavePermissionsFile() {
         try {
-            savePermissions();
+            permissionsFile.save();
             return true;
         } catch (IOException e) {
             GlassBrigadier.LOGGER.error("Couldn't save perms file!", e);
@@ -59,21 +45,17 @@ public final class PermissionManagerImpl {
         }
     }
 
-    private static void loadPermissions() throws FileNotFoundException {
-        final Map<String, Set<String>> stringMap = GSON.fromJson(new FileReader(permissionsFile), string2StringSetType.getType());
+    private static void loadPermissions() {
+        ConfigurationSection usersToGroups = (ConfigurationSection) permissionsFile.get("user_groups");
+        if (usersToGroups == null) {
+            return;
+        }
+        Set<String> names = usersToGroups.getKeys(false);
         permissionsMap.clear();
-        stringMap.forEach((names, perms) ->
-                permissionsMap.put(names, perms.stream().map(PermissionNode::of).collect(Collectors.toSet()))
-        );
-    }
-
-    private static void savePermissions() throws IOException {
-        final Map<String, Set<String>> stringMap = new HashMap<>();
-        permissionsMap.forEach((name, perms) ->
-                stringMap.put(name, perms.stream().map(PermissionNode::toString).collect(Collectors.toSet()))
-        );
-        final FileWriter writer = new FileWriter(permissionsFile);
-        writer.write(GSON.toJson(stringMap, string2StringSetType.getType()));
-        writer.close();
+        for (String name : names) {
+            Set<PermissionNode> permissions = new HashSet<>();
+            usersToGroups.getList(name).forEach(permission -> permissions.add(PermissionNode.of((String) permission)));
+            permissionsMap.put(name, permissions);
+        }
     }
 }

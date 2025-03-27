@@ -79,7 +79,7 @@ public final class PermissionManager {
         } else {
             nodes.add(node);
         }
-        return PermissionManagerImpl.tryUpdatePermissionsFile();
+        return PermissionManagerImpl.trySavePermissionsFile();
     }
 
     /**
@@ -116,7 +116,7 @@ public final class PermissionManager {
         } else {
             nodes.remove(node);
         }
-        return PermissionManagerImpl.tryUpdatePermissionsFile();
+        return PermissionManagerImpl.trySavePermissionsFile();
     }
 
 }
