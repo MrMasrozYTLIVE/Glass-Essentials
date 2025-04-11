@@ -55,7 +55,7 @@ public class PlayerStorageFile extends StorageFile {
         super(file);
 
         setHeader(GlassBrigadier.NAMESPACE.getName().toUpperCase() + """
-                 PLAYER STORAGE FILE
+                PLAYER STORAGE FILE
                 DO NOT EDIT WITHOUT BACKING UP FIRST
                 """);
 

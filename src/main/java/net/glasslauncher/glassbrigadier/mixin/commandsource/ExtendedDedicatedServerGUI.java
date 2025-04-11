@@ -2,6 +2,7 @@ package net.glasslauncher.glassbrigadier.mixin.commandsource;
 
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -57,8 +58,13 @@ public class ExtendedDedicatedServerGUI implements GlassCommandSource {
     }
 
     @Override
-    public Set<PermissionNode> getPermissions() {
+    public Set<PermissionNodeInstance<?>> getPermissions() {
         return Set.of();
+    }
+
+    @Override
+    public boolean satisfiesNode(PermissionNodeInstance<?> nodeToCheck) {
+        return true;
     }
 
     @Override

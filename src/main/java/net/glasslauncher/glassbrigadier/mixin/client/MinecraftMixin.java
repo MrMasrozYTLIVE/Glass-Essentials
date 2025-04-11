@@ -4,8 +4,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
+import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
+import net.glasslauncher.glassbrigadier.impl.permission.Role;
+import net.glasslauncher.glassbrigadier.impl.permission.RoleManagerImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
@@ -38,6 +42,13 @@ public class MinecraftMixin {
         if (world == null) {
             PlayerStorageFile.invalidateAll();
             WorldModStorageFile.invalidateAll();
+            PermissionNodeInstance.invalidateAll();
         }
+    }
+
+
+    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setWorld(Lnet/minecraft/world/World;Ljava/lang/String;)V", shift = At.Shift.AFTER))
+    void loadRoles(String name, String seed, long par3, CallbackInfo ci) {
+        RoleManagerImpl.setupRoleManager();
     }
 }

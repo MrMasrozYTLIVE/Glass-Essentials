@@ -16,13 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerCommandHandler.class)
 public class ServerCommandHandlerMixin {
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    void initCommands(MinecraftServer par1, CallbackInfo ci) {
-        GlassBrigadier.LOGGER.info("Initializing commands...");
-        StationAPI.EVENT_BUS.post(CommandRegisterEvent.builder().commandDispatcher(GlassBrigadier.dispatcher).build());
-        GlassBrigadier.LOGGER.info("Registered {} commands.", GlassBrigadier.dispatcher.getRoot().getChildren().size());
-    }
-
     @Inject(method = "executeCommand", at = @At(value = "HEAD"), cancellable = true)
     void hijackCommands(Command command, CallbackInfo ci) {
         try {

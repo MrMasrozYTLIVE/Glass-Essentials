@@ -14,7 +14,8 @@ import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteRequestPacket;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteResponsePacket;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierPermissionsExportPacket;
-import net.glasslauncher.glassbrigadier.impl.permission.PermissionManagerImpl;
+import net.glasslauncher.glassbrigadier.impl.permission.RoleManagerImpl;
+import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
@@ -46,7 +47,7 @@ public class GlassBrigadier {
 
     @EventListener(phase = CommandRegisterEvent.INTERNAL_PHASE)
     public void internalInit(CommandRegisterEvent event) {
-        PermissionManagerImpl.setupPermissionManager();
+        UserPermissionManagerImpl.setupPermissionManager();
     }
 
     @EventListener(phase = CommandRegisterEvent.VANILLA_PHASE)

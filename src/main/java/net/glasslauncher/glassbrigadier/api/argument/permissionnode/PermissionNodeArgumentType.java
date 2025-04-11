@@ -7,12 +7,14 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.impl.utils.StringReaderUtils;
+import net.modificationstation.stationapi.api.registry.BlockRegistry;
+import net.modificationstation.stationapi.api.registry.Registry;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-public class PermissionNodeArgumentType implements ArgumentType<PermissionNode> {
+public class PermissionNodeArgumentType implements ArgumentType<PermissionNode<?>> {
 
     private static final Collection<String> EXAMPLES = Arrays.asList("minecraft.operator", "*", "command.permissions");
 
@@ -20,14 +22,14 @@ public class PermissionNodeArgumentType implements ArgumentType<PermissionNode> 
         return new PermissionNodeArgumentType();
     }
 
-    public static PermissionNode getPermissionNode(final CommandContext<?> context, final String name) {
+    public static PermissionNode<?> getPermissionNode(final CommandContext<?> context, final String name) {
         return context.getArgument(name, PermissionNode.class);
     }
 
     @Override
-    public PermissionNode parse(StringReader reader) {
+    public PermissionNode<?> parse(StringReader reader) {
         String id = StringReaderUtils.readPermissionNode(reader);
-        return PermissionNode.of(id);
+        return PermissionNode.ofExisting(id);
     }
 
     @Override

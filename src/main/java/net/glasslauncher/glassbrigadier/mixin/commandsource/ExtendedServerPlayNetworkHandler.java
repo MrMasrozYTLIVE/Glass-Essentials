@@ -3,7 +3,9 @@ package net.glasslauncher.glassbrigadier.mixin.commandsource;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
+import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -58,12 +60,12 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
     }
 
     @Override
-    public Set<PermissionNode> getPermissions() {
-        return PermissionManager.getNodes(this);
+    public Set<PermissionNodeInstance<?>> getPermissions() {
+        return UserPermissionManagerImpl.getNodes(getName());
     }
 
     @Override
-    public boolean satisfiesNode(PermissionNode nodeToCheck) {
+    public boolean satisfiesNode(PermissionNodeInstance<?> nodeToCheck) {
         if (server.playerManager.isOperator(getName())) {
             return true;
         }
@@ -94,6 +96,7 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
 
     @Override
     public PlayerStorageFile getStorage() {
+        //noinspection DataFlowIssue If you're null then something real bad happened.
         return PlayerStorageFile.of(getPlayer());
     }
 }

@@ -10,6 +10,7 @@
     "commandsource.ExtendedDedicatedServerGUI",
     "commandsource.ExtendedMinecraftServer",
     "commandsource.ExtendedServerPlayNetworkHandler",
+    "server.MinecraftServerMixin",
     "server.ServerCommandHandlerMixin"
   ],
   "client": [

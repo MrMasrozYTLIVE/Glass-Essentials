@@ -1,6 +1,7 @@
 package net.glasslauncher.glassbrigadier.api.command;
 
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,9 +27,9 @@ public interface GlassCommandSource {
 
     Vector2f getRotation();
 
-    Set<PermissionNode> getPermissions();
+    Set<PermissionNodeInstance<?>> getPermissions();
 
-    default boolean satisfiesNode(PermissionNode nodeToCheck) {
+    default boolean satisfiesNode(PermissionNodeInstance<?> nodeToCheck) {
         return nodeToCheck.isSatisfiedBy(getPermissions());
     }
 

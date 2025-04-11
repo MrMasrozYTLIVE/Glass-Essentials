@@ -29,7 +29,7 @@ public class WorldModStorageFile extends StorageFile {
     public static final Configuration WORLD_DATA_DEFAULTS = new MemoryConfiguration();
 
     private static final @NotNull Cache<@NotNull Identifier, @NotNull WorldModStorageFile> CACHE = Caffeine.newBuilder().softValues().build();
-    private static final @NotNull Function<@NotNull Identifier, @NotNull WorldModStorageFile> PLAYER_STORAGE_FILE_FACTORY = (identifier) -> {
+    private static final @NotNull Function<@NotNull Identifier, @NotNull WorldModStorageFile> WORLD_STORAGE_FILE_FACTORY = (identifier) -> {
         File modFile = StorageUtils.getModStorageFile(identifier);
         if (!modFile.getParentFile().exists()) {
             modFile.getParentFile().mkdirs();
@@ -54,14 +54,14 @@ public class WorldModStorageFile extends StorageFile {
     }
 
     public static WorldModStorageFile of(Identifier identifier) {
-        return CACHE.get(identifier, PLAYER_STORAGE_FILE_FACTORY);
+        return CACHE.get(identifier, WORLD_STORAGE_FILE_FACTORY);
     }
 
     protected WorldModStorageFile(File file) {
         super(file);
 
         setHeader(GlassBrigadier.NAMESPACE.getName().toUpperCase() + """
-                 WORLD STORAGE FILE
+                WORLD STORAGE FILE
                 DO NOT EDIT WITHOUT BACKING UP FIRST
                 """);
 
