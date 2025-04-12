@@ -11,7 +11,8 @@
     "commandsource.ExtendedMinecraftServer",
     "commandsource.ExtendedServerPlayNetworkHandler",
     "server.MinecraftServerMixin",
-    "server.ServerCommandHandlerMixin"
+    "server.ServerCommandHandlerMixin",
+    "server.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
     "client.ChatScreenMixin",
