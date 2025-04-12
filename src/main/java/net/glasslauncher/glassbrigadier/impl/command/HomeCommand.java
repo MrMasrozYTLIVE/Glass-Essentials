@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
@@ -20,10 +21,10 @@ import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 public class HomeCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("home")
+        return GlassArgumentBuilder.literal("home")
                 .requires(source -> isPlayer().test(source) && permission("command.home").test(source))
                 .executes(this::home)
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("name", word())
+                .then(GlassArgumentBuilder.argument("name", word())
                         .executes(this::homeNamed)
                 );
     }

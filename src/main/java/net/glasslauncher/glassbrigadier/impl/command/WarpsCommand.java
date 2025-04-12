@@ -7,6 +7,7 @@ import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.MemorySection;
@@ -21,10 +22,10 @@ import static net.modificationstation.stationapi.api.util.Formatting.*;
 public class WarpsCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("warps")
+        return GlassArgumentBuilder.literal("warps")
                 .requires(permission("command.warp"))
                 .executes(this::listFirstWarps)
-                .then(RequiredArgumentBuilder.<GlassCommandSource, Integer>argument("page", integer(0))
+                .then(GlassArgumentBuilder.argument("page", integer(0))
                         .executes(this::listWarps)
                 );
     }

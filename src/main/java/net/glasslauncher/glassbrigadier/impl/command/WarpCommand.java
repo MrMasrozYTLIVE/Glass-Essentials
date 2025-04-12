@@ -7,6 +7,7 @@ import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
@@ -22,9 +23,9 @@ import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 public class WarpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("warp")
+        return GlassArgumentBuilder.literal("warp")
                 .requires(source -> isPlayer().test(source) && permission("command.warp").test(source))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("name", word())
+                .then(GlassArgumentBuilder.argument("name", word())
                         .executes(this::warp)
                 );
     }

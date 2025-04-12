@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.world.World;
 
 import java.util.function.Function;
@@ -18,24 +19,24 @@ public class TimeCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("time")
+        return GlassArgumentBuilder.literal("time")
                 .requires(permission("command.time"))
                 .then(
-                        LiteralArgumentBuilder.<GlassCommandSource>literal("set")
-                                .then(RequiredArgumentBuilder.<GlassCommandSource, Long>argument("time", longArg(0))
+                        GlassArgumentBuilder.literal("set")
+                                .then(GlassArgumentBuilder.argument("time", longArg(0))
                                         .executes(setTime(context -> getLong(context, "time")))
-                                ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("day")
+                                ).then(GlassArgumentBuilder.literal("day")
                                         .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 0)))
-                                ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("noon")
+                                ).then(GlassArgumentBuilder.literal("noon")
                                         .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 6000L)))
-                                ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("night")
+                                ).then(GlassArgumentBuilder.literal("night")
                                         .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 12000L)))
-                                ).then(LiteralArgumentBuilder.<GlassCommandSource>literal("midnight")
+                                ).then(GlassArgumentBuilder.literal("midnight")
                                         .executes(setTime(a -> nextDayIfPast(a.getSource().getWorld().getTime(), 18000L)))
                                 )
                 )
                 .then(
-                        LiteralArgumentBuilder.<GlassCommandSource>literal("get")
+                        GlassArgumentBuilder.literal("get")
                                 .executes(context -> {
                                     long time = context.getSource().getWorld().getTime();
 
@@ -47,8 +48,8 @@ public class TimeCommand implements CommandProvider {
                                 })
                 )
                 .then(
-                        LiteralArgumentBuilder.<GlassCommandSource>literal("add")
-                                .then(RequiredArgumentBuilder.<GlassCommandSource, Long>argument("time", longArg())
+                        GlassArgumentBuilder.literal("add")
+                                .then(GlassArgumentBuilder.argument("time", longArg())
                                         .executes(context -> {
                                             World level = (context.getSource()).getWorld();
                                             level.setTime(level.getTime()+getLong(context, "time"));

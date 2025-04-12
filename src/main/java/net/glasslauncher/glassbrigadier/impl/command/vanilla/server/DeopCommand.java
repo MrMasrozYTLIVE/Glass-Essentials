@@ -8,6 +8,7 @@ import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelect
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -21,7 +22,7 @@ public class DeopCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("deop", "Remove operator status from a player.")
                 .requires(permission("command.deop"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", TargetSelectorArgumentType.entity())
+                .then(GlassArgumentBuilder.argument("player", TargetSelectorArgumentType.entity())
                         .executes(this::deopPlayer)
                 );
     }

@@ -8,6 +8,7 @@ import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelect
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
@@ -28,12 +29,12 @@ public class GiveCommand implements CommandProvider {
         return GlassCommandBuilder.literal("give", "Gives the specified player the specified item.", "Gives the specified player the specified item. Loooong long long description way over 129 lets go weee wooo weeeeee aaaaaaa aaaaasddd \nForced linebreak")
                 .alias("g")
                 .requires(permission("command.give"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", entity())
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, ItemId>argument("item", itemId())
+                .then(GlassArgumentBuilder.argument("player", entity())
+                        .then(GlassArgumentBuilder.argument("item", itemId())
                                 .executes(this::giveItem)
-                                .then(RequiredArgumentBuilder.<GlassCommandSource, Integer>argument("count", integer(1))
+                                .then(GlassArgumentBuilder.argument("count", integer(1))
                                         .executes(this::giveItemWithCount)
-                                        .then(RequiredArgumentBuilder.<GlassCommandSource, Integer>argument("meta", integer())
+                                        .then(GlassArgumentBuilder.argument("meta", integer())
                                                 .executes(this::giveItemWithCountAndMeta)
                                         )
                                 )

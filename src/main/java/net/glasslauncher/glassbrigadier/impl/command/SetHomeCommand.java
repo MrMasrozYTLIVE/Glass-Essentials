@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.util.math.Vec3d;
 import org.simpleyaml.configuration.MemorySection;
 
@@ -19,10 +20,10 @@ import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 public class SetHomeCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("sethome")
+        return GlassArgumentBuilder.literal("sethome")
                 .requires(source -> isPlayer().test(source) && permission("command.sethome").test(source))
                 .executes(this::setHome)
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("name", word())
+                .then(GlassArgumentBuilder.argument("name", word())
                         .executes(this::setHomeNamed)
                 );
     }

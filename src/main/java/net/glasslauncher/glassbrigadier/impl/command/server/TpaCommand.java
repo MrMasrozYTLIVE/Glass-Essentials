@@ -8,6 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
@@ -30,34 +31,34 @@ public class TpaCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("tpa")
+        return GlassArgumentBuilder.literal("tpa")
                 .requires(permission("command.tpa"))
                 .requires(isPlayer())
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("yes")
+                .then(GlassArgumentBuilder.literal("yes")
                         .executes(this::tpYes)
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", player())
+                        .then(GlassArgumentBuilder.argument("player", player())
                                 .executes(this::tpYes)
                         )
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("y")
+                .then(GlassArgumentBuilder.literal("y")
                         .executes(this::tpYes)
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", player())
+                        .then(GlassArgumentBuilder.argument("player", player())
                                 .executes(this::tpYes)
                         )
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("no")
+                .then(GlassArgumentBuilder.literal("no")
                         .executes(this::tpNo)
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", player())
+                        .then(GlassArgumentBuilder.argument("player", player())
                                 .executes(this::tpNo)
                         )
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("n")
+                .then(GlassArgumentBuilder.literal("n")
                         .executes(this::tpNo)
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", player())
+                        .then(GlassArgumentBuilder.argument("player", player())
                                 .executes(this::tpNo)
                         )
                 )
-                .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", player())
+                .then(GlassArgumentBuilder.argument("player", player())
                         .executes(this::tpa)
                 );
     }

@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
@@ -17,7 +18,7 @@ public class MeCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("me", "Emote in chat. Shown as \"* <player> <text>\"")
                 .requires(permission("command.me"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("message", greedyString())
+                .then(GlassArgumentBuilder.argument("message", greedyString())
                                 .executes(this::sendMeMessage)
                 );
     }

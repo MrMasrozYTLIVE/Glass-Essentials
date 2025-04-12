@@ -7,6 +7,7 @@ import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.util.math.Vec3d;
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.MemorySection;
@@ -23,11 +24,11 @@ import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 public class SetWarpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("setwarp")
+        return GlassArgumentBuilder.literal("setwarp")
                 .requires(source -> isPlayer().test(source) && permission("command.setwarp").test(source))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("name", word())
+                .then(GlassArgumentBuilder.argument("name", word())
                         .executes(this::setWarp)
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("description", greedyString())
+                        .then(GlassArgumentBuilder.argument("description", greedyString())
                                 .executes(this::setWarpWithDesc)
                         )
                 );

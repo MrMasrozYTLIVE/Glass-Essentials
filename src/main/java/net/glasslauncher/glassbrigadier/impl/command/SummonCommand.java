@@ -7,6 +7,7 @@ import net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinate;
 import net.glasslauncher.glassbrigadier.api.argument.entityid.EntityType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.util.math.Vec3d;
@@ -21,10 +22,10 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class SummonCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("summon")
+        return GlassArgumentBuilder.literal("summon")
                 .requires(permission("command.summon"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, EntityType>argument("id", entityType())
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, Coordinate>argument("pos", coordinate())
+                .then(GlassArgumentBuilder.argument("id", entityType())
+                        .then(GlassArgumentBuilder.argument("pos", coordinate())
                                 .executes(this::summonEntity)
                         )
                 );

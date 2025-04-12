@@ -8,6 +8,7 @@ import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelect
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.entity.EntityUtils;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
@@ -23,21 +24,21 @@ import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 public class TeleportCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("tp")
+        return GlassArgumentBuilder.literal("tp")
                 .requires(permission("command.tp"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, Coordinate>argument("pos", coordinate())
+                .then(GlassArgumentBuilder.argument("pos", coordinate())
                         .requires(isPlayer())
                         .executes(this::teleportToPosition)
                 )
-                .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("target", entity())
+                .then(GlassArgumentBuilder.argument("target", entity())
                         .requires(isPlayer())
                         .executes(this::teleportToEntity)
                 )
-                .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("teleportees", entities())
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, Coordinate>argument("pos", coordinate())
+                .then(GlassArgumentBuilder.argument("teleportees", entities())
+                        .then(GlassArgumentBuilder.argument("pos", coordinate())
                                 .executes(this::teleportOtherToPosition)
                         )
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("target", entity())
+                        .then(GlassArgumentBuilder.argument("target", entity())
                                 .executes(this::teleportOtherToEntity)
                         )
                 );

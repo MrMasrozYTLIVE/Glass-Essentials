@@ -8,11 +8,13 @@ import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierPermissionsExportPacket;
 import net.glasslauncher.glassbrigadier.impl.permission.Role;
 import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.tag.TagEntry;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,8 +37,8 @@ public class PermissionsCommand implements CommandProvider {
                 .alias("p")
                 .requires(permission("command.permissions"))
 // TODO: Implement once I add Permissible
-//                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("get")
-//                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", players())
+//                .then(GlassArgumentBuilder.literal("get")
+//                        .then(GlassArgumentBuilder.<TargetSelector<?>>argument("player", players())
 //                                .executes(context -> {
 //                                    final StringBuilder builder = new StringBuilder();
 //                                    for (String playerName : getEntities(context, "player").getNames(context.getSource())) {
@@ -58,9 +60,9 @@ public class PermissionsCommand implements CommandProvider {
 //                                })
 //                        )
 //                )
-//                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("add")
-//                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", players())
-//                                .then(RequiredArgumentBuilder.<GlassCommandSource, PermissionNode<?>>argument("node", permissionNode())
+//                .then(GlassArgumentBuilder.literal("add")
+//                        .then(GlassArgumentBuilder.<TargetSelector<?>>argument("player", players())
+//                                .then(GlassArgumentBuilder.<PermissionNode<?>>argument("node", permissionNode())
 //                                        .executes(context -> {
 //                                            final StringBuilder builder = new StringBuilder();
 //                                            final PermissionNode<?> node = getPermissionNode(context, "node");
@@ -80,9 +82,9 @@ public class PermissionsCommand implements CommandProvider {
 //                                )
 //                        )
 //                )
-//                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("remove")
-//                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", players())
-//                                .then(RequiredArgumentBuilder.<GlassCommandSource, PermissionNode<?>>argument("node", permissionNode())
+//                .then(GlassArgumentBuilder.literal("remove")
+//                        .then(GlassArgumentBuilder.<TargetSelector<?>>argument("player", players())
+//                                .then(GlassArgumentBuilder.<PermissionNode<?>>argument("node", permissionNode())
 //                                        .executes(context -> {
 //                                            final StringBuilder builder = new StringBuilder();
 //                                            final PermissionNode<?> node = getPermissionNode(context, "node");
@@ -102,8 +104,8 @@ public class PermissionsCommand implements CommandProvider {
 //                                )
 //                        )
 //                )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("getRoles")
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", players())
+                .then(GlassArgumentBuilder.literal("getRoles")
+                        .then(GlassArgumentBuilder.argument("player", players())
                                 .executes(context -> {
                                     final StringBuilder builder = new StringBuilder();
                                     for (String playerName : getEntities(context, "player").getNames(context.getSource())) {
@@ -123,9 +125,9 @@ public class PermissionsCommand implements CommandProvider {
                                 })
                         )
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("addRole")
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", players())
-                                .then(RequiredArgumentBuilder.<GlassCommandSource, Role>argument("role", role())
+                .then(GlassArgumentBuilder.literal("addRole")
+                        .then(GlassArgumentBuilder.argument("player", players())
+                                .then(GlassArgumentBuilder.argument("role", role())
                                         .executes(context -> {
                                             final StringBuilder builder = new StringBuilder();
                                             final Role role = getRole(context, "role");
@@ -145,9 +147,9 @@ public class PermissionsCommand implements CommandProvider {
                                 )
                         )
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("removeRole")
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", players())
-                                .then(RequiredArgumentBuilder.<GlassCommandSource, PermissionNode<?>>argument("role", permissionNode())
+                .then(GlassArgumentBuilder.literal("removeRole")
+                        .then(GlassArgumentBuilder.argument("player", players())
+                                .then(GlassArgumentBuilder.argument("role", permissionNode())
                                         .executes(context -> {
                                             final StringBuilder builder = new StringBuilder();
                                             final Role node = getRole(context, "role");
@@ -167,7 +169,7 @@ public class PermissionsCommand implements CommandProvider {
                                 )
                         )
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("export")
+                .then(GlassArgumentBuilder.literal("export")
                         .executes(context -> {
                             sendFeedbackAndLog(context.getSource(), "Printing permissions to file...");
                             File permissionsFile = GlassBrigadier.getConfigFile("permissionsOutput.txt");
@@ -192,7 +194,7 @@ public class PermissionsCommand implements CommandProvider {
                             return 0;
                         })
                 )
-                .then(LiteralArgumentBuilder.<GlassCommandSource>literal("exportlocal")
+                .then(GlassArgumentBuilder.literal("exportlocal")
                         .requires(isPlayer())
                         .executes(context -> {
                             sendFeedbackAndLog(context.getSource(), "Sending permissions to " + context.getSource().getName() + "...");

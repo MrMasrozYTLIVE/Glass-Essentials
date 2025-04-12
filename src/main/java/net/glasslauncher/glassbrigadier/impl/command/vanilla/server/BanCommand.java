@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -20,7 +21,7 @@ public class BanCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("ban", "Ban a given player.")
                 .requires(permission("command.ban"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("player", StringArgumentType.word())
+                .then(GlassArgumentBuilder.argument("player", StringArgumentType.word())
                         .executes(this::banPlayer)
                 );
     }

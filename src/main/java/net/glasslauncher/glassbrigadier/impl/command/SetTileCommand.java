@@ -7,6 +7,7 @@ import net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinate;
 import net.glasslauncher.glassbrigadier.api.argument.tileid.BlockId;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.util.math.Vec3i;
 
 import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
@@ -20,12 +21,12 @@ import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permi
 public class SetTileCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("settile")
+        return GlassArgumentBuilder.literal("settile")
                 .requires(permission("command.settile"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, Coordinate>argument("pos", intCoordinate())
-                        .then(RequiredArgumentBuilder.<GlassCommandSource, BlockId>argument("id", tileId())
+                .then(GlassArgumentBuilder.argument("pos", intCoordinate())
+                        .then(GlassArgumentBuilder.argument("id", tileId())
                                 .executes(this::placeBlock)
-                                .then(RequiredArgumentBuilder.<GlassCommandSource, Integer>argument("meta", integer())
+                                .then(GlassArgumentBuilder.argument("meta", integer())
                                         .executes(this::placeBlockWithMeta)
                                 )
                         )

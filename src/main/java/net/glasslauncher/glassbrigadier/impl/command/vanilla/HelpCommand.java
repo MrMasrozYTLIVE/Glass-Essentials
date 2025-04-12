@@ -14,6 +14,7 @@ import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.argument.DescriptiveLiteralCommandNode;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.modificationstation.stationapi.api.util.Formatting;
 
 import java.util.ArrayList;
@@ -30,11 +31,11 @@ public class HelpCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("help").executes(this::showHelpPage)
-                .then(RequiredArgumentBuilder.<GlassCommandSource, Integer>argument("page", integer(0))
+        return GlassArgumentBuilder.literal("help").executes(this::showHelpPage)
+                .then(GlassArgumentBuilder.argument("page", integer(0))
                         .executes(this::showHelpPage)
                 )
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("command", StringArgumentType.greedyString())
+                .then(GlassArgumentBuilder.argument("command", StringArgumentType.greedyString())
                         .executes(this::showCommandHelp)
                 );
     }

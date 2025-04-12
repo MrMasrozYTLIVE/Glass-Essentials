@@ -7,6 +7,7 @@ import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.play.ChatMessagePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
@@ -22,10 +23,10 @@ public class MsgCommand implements CommandProvider {
 
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return LiteralArgumentBuilder.<GlassCommandSource>literal("msg")
+        return GlassArgumentBuilder.literal("msg")
                 .requires(permission("command.msg"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, TargetSelector<?>>argument("player", entity())
-                                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("message", greedyString())
+                .then(GlassArgumentBuilder.argument("player", entity())
+                                .then(GlassArgumentBuilder.<String>argument("message", greedyString())
                                                 .executes(this::whisper)
                                 )
                 );

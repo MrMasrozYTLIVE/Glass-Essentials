@@ -7,6 +7,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.argument.playerdata.PlayerDataArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
@@ -20,7 +21,7 @@ public class OpCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("op", "Give the specified player operator status.", "Give the specified player operator status. This is effectively the same as giving them all permissions.")
                 .requires(permission("command.op"))
-                .then(RequiredArgumentBuilder.<GlassCommandSource, String>argument("player", PlayerDataArgumentType.offlinePlayers())
+                .then(GlassArgumentBuilder.argument("player", PlayerDataArgumentType.offlinePlayers())
                         .executes(this::opPlayer)
                 );
     }
