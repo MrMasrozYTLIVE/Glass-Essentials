@@ -1,10 +1,8 @@
 package net.glasslauncher.glassbrigadier.impl.command.vanilla.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
-import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
@@ -37,11 +35,11 @@ public class MsgCommand implements CommandProvider {
             PlayerEntity playerEntity = context.getSource().getPlayerByName(player);
 
             if (playerEntity == null) {
-                context.getSource().sendMessage(Formatting.RED + "Invalid player name: " + player);
+                context.getSource().sendFeedback(Formatting.RED + "Invalid player name: " + player);
                 return;
             }
 
-            String message =  context.getSource().getName() + " whispers: " + getString(context, "message");
+            String message =  context.getSource().getSourceName() + " whispers: " + getString(context, "message");
             GlassBrigadier.LOGGER.info(message);
             PacketHelper.sendTo(playerEntity, new ChatMessagePacket("§7" + message));
         });

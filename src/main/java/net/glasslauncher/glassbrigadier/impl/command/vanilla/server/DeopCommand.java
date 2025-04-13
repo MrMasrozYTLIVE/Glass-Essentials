@@ -1,10 +1,8 @@
 package net.glasslauncher.glassbrigadier.impl.command.vanilla.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
-import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -32,7 +30,7 @@ public class DeopCommand implements CommandProvider {
         //noinspection deprecation
         PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
         if (!playerManager.isOperator(player)) {
-            context.getSource().sendMessage(Formatting.RED + player + " isn't an op!");
+            context.getSource().sendFeedback(Formatting.RED + player + " isn't an op!");
             return 0;
         }
 

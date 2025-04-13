@@ -1,10 +1,8 @@
 package net.glasslauncher.glassbrigadier.impl.command.vanilla.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
-import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -33,7 +31,7 @@ public class PardonCommand implements CommandProvider {
             //noinspection deprecation
             PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
             if (!playerManager.bannedPlayers.contains(player.name.toLowerCase().strip())) {
-                context.getSource().sendMessage(Formatting.RED + player.name + " isn't banned!");
+                context.getSource().sendFeedback(Formatting.RED + player.name + " isn't banned!");
                 return;
             }
             playerManager.unbanPlayer(player.name);

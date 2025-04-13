@@ -3,9 +3,7 @@ package net.glasslauncher.glassbrigadier.impl.command.server;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
@@ -70,7 +68,7 @@ public class TpaCommand implements CommandProvider {
             return invalid(context);
         }
 
-        context.getSource().sendMessage(Formatting.AQUA + "TPA request accepted.");
+        context.getSource().sendFeedback(Formatting.AQUA + "TPA request accepted.");
         tpaData.playerEntity().sendMessage(Formatting.AQUA + "Your TPA request was accepted.");
         Vec3d pos = context.getSource().getPosition();
         Vector2f rotation = context.getSource().getRotation();
@@ -86,7 +84,7 @@ public class TpaCommand implements CommandProvider {
             return invalid(context);
         }
 
-        context.getSource().sendMessage("Denied TPA from " + tpaData.tpaRequest().sourceName());
+        context.getSource().sendFeedback("Denied TPA from " + tpaData.tpaRequest().sourceName());
         tpaData.playerEntity().sendMessage(Formatting.RED + "Your TPA request was denied.");
         tpaData.tpaRequest.delete();
         return 0;
@@ -98,16 +96,16 @@ public class TpaCommand implements CommandProvider {
             return 0;
         }
 
-        if (playerEntity.get().name.equals(context.getSource().getName())) {
-            context.getSource().sendMessage(Formatting.RED + "You can't send TPAs to yourself.");
+        if (playerEntity.get().name.equals(context.getSource().getSourceName())) {
+            context.getSource().sendFeedback(Formatting.RED + "You can't send TPAs to yourself.");
             return 0;
         }
 
-        TpaRequest request = new TpaRequest(playerEntity.get().name, context.getSource().getName(), System.currentTimeMillis() / 1000L);
-        TPA_REQUESTS_FROM.put(context.getSource().getName(), request);
+        TpaRequest request = new TpaRequest(playerEntity.get().name, context.getSource().getSourceName(), System.currentTimeMillis() / 1000L);
+        TPA_REQUESTS_FROM.put(context.getSource().getSourceName(), request);
         TPA_REQUESTS_TO.put(playerEntity.get().name, request);
-        context.getSource().sendMessage("TPA request sent to " + playerEntity.get().name);
-        playerEntity.get().sendMessage(Formatting.AQUA + context.getSource().getName() + " has requested a teleport! Type " + Formatting.RED + "/tpa yes" + Formatting.AQUA + " to accept.");
+        context.getSource().sendFeedback("TPA request sent to " + playerEntity.get().name);
+        playerEntity.get().sendMessage(Formatting.AQUA + context.getSource().getSourceName() + " has requested a teleport! Type " + Formatting.RED + "/tpa yes" + Formatting.AQUA + " to accept.");
         return 0;
     }
 
@@ -122,7 +120,7 @@ public class TpaCommand implements CommandProvider {
         }
 
         Optional<TpaRequest> maybeRequest;
-        maybeRequest = playerEntity.flatMap(player -> Optional.of(TPA_REQUESTS_FROM.get(player.name))).or(() -> TPA_REQUESTS_TO.get(context.getSource().getName()).stream().reduce(((tpaRequest, tpaRequest2) -> tpaRequest2)));
+        maybeRequest = playerEntity.flatMap(player -> Optional.of(TPA_REQUESTS_FROM.get(player.name))).or(() -> TPA_REQUESTS_TO.get(context.getSource().getSourceName()).stream().reduce(((tpaRequest, tpaRequest2) -> tpaRequest2)));
 
         if (maybeRequest.isEmpty()) {
             return null;
@@ -142,7 +140,7 @@ public class TpaCommand implements CommandProvider {
     }
 
     public int invalid(CommandContext<GlassCommandSource> context) {
-        context.getSource().sendMessage("No valid TPA request found.");
+        context.getSource().sendFeedback("No valid TPA request found.");
         return 0;
     }
 

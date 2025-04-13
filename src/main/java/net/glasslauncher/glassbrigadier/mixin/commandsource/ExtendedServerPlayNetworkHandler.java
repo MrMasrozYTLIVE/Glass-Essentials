@@ -1,8 +1,6 @@
 package net.glasslauncher.glassbrigadier.mixin.commandsource;
 
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
-import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
@@ -31,6 +29,18 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
     @Shadow public MinecraftServer server;
 
     @Shadow public abstract String getName();
+
+    @Shadow public abstract void sendMessage(String message);
+
+    @Override
+    public String getSourceName() {
+        return getName();
+    }
+
+    @Override
+    public void sendFeedback(String message) {
+        sendMessage(message);
+    }
 
     @Override
     public World getWorld() {
@@ -61,12 +71,12 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
 
     @Override
     public Set<PermissionNodeInstance<?>> getPermissions() {
-        return UserPermissionManagerImpl.getNodes(getName());
+        return UserPermissionManagerImpl.getNodes(getSourceName());
     }
 
     @Override
     public boolean satisfiesNode(PermissionNodeInstance<?> nodeToCheck) {
-        if (server.playerManager.isOperator(getName())) {
+        if (server.playerManager.isOperator(getSourceName())) {
             return true;
         }
         return nodeToCheck.isSatisfiedBy(getPermissions());

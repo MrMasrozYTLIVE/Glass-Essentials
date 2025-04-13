@@ -1,9 +1,7 @@
 package net.glasslauncher.glassbrigadier.impl.command.vanilla;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import net.glasslauncher.glassbrigadier.api.argument.itemid.ItemId;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
@@ -51,7 +49,7 @@ public class GiveCommand implements CommandProvider {
 
         players.forEach(playerEntity -> {
             int item = getItemId(context, "item").numericId;
-            context.getSource().sendMessage("Giving " + playerEntity.name + " some " + item);
+            context.getSource().sendFeedback("Giving " + playerEntity.name + " some " + item);
             playerEntity.dropItem(item, 1, 0);
 
         });

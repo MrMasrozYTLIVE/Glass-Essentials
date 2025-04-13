@@ -23,7 +23,7 @@ public class SayCommand implements CommandProvider {
 
     public int say(CommandContext<GlassCommandSource> context) {
         String message = context.getArgument("message", String.class);
-        GlassBrigadier.LOGGER.info("[{}] {}", context.getSource().getName(), message);
+        GlassBrigadier.LOGGER.info("[{}] {}", context.getSource().getSourceName(), message);
         context.getSource().getAllPlayers().forEach(player -> player.sendMessage(Formatting.LIGHT_PURPLE + "[Server] " + message));
         return 0;
     }

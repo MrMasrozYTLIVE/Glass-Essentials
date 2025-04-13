@@ -2,7 +2,6 @@ package net.glasslauncher.glassbrigadier.impl.command.vanilla;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -43,7 +42,7 @@ public class TimeCommand implements CommandProvider {
                                     long hours = ((time / 1000) + 6) % 24;
                                     long minutes = (time % 1000) * 60 / 1000;
 
-                                    context.getSource().sendMessage("It is day " + (int) Math.floor((double) time / 24000L) + " at " + hours + ":" + (String.valueOf(minutes).length() == 1 ? "0" + minutes : minutes) + ".");
+                                    context.getSource().sendFeedback("It is day " + (int) Math.floor((double) time / 24000L) + " at " + hours + ":" + (String.valueOf(minutes).length() == 1 ? "0" + minutes : minutes) + ".");
                                     return 0;
                                 })
                 )

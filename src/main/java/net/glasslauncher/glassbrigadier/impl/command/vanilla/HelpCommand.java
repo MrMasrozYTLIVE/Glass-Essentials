@@ -4,7 +4,6 @@ import com.google.common.collect.Iterables;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedCommandNode;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -23,8 +22,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
-import static net.glasslauncher.glassbrigadier.impl.utils.AMIFormatting.BOLD;
-import static net.modificationstation.stationapi.api.util.Formatting.*;
+import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemMessageColor;
+import static net.modificationstation.stationapi.api.util.Formatting.RED;
 
 public class HelpCommand implements CommandProvider {
     private static final SimpleCommandExceptionType FAILED_EXCEPTION = new SimpleCommandExceptionType(() -> "Unknown command or insufficient permissions");
@@ -50,24 +49,24 @@ public class HelpCommand implements CommandProvider {
         int maxPages = (int) Math.ceil(commands.size() / 9d);
 
         if (page > maxPages) {
-            context.getSource().sendMessage(RED + "There are only " + GOLD + maxPages + RED + " pages.");
+            context.getSource().sendFeedback(RED + "There are only " + systemMessageColor() + maxPages + RED + " pages.");
             return 0;
         }
 
         CommandNode<?>[] commandKeys = commands.keySet().toArray(CommandNode[]::new);
 
-        context.getSource().sendMessage(AQUA.toString() + BOLD + ">" + GOLD + " Showing help page " + RED + page + GOLD + " of " + RED + maxPages + GOLD + ".");
+        context.getSource().sendFeedback(GlassBrigadier.systemMessage("Showing help page " + RED + page + systemMessageColor() + " of " + RED + maxPages + systemMessageColor() + "."));
         int startIndex = (page - 1) * 9;
         for (int i = startIndex; i < commands.size() && i < startIndex + 9; ++i) {
             CommandNode<?> commandNode = commandKeys[i];
             String usageText = commands.get(commandNode);
 
             if (commandNode instanceof DescriptiveLiteralCommandNode<?> descriptiveLiteralCommandNode) {
-                context.getSource().sendMessage(GOLD + "/" + usageText + Formatting.GRAY + ": " + descriptiveLiteralCommandNode.getShortDescription());
+                context.getSource().sendFeedback(systemMessageColor() + "/" + usageText + Formatting.GRAY + ": " + descriptiveLiteralCommandNode.getShortDescription());
                 continue;
             }
 
-            context.getSource().sendMessage(GOLD + "/" + usageText);
+            context.getSource().sendFeedback(systemMessageColor() + "/" + usageText);
         }
 
         return commands.size();
@@ -89,14 +88,14 @@ public class HelpCommand implements CommandProvider {
 
             Map<CommandNode<GlassCommandSource>, String> map = GlassBrigadier.dispatcher.getSmartUsage(commandNode, context.getSource());
 
-            context.getSource().sendMessage(AQUA.toString() + BOLD + ">" + GOLD + " Showing usage for " + RED + command + GOLD + ":");
+            context.getSource().sendFeedback(GlassBrigadier.systemMessage(" Showing usage for " + RED + command + systemMessageColor() + ":"));
             if (commandNode instanceof DescriptiveLiteralCommandNode<?> literalArgumentBuilder) {
                 for (String helpLine : getHelpLines(literalArgumentBuilder.getDescription())) {
-                    context.getSource().sendMessage(helpLine);
+                    context.getSource().sendFeedback(helpLine);
                 }
             }
             for (String string : map.values()) {
-                context.getSource().sendMessage(AQUA.toString() + BOLD + "*" + GOLD + " /" + parseResults.getReader().getString() + " " + string);
+                context.getSource().sendFeedback(GlassBrigadier.systemBulletPoint("/" + parseResults.getReader().getString() + " " + string));
             }
 
             return map.size();
@@ -104,6 +103,9 @@ public class HelpCommand implements CommandProvider {
     }
 
     public List<String> getHelpLines(String linesString) {
+        if (linesString == null) {
+            return List.of();
+        }
         List<String> lines = new ArrayList<>();
 
         for (String line : linesString.split("\n")) {

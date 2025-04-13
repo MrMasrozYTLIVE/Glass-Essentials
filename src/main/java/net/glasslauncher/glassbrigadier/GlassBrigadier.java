@@ -15,8 +15,6 @@ import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteRequestPacket;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierAutocompleteResponsePacket;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierPermissionsExportPacket;
-import net.glasslauncher.glassbrigadier.impl.permission.RoleManagerImpl;
-import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 import net.glasslauncher.mods.gcapi3.api.ConfigRoot;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
@@ -28,6 +26,10 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.glasslauncher.glassbrigadier.impl.utils.AMIFormatting.BOLD;
+import static net.modificationstation.stationapi.api.util.Formatting.AQUA;
+import static net.modificationstation.stationapi.api.util.Formatting.GOLD;
 
 public class GlassBrigadier {
     @ConfigRoot(value = "config", visibleName = "Config", nameKey = "config.glassbrigadier.config.name")
@@ -101,5 +103,29 @@ public class GlassBrigadier {
         Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete_request"), GlassBrigadierAutocompleteRequestPacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("autocomplete_response"), GlassBrigadierAutocompleteResponsePacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, GlassBrigadier.NAMESPACE.id("permissions_export"), GlassBrigadierPermissionsExportPacket.TYPE);
+    }
+
+    public static String systemCursorColor() {
+        return AQUA.toString() + BOLD;
+    }
+
+    public static String systemMessageColor() {
+        return GOLD.toString();
+    }
+
+    public static String systemMessagePrefix() {
+        return systemCursorColor() + ">" + systemMessageColor();
+    }
+
+    public static String systemMessage(String message) {
+        return systemMessagePrefix() + " " + message;
+    }
+
+    public static String systemBulletPointPrefix() {
+        return systemCursorColor() + "*" + systemMessageColor();
+    }
+
+    public static String systemBulletPoint(String message) {
+        return systemBulletPointPrefix() + " " + message;
     }
 }

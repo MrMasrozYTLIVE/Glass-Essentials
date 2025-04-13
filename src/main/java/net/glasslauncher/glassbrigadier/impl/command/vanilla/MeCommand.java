@@ -1,7 +1,6 @@
 package net.glasslauncher.glassbrigadier.impl.command.vanilla;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -24,7 +23,7 @@ public class MeCommand implements CommandProvider {
     }
 
     public int sendMeMessage(CommandContext<GlassCommandSource> context) {
-        String message = "* " + context.getSource().getName() + " " + getString(context, "message").trim();
+        String message = "* " + context.getSource().getSourceName() + " " + getString(context, "message").trim();
         sendToChatAndLog(context.getSource(), message);
         return 0;
     }

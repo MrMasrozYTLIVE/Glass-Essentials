@@ -1,6 +1,5 @@
 package net.glasslauncher.glassbrigadier.impl.command.server;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
@@ -12,11 +11,9 @@ import net.glasslauncher.glassbrigadier.impl.permission.RoleChain;
 import net.glasslauncher.glassbrigadier.impl.permission.RoleManagerImpl;
 import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 
-import java.util.Set;
-
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
-import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getEntities;
-import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.players;
+import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemBulletPointPrefix;
+import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemMessagePrefix;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.role;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
@@ -69,21 +66,28 @@ public class RoleCommand implements CommandProvider {
             builder.append(chain.getRoles().size());
             builder.append(")");
         }
-        context.getSource().sendMessage(builder.toString());
+        context.getSource().sendFeedback(builder.toString());
         return 0;
     }
 
     private int listRoles(CommandContext<GlassCommandSource> context) {
         final StringBuilder builder = new StringBuilder();
+        builder.append(systemMessagePrefix());
+        builder.append(" ");
         builder.append("Available roles:");
         for (Role role : Role.getStartingWith("")) {
-            builder.append("\n ");
+            builder.append("\n");
+            builder.append(systemBulletPointPrefix());
+            builder.append(" ");
             builder.append(role.getName());
             builder.append(" (");
-            builder.append(UserPermissionManagerImpl.getUsers(role));
+            int players = UserPermissionManagerImpl.getUsers(role).size();
+            builder.append(players);
+            builder.append(" ");
+            builder.append(players == 1 ? "player" : "players");
             builder.append(")");
         }
-        context.getSource().sendMessage(builder.toString());
+        context.getSource().sendFeedback(builder.toString());
         return 0;
     }
 

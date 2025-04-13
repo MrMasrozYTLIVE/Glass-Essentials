@@ -1,8 +1,6 @@
 package net.glasslauncher.glassbrigadier.mixin.commandsource;
 
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
-import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
@@ -30,7 +28,7 @@ public class ExtendedMinecraft implements GlassCommandSource {
     @Shadow public InGameHud inGameHud;
 
     @Override
-    public void sendMessage(String message) {
+    public void sendFeedback(String message) {
         PlayerEntity playerEntity = getPlayer();
         if (playerEntity != null) {
             playerEntity.sendMessage(message);
@@ -38,7 +36,7 @@ public class ExtendedMinecraft implements GlassCommandSource {
     }
 
     @Override
-    public String getName() {
+    public String getSourceName() {
         PlayerEntity playerEntity = getPlayer();
         if (playerEntity != null) {
             return playerEntity.name;
@@ -75,7 +73,7 @@ public class ExtendedMinecraft implements GlassCommandSource {
 
     @Override
     public Set<PermissionNodeInstance<?>> getPermissions() {
-        return UserPermissionManagerImpl.getNodes(getName());
+        return UserPermissionManagerImpl.getNodes(getSourceName());
     }
 
     @Override

@@ -1,10 +1,8 @@
 package net.glasslauncher.glassbrigadier.impl.command.vanilla.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
-import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -32,13 +30,13 @@ public class PardonIpCommand implements CommandProvider {
     public int pardonIp(CommandContext<GlassCommandSource> context) {
         String ip = getString(context, "ip").toLowerCase().strip();
         if (!IP_REGEX.matcher(ip).matches()) {
-            context.getSource().sendMessage(Formatting.RED + ip + " isn't a valid IP address!");
+            context.getSource().sendFeedback(Formatting.RED + ip + " isn't a valid IP address!");
             return 0;
         }
         //noinspection deprecation
         PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
         if (!playerManager.bannedIps.contains(ip)) {
-            context.getSource().sendMessage(Formatting.RED + ip + " isn't banned!");
+            context.getSource().sendFeedback(Formatting.RED + ip + " isn't banned!");
             return 0;
         }
 

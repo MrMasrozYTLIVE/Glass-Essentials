@@ -37,7 +37,7 @@ public class PermissionNode<T> {
     /**
      * Get the permission node object relevant to the provided string.
      */
-    public static <T> PermissionNode<T> of(String path, IsValuePositivePredicate<T> positivePredicate) {
+    public static <T> PermissionNode<T> register(String path, IsValuePositivePredicate<T> positivePredicate) {
         //noinspection unchecked Ahahaha fuck type erasure fuck type erasure fuck type erasure fucking why
         return (PermissionNode<T>) CACHE.get(path, path_ -> new PermissionNode<>(path_, positivePredicate));
     }

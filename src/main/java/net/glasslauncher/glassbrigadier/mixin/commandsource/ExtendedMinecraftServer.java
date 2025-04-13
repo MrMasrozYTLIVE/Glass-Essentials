@@ -33,7 +33,19 @@ public abstract class ExtendedMinecraftServer implements GlassCommandSource {
 
     @Shadow public abstract ServerWorld getWorld(int dimensionId);
 
+    @Shadow public abstract void sendMessage(String message);
+
     @Shadow public abstract String getName();
+
+    @Override
+    public void sendFeedback(String message) {
+        sendMessage(message);
+    }
+
+    @Override
+    public String getSourceName() {
+        return getName();
+    }
 
     @Override
     public World getWorld() {

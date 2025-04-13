@@ -25,12 +25,21 @@ import java.util.Set;
 // I'm pretty certain this is never ever used, but hey.
 @SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(DedicatedServerGui.class)
-public class ExtendedDedicatedServerGUI implements GlassCommandSource {
+public abstract class ExtendedDedicatedServerGUI implements GlassCommandSource {
 
     @Shadow private MinecraftServer server;
 
-    @Shadow @Override public String getName() {return "";}
-    @Shadow @Override public void sendMessage(String message) {}
+    @Shadow public abstract String getName();
+
+    @Shadow public abstract void sendMessage(String message);
+
+    @Override public String getSourceName() {
+        return getName();
+    }
+
+    @Override public void sendFeedback(String message) {
+        sendMessage(message);
+    }
 
     @Override
     public World getWorld() {

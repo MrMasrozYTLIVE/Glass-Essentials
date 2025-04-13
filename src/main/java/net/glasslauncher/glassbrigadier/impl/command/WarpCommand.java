@@ -1,7 +1,6 @@
 package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
@@ -38,7 +37,7 @@ public class WarpCommand implements CommandProvider {
         ConfigurationSection warp = (ConfigurationSection) warps.get(name);
 
         if (warp == null) {
-            context.getSource().sendMessage(Formatting.RED + "No warp named \"" + name + "\".");
+            context.getSource().sendFeedback(Formatting.RED + "No warp named \"" + name + "\".");
             return 0;
         }
 
@@ -52,7 +51,7 @@ public class WarpCommand implements CommandProvider {
             player.setPositionAndAnglesKeepPrevAngles(warpLoc.get(0), warpLoc.get(1), warpLoc.get(2), player.yaw, player.pitch);
         }
 
-        context.getSource().sendMessage("Warped to \"" + name + "\".");
+        context.getSource().sendFeedback("Warped to \"" + name + "\".");
         return 0;
     }
 }

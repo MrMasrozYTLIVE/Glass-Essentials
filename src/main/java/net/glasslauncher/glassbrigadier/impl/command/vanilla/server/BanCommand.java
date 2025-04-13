@@ -2,7 +2,6 @@ package net.glasslauncher.glassbrigadier.impl.command.vanilla.server;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
@@ -32,7 +31,7 @@ public class BanCommand implements CommandProvider {
         //noinspection deprecation
         PlayerManager playerManager = ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).playerManager;
         if (playerManager.bannedPlayers.contains(player.toLowerCase().strip())) {
-            context.getSource().sendMessage(Formatting.RED + player + " is already banned!");
+            context.getSource().sendFeedback(Formatting.RED + player + " is already banned!");
             return 0;
         }
 

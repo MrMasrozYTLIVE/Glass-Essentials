@@ -69,7 +69,7 @@ public class PermissionNodeInstance<T> {
     }
 
     private static String getID(PermissionNode<?> path, GlassCommandSource source) {
-        return path + ":C:" + source.getName();
+        return path + ":C:" + source.getSourceName();
     }
 
     private static String getID(PermissionNode<?> path, Role role) {

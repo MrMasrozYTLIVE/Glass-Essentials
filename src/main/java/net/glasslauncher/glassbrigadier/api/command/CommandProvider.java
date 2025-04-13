@@ -8,8 +8,8 @@ import java.util.function.Supplier;
 public interface CommandProvider extends Supplier<LiteralArgumentBuilder<GlassCommandSource>> {
 
     default void sendFeedbackAndLog(GlassCommandSource source, String message) {
-        source.sendMessage(message);
-        GlassBrigadier.LOGGER.info("{}: {}", source.getName(), message);
+        source.sendFeedback(message);
+        GlassBrigadier.LOGGER.info("{}: {}", source.getSourceName(), message);
     }
 
     default void sendToChatAndLog(GlassCommandSource source, String message) {

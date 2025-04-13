@@ -1,7 +1,6 @@
 package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -51,6 +50,6 @@ public class SetHomeCommand implements CommandProvider {
             throw new RuntimeException(e);
         }
 
-        context.getSource().sendMessage("Set home \"" + name + "\".");
+        context.getSource().sendFeedback("Set home \"" + name + "\".");
     }
 }

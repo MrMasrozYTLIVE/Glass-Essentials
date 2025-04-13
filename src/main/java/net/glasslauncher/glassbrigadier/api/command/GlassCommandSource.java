@@ -1,6 +1,5 @@
 package net.glasslauncher.glassbrigadier.api.command;
 
-import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.minecraft.entity.Entity;
@@ -16,10 +15,10 @@ import java.util.Set;
 public interface GlassCommandSource {
 
     // Vanilla method, update with mappings.
-    void sendMessage(String message);
+    void sendFeedback(String message);
 
     // Vanilla method, update with mappings.
-    String getName();
+    String getSourceName();
 
     World getWorld();
 

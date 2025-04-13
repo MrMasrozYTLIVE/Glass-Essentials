@@ -6,8 +6,6 @@ import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImp
 import net.minecraft.entity.player.PlayerEntity;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public final class PermissionManager {
@@ -31,7 +29,7 @@ public final class PermissionManager {
      */
     @Nonnull
     public static Set<Role> getRoles(@Nonnull GlassCommandSource source) {
-        return getRoles(source.getName());
+        return getRoles(source.getSourceName());
     }
 
     /**
@@ -61,7 +59,7 @@ public final class PermissionManager {
      * @return whether the node was successfully added.
      */
     public static boolean addRole(@Nonnull GlassCommandSource source, @Nonnull Role role) {
-        return addRole(source.getName(), role);
+        return addRole(source.getSourceName(), role);
     }
 
     /**
@@ -91,7 +89,7 @@ public final class PermissionManager {
      * @return whether the node was successfully removed.
      */
     public static boolean removeRole(@Nonnull GlassCommandSource source, @Nonnull Role role) {
-        return removeRole(source.getName(), role);
+        return removeRole(source.getSourceName(), role);
     }
 
     /**

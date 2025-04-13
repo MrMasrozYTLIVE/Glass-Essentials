@@ -1,13 +1,11 @@
 package net.glasslauncher.glassbrigadier.mixin.server;
 
-import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.permission.Role;
 import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 import net.minecraft.network.packet.play.ChatMessagePacket;
-import net.minecraft.server.command.Command;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,17 +20,16 @@ import java.util.Optional;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public abstract class ServerPlayNetworkHandlerMixin implements GlassCommandSource {
+
     @Unique
     private String originalMessage;
-
-    @Shadow public abstract String getName();
 
     @Inject(method = "handleCommand", at = @At(value = "HEAD"), cancellable = true)
     void hijackCommands(String message, CallbackInfo ci) {
         try {
             GlassBrigadier.dispatcher.execute(message.substring(1), this);
         } catch (CommandSyntaxException e) {
-            this.sendMessage(e.getMessage());
+            this.sendFeedback(e.getMessage());
         }
         ci.cancel();
     }
@@ -44,8 +41,8 @@ public abstract class ServerPlayNetworkHandlerMixin implements GlassCommandSourc
 
     @ModifyVariable(method = "onChatMessage", at = @At(value = "STORE", ordinal = 2), ordinal = 0)
     private String modifyChatSender(String originalOutput) {
-        Optional<Role> role = UserPermissionManagerImpl.getRoles(getName()).stream().max(Comparator.comparingInt(Role::getPower));
-        return role.map(value -> value.getDisplay(getName()) + " " + originalMessage)
+        Optional<Role> role = UserPermissionManagerImpl.getRoles(getSourceName()).stream().max(Comparator.comparingInt(Role::getPower));
+        return role.map(value -> value.getDisplay(getSourceName()) + " " + originalMessage)
                 .orElse(originalOutput);
     }
 }

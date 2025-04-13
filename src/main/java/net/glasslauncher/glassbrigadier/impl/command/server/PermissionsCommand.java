@@ -1,20 +1,16 @@
 package net.glasslauncher.glassbrigadier.impl.command.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
-import net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelector;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionManager;
-import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.glasslauncher.glassbrigadier.impl.network.GlassBrigadierPermissionsExportPacket;
 import net.glasslauncher.glassbrigadier.impl.permission.Role;
 import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
-import net.modificationstation.stationapi.api.tag.TagEntry;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,7 +18,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
-import static net.glasslauncher.glassbrigadier.api.argument.permissionnode.PermissionNodeArgumentType.permissionNode;
+import static net.glasslauncher.glassbrigadier.GlassBrigadier.*;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.getRole;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.role;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
@@ -110,14 +106,18 @@ public class PermissionsCommand implements CommandProvider {
                                     final StringBuilder builder = new StringBuilder();
                                     for (String playerName : getEntities(context, "player").getNames(context.getSource())) {
                                         final Set<Role> roles = UserPermissionManagerImpl.getRoles(playerName);
+                                        builder.append(systemMessagePrefix());
+                                        builder.append(" ");
                                         builder.append(playerName);
                                         builder.append(" has roles:");
                                         for (Role role : roles) {
                                             builder.append("\n");
+                                            builder.append(systemBulletPointPrefix());
+                                            builder.append(" ");
                                             builder.append(role.getName());
                                         }
                                     }
-                                    context.getSource().sendMessage(builder.toString());
+                                    context.getSource().sendFeedback(builder.toString());
                                     return 0;
                                 })
                         )
@@ -130,6 +130,8 @@ public class PermissionsCommand implements CommandProvider {
                                             final Role role = getRole(context, "role");
                                             for (String playerName : getPlayers(context, "player").getNames(context.getSource())) {
                                                 final boolean success = PermissionManager.addRole(playerName, role);
+                                                builder.append(systemMessagePrefix());
+                                                builder.append(" ");
                                                 builder.append(success ? "Added" : "Failed to add");
                                                 builder.append(" role ");
                                                 builder.append(role.getName());
@@ -152,6 +154,8 @@ public class PermissionsCommand implements CommandProvider {
                                             final Role role = getRole(context, "role");
                                             for (String playerName : getPlayers(context, "player").getNames(context.getSource())) {
                                                 final boolean success = PermissionManager.removeRole(playerName, role);
+                                                builder.append(systemMessagePrefix());
+                                                builder.append(" ");
                                                 builder.append(success ? "Removed" : "Failed to remove");
                                                 builder.append(" role ");
                                                 builder.append(role);
@@ -194,7 +198,7 @@ public class PermissionsCommand implements CommandProvider {
                 .then(GlassArgumentBuilder.literal("exportlocal")
                         .requires(isPlayer())
                         .executes(context -> {
-                            sendFeedbackAndLog(context.getSource(), "Sending permissions to " + context.getSource().getName() + "...");
+                            sendFeedbackAndLog(context.getSource(), "Sending permissions to " + context.getSource().getSourceName() + "...");
 
                                 StringBuilder permissions = new StringBuilder();
                                 for (String node : GlassBrigadier.ALL_PERMISSIONS) {

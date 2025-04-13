@@ -76,6 +76,6 @@ public class Role {
     }
 
     public String getDisplay(String user) {
-        return AMIFormatting.RESET + (getPrefix() == null ? "" : getPrefix()) + "<" + user + "> " + (getSuffix() == null ? "" : getSuffix()) + AMIFormatting.RESET;
+        return AMIFormatting.RESET + (getPrefix() == null ? "" : getPrefix()) + "<" + user + ">" + (getSuffix() == null ? "" : getSuffix()) + AMIFormatting.RESET;
     }
 }

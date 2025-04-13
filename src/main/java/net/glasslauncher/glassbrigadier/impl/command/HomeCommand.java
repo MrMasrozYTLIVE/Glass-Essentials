@@ -1,7 +1,6 @@
 package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -45,7 +44,7 @@ public class HomeCommand implements CommandProvider {
         List<Double> homeLoc = homes.getDoubleList(name);
 
         if (homeLoc == null) {
-            context.getSource().sendMessage(Formatting.RED + "No home named \"" + name + "\".");
+            context.getSource().sendFeedback(Formatting.RED + "No home named \"" + name + "\".");
             return;
         }
 
@@ -57,6 +56,6 @@ public class HomeCommand implements CommandProvider {
             player.setPositionAndAnglesKeepPrevAngles(homeLoc.get(0), homeLoc.get(1), homeLoc.get(2), player.yaw, player.pitch);
         }
 
-        context.getSource().sendMessage("Teleported to home \"" + name + "\".");
+        context.getSource().sendFeedback("Teleported to home \"" + name + "\".");
     }
 }
