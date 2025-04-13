@@ -3,6 +3,7 @@ package net.glasslauncher.glassbrigadier.mixin.server;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
 import net.glasslauncher.glassbrigadier.impl.permission.RoleManagerImpl;
+import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
 import net.glasslauncher.glassbrigadier.mixin.client.MinecraftMixin;
 import net.minecraft.server.MinecraftServer;
 import net.modificationstation.stationapi.api.StationAPI;
@@ -21,5 +22,6 @@ public class MinecraftServerMixin {
         StationAPI.EVENT_BUS.post(CommandRegisterEvent.builder().commandDispatcher(GlassBrigadier.dispatcher).build());
         GlassBrigadier.LOGGER.info("Registered {} commands.", GlassBrigadier.dispatcher.getRoot().getChildren().size());
         RoleManagerImpl.setupRoleManager();
+        UserPermissionManagerImpl.setupPermissionManager();
     }
 }

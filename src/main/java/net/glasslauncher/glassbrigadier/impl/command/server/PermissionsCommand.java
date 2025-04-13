@@ -111,15 +111,12 @@ public class PermissionsCommand implements CommandProvider {
                                     for (String playerName : getEntities(context, "player").getNames(context.getSource())) {
                                         final Set<Role> roles = UserPermissionManagerImpl.getRoles(playerName);
                                         builder.append(playerName);
-                                        builder.append(" has permissions:\n");
+                                        builder.append(" has roles:");
                                         for (Role role : roles) {
-                                            builder.append(" ");
-                                            builder.append(role);
                                             builder.append("\n");
+                                            builder.append(role.getName());
                                         }
-                                        builder.append("\n");
                                     }
-                                    builder.deleteCharAt(builder.length() - 1); // Remove last newline
                                     context.getSource().sendMessage(builder.toString());
                                     return 0;
                                 })
@@ -135,7 +132,7 @@ public class PermissionsCommand implements CommandProvider {
                                                 final boolean success = PermissionManager.addRole(playerName, role);
                                                 builder.append(success ? "Added" : "Failed to add");
                                                 builder.append(" role ");
-                                                builder.append(role);
+                                                builder.append(role.getName());
                                                 builder.append(" to ");
                                                 builder.append(playerName);
                                                 builder.append("\n");
@@ -149,15 +146,15 @@ public class PermissionsCommand implements CommandProvider {
                 )
                 .then(GlassArgumentBuilder.literal("removeRole")
                         .then(GlassArgumentBuilder.argument("player", players())
-                                .then(GlassArgumentBuilder.argument("role", permissionNode())
+                                .then(GlassArgumentBuilder.argument("role", role())
                                         .executes(context -> {
                                             final StringBuilder builder = new StringBuilder();
-                                            final Role node = getRole(context, "role");
+                                            final Role role = getRole(context, "role");
                                             for (String playerName : getPlayers(context, "player").getNames(context.getSource())) {
-                                                final boolean success = PermissionManager.removeRole(playerName, node);
+                                                final boolean success = PermissionManager.removeRole(playerName, role);
                                                 builder.append(success ? "Removed" : "Failed to remove");
-                                                builder.append(" node ");
-                                                builder.append(node);
+                                                builder.append(" role ");
+                                                builder.append(role);
                                                 builder.append(" from ");
                                                 builder.append(playerName);
                                                 builder.append("\n");

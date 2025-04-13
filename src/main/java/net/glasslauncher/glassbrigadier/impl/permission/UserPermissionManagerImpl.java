@@ -91,8 +91,9 @@ public final class UserPermissionManagerImpl {
         rolesToUsers.clear();
         for (String name : names) {
             Set<Role> roles = new HashSet<>();
-            usersToRolesSection.getList(name).forEach(role_ -> {
-                Role role = Role.get((String) role_);
+            //noinspection unchecked
+            ((Set<String>) usersToRolesSection.get(name, new HashSet<>())).forEach(role_ -> {
+                Role role = Role.get(role_);
                 roles.add(role);
                 rolesToUsers.computeIfAbsent(role, e -> new HashSet<>()).add(name);
             });

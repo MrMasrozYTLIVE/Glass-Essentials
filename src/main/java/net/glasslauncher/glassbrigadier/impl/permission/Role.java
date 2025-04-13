@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
+import net.glasslauncher.glassbrigadier.impl.utils.AMIFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.serialization.ConfigurationSerializable;
@@ -13,19 +14,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Getter
+@Getter @Setter
 public class Role {
 
     private String prefix;
     private String suffix;
     private int power;
-    private String roleChain;
+    private RoleChain roleChain;
     private String name;
 
-    @Setter
     private Set<PermissionNodeInstance<?>> permissions = new HashSet<>();
 
-    public Role(String prefix, String suffix, int power, String roleChain, String name) {
+    public Role(String prefix, String suffix, int power, RoleChain roleChain, String name) {
         this.prefix = prefix;
         this.suffix = suffix;
         this.power = power;
@@ -52,5 +52,30 @@ public class Role {
 
     public static void removeRole(Role role) {
         RoleManagerImpl.removeRole(role);
+    }
+
+    public boolean setName(String name) {
+        if (RoleManagerImpl.get(name) != null) {
+            return false;
+        }
+
+        RoleManagerImpl.removeRole(this);
+        this.name = name;
+        RoleManagerImpl.addRole(this);
+        return true;
+    }
+
+    public void setRoleChain(RoleChain roleChain) {
+        if (this.roleChain != null) {
+//            this.roleChain.removeRole(this);
+        }
+        this.roleChain = roleChain;
+        if (roleChain != null) {
+//            this.roleChain.addRole(this);
+        }
+    }
+
+    public String getDisplay(String user) {
+        return AMIFormatting.RESET + (getPrefix() == null ? "" : getPrefix()) + "<" + user + "> " + (getSuffix() == null ? "" : getSuffix()) + AMIFormatting.RESET;
     }
 }

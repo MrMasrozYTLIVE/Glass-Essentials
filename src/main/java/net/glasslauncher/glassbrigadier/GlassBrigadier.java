@@ -8,6 +8,7 @@ import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
 import net.glasslauncher.glassbrigadier.impl.command.*;
 import net.glasslauncher.glassbrigadier.impl.command.server.PermissionsCommand;
+import net.glasslauncher.glassbrigadier.impl.command.server.RoleCommand;
 import net.glasslauncher.glassbrigadier.impl.command.server.TpaCommand;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.*;
 import net.glasslauncher.glassbrigadier.impl.command.vanilla.server.*;
@@ -47,7 +48,7 @@ public class GlassBrigadier {
 
     @EventListener(phase = CommandRegisterEvent.INTERNAL_PHASE)
     public void internalInit(CommandRegisterEvent event) {
-        UserPermissionManagerImpl.setupPermissionManager();
+        // Register permission nodes here
     }
 
     @EventListener(phase = CommandRegisterEvent.VANILLA_PHASE)
@@ -91,6 +92,7 @@ public class GlassBrigadier {
     @EventListener
     public void customServerInit(CommandRegisterEvent event) {
         event.register(new PermissionsCommand());
+        event.register(new RoleCommand());
         event.register(new TpaCommand());
     }
 
