@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import static com.mojang.brigadier.arguments.LongArgumentType.getLong;
 import static com.mojang.brigadier.arguments.LongArgumentType.longArg;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class TimeCommand implements CommandProvider {
@@ -19,7 +20,7 @@ public class TimeCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("time")
-                .requires(permission("command.time"))
+                .requires(booleanPermission("command.time"))
                 .then(
                         GlassArgumentBuilder.literal("set")
                                 .then(GlassArgumentBuilder.argument("time", longArg(0))

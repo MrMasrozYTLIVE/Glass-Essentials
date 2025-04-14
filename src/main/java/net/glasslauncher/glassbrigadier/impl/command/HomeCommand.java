@@ -14,6 +14,7 @@ import org.simpleyaml.configuration.MemorySection;
 import java.util.List;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
@@ -21,7 +22,7 @@ public class HomeCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("home")
-                .requires(source -> isPlayer().test(source) && permission("command.home").test(source))
+                .requires(source -> isPlayer().test(source) && booleanPermission("command.home").test(source))
                 .executes(this::home)
                 .then(GlassArgumentBuilder.argument("name", word())
                         .executes(this::homeNamed)

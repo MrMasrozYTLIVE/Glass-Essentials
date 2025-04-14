@@ -15,6 +15,7 @@ import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.entity;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class MsgCommand implements CommandProvider {
@@ -22,7 +23,7 @@ public class MsgCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("msg")
-                .requires(permission("command.msg"))
+                .requires(booleanPermission("command.msg"))
                 .then(GlassArgumentBuilder.argument("player", entity())
                                 .then(GlassArgumentBuilder.<String>argument("message", greedyString())
                                                 .executes(this::whisper)

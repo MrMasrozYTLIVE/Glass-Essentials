@@ -9,13 +9,14 @@ import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class StopCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("stop", "Stop the server.")
-                .requires(permission("command.stop"))
+                .requires(booleanPermission("command.stop"))
                 .executes(this::stop);
     }
 

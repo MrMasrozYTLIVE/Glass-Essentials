@@ -16,13 +16,14 @@ import static net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinat
 import static net.glasslauncher.glassbrigadier.api.argument.coordinate.CoordinateArgumentType.intCoordinate;
 import static net.glasslauncher.glassbrigadier.api.argument.tileid.BlockIdArgumentType.getTileId;
 import static net.glasslauncher.glassbrigadier.api.argument.tileid.BlockIdArgumentType.tileId;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SetTileCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("settile")
-                .requires(permission("command.settile"))
+                .requires(booleanPermission("command.settile"))
                 .then(GlassArgumentBuilder.argument("pos", intCoordinate())
                         .then(GlassArgumentBuilder.argument("id", tileId())
                                 .executes(this::placeBlock)

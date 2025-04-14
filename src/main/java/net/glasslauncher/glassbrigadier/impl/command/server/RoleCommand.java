@@ -15,6 +15,7 @@ import static com.mojang.brigadier.arguments.StringArgumentType.string;
 import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemBulletPointPrefix;
 import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemMessagePrefix;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.role;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class RoleCommand implements CommandProvider {
@@ -23,7 +24,7 @@ public class RoleCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("roles")
                 .alias("r")
-                .requires(permission("glassbrigadier.role"))
+                .requires(booleanPermission("glassbrigadier.role"))
                 .then(GlassArgumentBuilder.literal("list")
                         .executes(this::listRoles)
                 )

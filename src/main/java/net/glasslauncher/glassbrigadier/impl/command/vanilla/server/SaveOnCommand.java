@@ -12,13 +12,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ServerWorld;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SaveOnCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("deop", "Remove operator status from a player.")
-                .requires(permission("command.deop"))
+                .requires(booleanPermission("command.deop"))
                 .then(RequiredArgumentBuilder.argument("player", TargetSelectorArgumentType.player()))
                 .executes(this::saveOn);
     }

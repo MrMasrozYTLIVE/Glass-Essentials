@@ -18,6 +18,7 @@ import java.util.List;
 import static net.glasslauncher.glassbrigadier.api.argument.coordinate.CoordinateArgumentType.coordinate;
 import static net.glasslauncher.glassbrigadier.api.argument.coordinate.CoordinateArgumentType.getCoordinate;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
@@ -25,7 +26,7 @@ public class TeleportCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("tp")
-                .requires(permission("command.tp"))
+                .requires(booleanPermission("command.tp"))
                 .then(GlassArgumentBuilder.argument("pos", coordinate())
                         .requires(isPlayer())
                         .executes(this::teleportToPosition)

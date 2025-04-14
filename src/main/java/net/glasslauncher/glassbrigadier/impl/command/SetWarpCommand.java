@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.predicate.HasPermission;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.util.math.Vec3d;
@@ -17,14 +18,16 @@ import java.util.HashMap;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
 public class SetWarpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
+        HasPermission hasPermission = booleanPermission("command.setwarp");
         return GlassArgumentBuilder.literal("setwarp")
-                .requires(source -> isPlayer().test(source) && permission("command.setwarp").test(source))
+                .requires(source -> isPlayer().test(source) && hasPermission.test(source))
                 .then(GlassArgumentBuilder.argument("name", word())
                         .executes(this::setWarp)
                         .then(GlassArgumentBuilder.argument("description", greedyString())

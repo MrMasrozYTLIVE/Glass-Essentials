@@ -13,13 +13,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class OpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("op", "Give the specified player operator status.", "Give the specified player operator status. This is effectively the same as giving them all permissions.")
-                .requires(permission("command.op"))
+                .requires(booleanPermission("command.op"))
                 .then(GlassArgumentBuilder.argument("player", PlayerDataArgumentType.offlinePlayers())
                         .executes(this::opPlayer)
                 );

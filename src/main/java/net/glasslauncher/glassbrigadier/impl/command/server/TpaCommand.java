@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.player;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
@@ -30,7 +31,7 @@ public class TpaCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("tpa")
-                .requires(permission("command.tpa"))
+                .requires(booleanPermission("command.tpa"))
                 .requires(isPlayer())
                 .then(GlassArgumentBuilder.literal("yes")
                         .executes(this::tpYes)

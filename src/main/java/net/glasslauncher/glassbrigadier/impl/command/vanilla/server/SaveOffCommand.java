@@ -10,13 +10,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ServerWorld;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SaveOffCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("save-off", "Turn off server saving until turned back on, or next reboot.")
-                .requires(permission("command.saveoff"))
+                .requires(booleanPermission("command.saveoff"))
                 .executes(this::saveOff);
     }
 

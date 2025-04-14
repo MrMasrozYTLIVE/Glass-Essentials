@@ -103,7 +103,7 @@ public class PermissionNodeInstance<T> {
      * @param nodesToCheck the set of nodes to check.
      * @return whether this node is satisfied by any in the set.
      */
-    public boolean isSatisfiedBy(@Nonnull Set<PermissionNodeInstance<?>> nodesToCheck) {
+    public boolean isSatisfiedBy(Set<PermissionNodeInstance<?>> nodesToCheck) {
         for (PermissionNodeInstance<?> nodeToCheck : nodesToCheck) {
             if (nodeToCheck.satisfies(this))
                 return true;

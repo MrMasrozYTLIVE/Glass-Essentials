@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class BanIpCommand implements CommandProvider {
@@ -26,7 +27,7 @@ public class BanIpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("ban-ip", "Ban an IP.")
-                .requires(permission("command.banip"))
+                .requires(booleanPermission("command.banip"))
                 .then(GlassArgumentBuilder.argument("ip", word())
                         .executes(this::banIp)
                 );

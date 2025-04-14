@@ -13,13 +13,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class BanCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("ban", "Ban a given player.")
-                .requires(permission("command.ban"))
+                .requires(booleanPermission("command.ban"))
                 .then(GlassArgumentBuilder.argument("player", StringArgumentType.word())
                         .executes(this::banPlayer)
                 );

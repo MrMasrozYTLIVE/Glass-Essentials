@@ -13,13 +13,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class DeopCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("deop", "Remove operator status from a player.")
-                .requires(permission("command.deop"))
+                .requires(booleanPermission("command.deop"))
                 .then(GlassArgumentBuilder.argument("player", TargetSelectorArgumentType.entity())
                         .executes(this::deopPlayer)
                 );

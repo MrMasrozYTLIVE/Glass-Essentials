@@ -17,13 +17,14 @@ import static net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinat
 import static net.glasslauncher.glassbrigadier.api.argument.coordinate.CoordinateArgumentType.getCoordinate;
 import static net.glasslauncher.glassbrigadier.api.argument.entityid.EntityTypeArgumentType.entityType;
 import static net.glasslauncher.glassbrigadier.api.argument.entityid.EntityTypeArgumentType.getEntityType;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SummonCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("summon")
-                .requires(permission("command.summon"))
+                .requires(booleanPermission("command.summon"))
                 .then(GlassArgumentBuilder.argument("id", entityType())
                         .then(GlassArgumentBuilder.argument("pos", coordinate())
                                 .executes(this::summonEntity)

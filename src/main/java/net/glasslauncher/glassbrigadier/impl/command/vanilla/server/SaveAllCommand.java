@@ -10,13 +10,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SaveAllCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("save-all", "Forces a save of all the loaded levels in the world.")
-                .requires(permission("command.saveall"))
+                .requires(booleanPermission("command.saveall"))
                 .executes(this::saveAll);
     }
 

@@ -18,11 +18,32 @@ public class HasPermission implements Predicate<GlassCommandSource> {
     /**
      * Create a predicate that requires the node path given.
      * @param nodePath the node path that must be satisfied by the {@link GlassCommandSource}
+     * @param positivePredicate the predicate that decides if this permission should be processed.
      * @return the predicate.
      */
-    public static HasPermission permission(String nodePath) {
+    public static <T> HasPermission permission(String nodePath, PermissionNode.IsValuePositivePredicate<T> positivePredicate) {
         GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
-        return new HasPermission(PermissionNode.ofExisting(nodePath));
+        return new HasPermission(PermissionNode.register(nodePath, positivePredicate));
+    }
+
+    /**
+     * Create a predicate that requires the node path given.
+     * @param nodePath the node path that must be satisfied by the {@link GlassCommandSource}
+     * @return the predicate.
+     */
+    public static HasPermission booleanPermission(String nodePath) {
+        GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
+        return new HasPermission(PermissionNode.register(nodePath, PermissionNode.BOOLEAN));
+    }
+
+    /**
+     * Create a predicate that requires the node path given.
+     * @param nodePath the node path that must be satisfied by the {@link GlassCommandSource}
+     * @return the predicate.
+     */
+    public static <T> HasPermission simpleNullablePermission(String nodePath) {
+        GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
+        return new HasPermission(PermissionNode.register(nodePath, PermissionNode.<T>notNullPositive()));
     }
 
     @Override

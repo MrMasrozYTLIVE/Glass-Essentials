@@ -22,6 +22,7 @@ import static net.glasslauncher.glassbrigadier.GlassBrigadier.*;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.getRole;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.role;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
@@ -31,7 +32,7 @@ public class PermissionsCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("permissions", "Set permissions on a role.")
                 .alias("p")
-                .requires(permission("command.permissions"))
+                .requires(booleanPermission("command.permissions"))
 // TODO: Implement once I add Permissible
 //                .then(GlassArgumentBuilder.literal("get")
 //                        .then(GlassArgumentBuilder.<TargetSelector<?>>argument("player", players())

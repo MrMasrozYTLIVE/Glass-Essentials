@@ -10,13 +10,14 @@ import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.modificationstation.stationapi.api.util.Formatting;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SayCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("say", "Say a message as the server.")
-                .requires(permission("command.say"))
+                .requires(booleanPermission("command.say"))
                 .then(RequiredArgumentBuilder.argument("message", greedyString()))
                 .executes(this::say);
     }

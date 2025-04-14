@@ -13,6 +13,7 @@ import net.minecraft.server.PlayerManager;
 import net.modificationstation.stationapi.api.util.Formatting;
 
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class PardonCommand implements CommandProvider {
@@ -20,7 +21,7 @@ public class PardonCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("pardon", "Unban a player.")
                 .alias("unban")
-                .requires(permission("command.pardon"))
+                .requires(booleanPermission("command.pardon"))
                 .then(GlassArgumentBuilder.argument("player", TargetSelectorArgumentType.entity())
                         .executes(this::pardonPlayer)
                 );

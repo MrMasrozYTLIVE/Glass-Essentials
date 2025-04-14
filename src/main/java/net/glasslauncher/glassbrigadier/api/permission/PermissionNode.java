@@ -3,20 +3,20 @@ package net.glasslauncher.glassbrigadier.api.permission;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.Getter;
-import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
-import java.util.Set;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 @Getter
 public class PermissionNode<T> {
     private static final @NotNull Cache<@NotNull String, @NotNull PermissionNode<?>> CACHE = Caffeine.newBuilder().softValues().build();
+
+    public static IsValuePositivePredicate<Boolean> BOOLEAN = thisNode -> thisNode.getValue() != null;
+
+    public static <T> IsValuePositivePredicate<T> notNullPositive() {
+        return thisNode -> thisNode.getValue() != null;
+    }
 
     private final String path;
     transient private final IsValuePositivePredicate<T> positivePredicate;
@@ -35,7 +35,7 @@ public class PermissionNode<T> {
     }
 
     /**
-     * Get the permission node object relevant to the provided string.
+     * Register the permission node for use.
      */
     public static <T> PermissionNode<T> register(String path, IsValuePositivePredicate<T> positivePredicate) {
         //noinspection unchecked Ahahaha fuck type erasure fuck type erasure fuck type erasure fucking why

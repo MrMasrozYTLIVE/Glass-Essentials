@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static net.glasslauncher.glassbrigadier.GlassBrigadier.*;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.modificationstation.stationapi.api.util.Formatting.*;
 
@@ -22,7 +23,7 @@ public class WarpsCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassArgumentBuilder.literal("warps")
-                .requires(permission("command.warp"))
+                .requires(booleanPermission("command.warp"))
                 .executes(this::listFirstWarps)
                 .then(GlassArgumentBuilder.argument("page", integer(0))
                         .executes(this::listWarps)

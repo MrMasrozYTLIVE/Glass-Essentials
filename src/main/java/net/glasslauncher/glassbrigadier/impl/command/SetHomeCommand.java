@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.predicate.HasPermission;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.util.math.Vec3d;
@@ -13,14 +14,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
+import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
 public class SetHomeCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
+        HasPermission hasPermission = booleanPermission("command.sethome");
         return GlassArgumentBuilder.literal("sethome")
-                .requires(source -> isPlayer().test(source) && permission("command.sethome").test(source))
+                .requires(source -> isPlayer().test(source) && hasPermission.test(source))
                 .executes(this::setHome)
                 .then(GlassArgumentBuilder.argument("name", word())
                         .executes(this::setHomeNamed)
