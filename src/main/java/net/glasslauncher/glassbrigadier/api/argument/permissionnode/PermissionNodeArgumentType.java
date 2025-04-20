@@ -1,8 +1,12 @@
 package net.glasslauncher.glassbrigadier.api.argument.permissionnode;
 
+import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandExceptionType;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
@@ -15,6 +19,7 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 public class PermissionNodeArgumentType implements ArgumentType<PermissionNode<?>> {
+    public static final CommandExceptionType NODE_EXCEPTION = new SimpleCommandExceptionType(new LiteralMessage("NodeException"));
 
     private static final Collection<String> EXAMPLES = Arrays.asList("minecraft.operator", "*", "command.permissions");
 
@@ -27,9 +32,13 @@ public class PermissionNodeArgumentType implements ArgumentType<PermissionNode<?
     }
 
     @Override
-    public PermissionNode<?> parse(StringReader reader) {
+    public PermissionNode<?> parse(StringReader reader) throws CommandSyntaxException {
         String id = StringReaderUtils.readPermissionNode(reader);
-        return PermissionNode.ofExisting(id);
+        PermissionNode<?> node = PermissionNode.ofExisting(id);
+        if (node == null) {
+            throw new CommandSyntaxException(NODE_EXCEPTION, new LiteralMessage("Node \"" + id + "\" not found!"));
+        }
+        return node;
     }
 
     @Override
