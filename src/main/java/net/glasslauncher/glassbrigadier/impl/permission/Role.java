@@ -7,11 +7,8 @@ import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.impl.utils.AMIFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.simpleyaml.configuration.serialization.ConfigurationSerializable;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Getter @Setter
@@ -65,6 +62,7 @@ public class Role {
         return true;
     }
 
+    // TODO: Actually implement, I'm skipping this for 1.0.
     public void setRoleChain(RoleChain roleChain) {
         if (this.roleChain != null) {
 //            this.roleChain.removeRole(this);
@@ -77,5 +75,22 @@ public class Role {
 
     public String getDisplay(String user) {
         return AMIFormatting.RESET + (getPrefix() == null ? "" : getPrefix()) + "<" + user + ">" + (getSuffix() == null ? "" : getSuffix()) + AMIFormatting.RESET;
+    }
+
+    public boolean setPermission(PermissionNode<?> permission_, @Nullable String value) {
+        //noinspection unchecked Java I swear to god
+        PermissionNode<Object> permission = (PermissionNode<Object>) permission_;
+        if (value == null) {
+            permissions.remove(PermissionNodeInstance.ofExisting(permission, this));
+        }
+        else {
+            Object parsed = permission.valueFromArgumentFunction().apply(value);
+            if (parsed == null) {
+                return false;
+            }
+            permissions.add(PermissionNodeInstance.ofAndSetValue(permission, this, parsed));
+        }
+        RoleManagerImpl.updateAndSaveRolesFile();
+        return true;
     }
 }

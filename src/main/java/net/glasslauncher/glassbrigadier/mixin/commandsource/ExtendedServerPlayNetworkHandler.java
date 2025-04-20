@@ -79,6 +79,9 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
         if (server.playerManager.isOperator(getSourceName())) {
             return true;
         }
+        if (nodeToCheck == null) {
+            return false;
+        }
         return nodeToCheck.isSatisfiedBy(getPermissions());
     }
 

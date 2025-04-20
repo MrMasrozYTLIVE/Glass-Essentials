@@ -1,6 +1,5 @@
 package net.glasslauncher.glassbrigadier.impl.permission;
 
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
@@ -8,10 +7,10 @@ import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.simpleyaml.configuration.ConfigurationSection;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class RoleManagerImpl {
@@ -47,7 +46,8 @@ public class RoleManagerImpl {
                 if (role.getRoleChain() != null) {
                     map.put("chain", role.getRoleChain().getName());
                 }
-                map.put("permissions", role.getPermissions().stream().map(e -> new BasicEntry<String, Object>(e.getNode().getPath(), e.getValue())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+                //noinspection unchecked Fucking java type erasure bullshit why this is actually fucking braindead, it LITERALLY CAN ALWAYS BE SAFELY CAST TO OBJECT YOU FUCKING IMBECILE
+                map.put("permissions", role.getPermissions().stream().map(e -> new BasicEntry<>(e.getNode().path(), ((Function<Object, Object>) e.getNode().valueSaveFunction()).apply(e.getValue()))).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
                 return map;
             }).toList();
             rolesFile.set("roles", roles);
@@ -71,7 +71,7 @@ public class RoleManagerImpl {
             //noinspection unchecked
             Map<String, Object> permissions = (Map<String, Object>) roleObj.get("permissions");
             Set<PermissionNodeInstance<?>> permissionNodeMap = new HashSet<>();
-            permissions.forEach((key, value) -> permissionNodeMap.add(PermissionNodeInstance.of(PermissionNode.ofExisting(key), role, value)));
+            permissions.forEach((key, value) -> permissionNodeMap.add(PermissionNodeInstance.ofAndSetValue(PermissionNode.ofExisting(key), role, value)));
             role.setPermissions(permissionNodeMap);
             addRole(role);
         });

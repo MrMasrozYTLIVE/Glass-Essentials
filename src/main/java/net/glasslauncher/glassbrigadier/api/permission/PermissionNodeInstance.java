@@ -22,18 +22,16 @@ public class PermissionNodeInstance<T> {
     @Setter
     private T value;
 
-    private PermissionNodeInstance(PermissionNode<T> node, GlassCommandSource source, T value) {
+    private PermissionNodeInstance(PermissionNode<T> node, GlassCommandSource source) {
         this.node = node;
         this.source = source;
         this.role = null;
-        this.value = value;
     }
 
-    private PermissionNodeInstance(PermissionNode<T> node, Role role, T value) {
+    private PermissionNodeInstance(PermissionNode<T> node, Role role) {
         this.node = node;
         this.source = null;
         this.role = role;
-        this.value = value;
     }
 
     /**
@@ -47,9 +45,11 @@ public class PermissionNodeInstance<T> {
     /**
      * Get the permission node object relevant to the provided string.
      */
-    public static <T> PermissionNodeInstance<T> of(PermissionNode<T> node, GlassCommandSource source, T def) {
+    public static <T> PermissionNodeInstance<T> ofAndSetValue(PermissionNode<T> node, GlassCommandSource source, T value) {
         //noinspection unchecked Ahahaha fuck type erasure fuck type erasure fuck type erasure fucking why
-        return (PermissionNodeInstance<T>) CACHE.get(getID(node, source), path_ -> new PermissionNodeInstance<>(node, source, def));
+        PermissionNodeInstance<T> instance = (PermissionNodeInstance<T>) CACHE.get(getID(node, source), path_ -> new PermissionNodeInstance<>(node, source));
+        instance.setValue(value);
+        return instance;
     }
 
     /**
@@ -63,9 +63,11 @@ public class PermissionNodeInstance<T> {
     /**
      * Get the permission node object relevant to the provided string.
      */
-    public static <T> PermissionNodeInstance<T> of(PermissionNode<T> node, Role role, T def) {
+    public static <T> PermissionNodeInstance<T> ofAndSetValue(PermissionNode<T> node, Role role, T value) {
         //noinspection unchecked Ahahaha fuck type erasure fuck type erasure fuck type erasure fucking why
-        return (PermissionNodeInstance<T>) CACHE.get(getID(node, role), path_ -> new PermissionNodeInstance<>(node, role, def));
+        PermissionNodeInstance<T> instance = (PermissionNodeInstance<T>) CACHE.get(getID(node, role), path_ -> new PermissionNodeInstance<>(node, role));
+        instance.setValue(value);
+        return instance;
     }
 
     private static String getID(PermissionNode<?> path, GlassCommandSource source) {
@@ -82,20 +84,10 @@ public class PermissionNodeInstance<T> {
      * @return whether this node satisfies the other node.
      */
     public boolean satisfies(@Nonnull PermissionNodeInstance<?> nodeToCheck) {
-        if (!node.getPositivePredicate().isPositive(this)) {
+        if (!node.positivePredicate().isPositive(this)) {
             return false;
         }
-        String[] pathElements = toString().split("\\.");
-        String[] checkPathElements = nodeToCheck.node.getPath().split("\\.");
-        final int length = Math.max(pathElements.length, checkPathElements.length);
-
-        for (int i = 0; i < length; i++) {
-            final String node1 = i < pathElements.length ? pathElements[i] : "*";
-            final String node2 = i < checkPathElements.length ? checkPathElements[i] : null;
-            if (node2 == null || !nodeSatisfiesNode(node1, node2))
-                return false;
-        }
-        return true;
+        return node.matches(nodeToCheck.node);
     }
 
     /**
@@ -109,12 +101,6 @@ public class PermissionNodeInstance<T> {
                 return true;
         }
         return false;
-    }
-
-    public static boolean nodeSatisfiesNode(@Nonnull String node1, String node2) {
-        if (node1.equals("*"))
-            return true;
-        return node1.equals(node2);
     }
 
     public static void invalidateAll() {

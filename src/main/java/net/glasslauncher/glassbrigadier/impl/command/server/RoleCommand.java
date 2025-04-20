@@ -2,21 +2,23 @@ package net.glasslauncher.glassbrigadier.impl.command.server;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.glasslauncher.glassbrigadier.impl.permission.Role;
 import net.glasslauncher.glassbrigadier.impl.permission.RoleChain;
 import net.glasslauncher.glassbrigadier.impl.permission.RoleManagerImpl;
 import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImpl;
+import net.modificationstation.stationapi.api.util.Formatting;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
-import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemBulletPointPrefix;
-import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemMessagePrefix;
+import static net.glasslauncher.glassbrigadier.GlassBrigadier.*;
+import static net.glasslauncher.glassbrigadier.api.argument.permissionnode.PermissionNodeArgumentType.permissionNode;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.role;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class RoleCommand implements CommandProvider {
 
@@ -49,12 +51,58 @@ public class RoleCommand implements CommandProvider {
                                 )
                         )
                 )
-                .then(GlassArgumentBuilder.literal("chain")
-                        .then(GlassArgumentBuilder.literal("list")
-                                .executes(this::listChains)
+//                .then(GlassArgumentBuilder.literal("chain")
+//                        .then(GlassArgumentBuilder.literal("list")
+//                                .executes(this::listChains)
+//                        )
+//                )
+                .then(GlassArgumentBuilder.literal("permission")
+                        .then(GlassArgumentBuilder.literal("set")
+                                .then(GlassArgumentBuilder.argument("role", role())
+                                        .then(GlassArgumentBuilder.argument("permission", permissionNode())
+                                                .executes(this::setPermissionTrue)
+                                                .then(GlassArgumentBuilder.argument("value", string())
+                                                        .executes(this::setPermission)
+                                                )
+                                        )
+                                )
+                        )
+                        .then(GlassArgumentBuilder.literal("remove")
+                                .then(GlassArgumentBuilder.argument("role", role())
+                                        .then(GlassArgumentBuilder.argument("permission", permissionNode())
+                                                .executes(this::removePermission)
+                                        )
+                                )
                         )
                 )
                 ;
+    }
+
+    private int removePermission(CommandContext<GlassCommandSource> context) {
+        Role role = context.getArgument("role", Role.class);
+        PermissionNode<?> node = context.getArgument("permission", PermissionNode.class);
+        role.setPermission(node, null);
+        return 0;
+    }
+
+    private int setPermissionTrue(CommandContext<GlassCommandSource> context) {
+        return setPermission(context, "true");
+    }
+
+    private int setPermission(CommandContext<GlassCommandSource> context) {
+        return setPermission(context, context.getArgument("value", String.class));
+    }
+
+    private int setPermission(CommandContext<GlassCommandSource> context, String value) {
+        Role role = context.getArgument("role", Role.class); // Sure would be nice to not have to specify this cause the field type's there- oh right, kotlin does this.
+        PermissionNode<?> node = context.getArgument("permission", PermissionNode.class);
+        if (role.setPermission(node, value)) {
+            context.getSource().sendFeedback(systemMessage("Set \"" + node.path() + "\" to \"" + value + "\"."));
+        }
+        else {
+            context.getSource().sendFeedback(Formatting.RED + "Failed to set \"" + node.path() + "\" to \"" + value + "\". Did you type the value correctly?");
+        }
+        return 0;
     }
 
     private int listChains(CommandContext<GlassCommandSource> context) {
@@ -112,6 +160,7 @@ public class RoleCommand implements CommandProvider {
         Role role = context.getArgument("role", Role.class);
         role.setSuffix(suffix);
         RoleManagerImpl.updateAndSaveRolesFile();
+        context.getSource().sendFeedback(systemMessage("Successfully updated suffix for " + role.getName() + ". Example: " + role.getDisplay("User")));
         return 0;
     }
 
@@ -119,13 +168,19 @@ public class RoleCommand implements CommandProvider {
         Role role = context.getArgument("role", Role.class);
         role.setPrefix(prefix);
         RoleManagerImpl.updateAndSaveRolesFile();
+        context.getSource().sendFeedback(systemMessage("Successfully updated prefix for " + role.getName() + ". Example: " + role.getDisplay("User")));
         return 0;
     }
 
     private int createRole(CommandContext<GlassCommandSource> context) {
         String role = context.getArgument("role", String.class);
-        RoleManagerImpl.addRole(new Role(role));
+        if (!RoleManagerImpl.addRole(new Role(role))) {
+            context.getSource().sendFeedback(Formatting.RED + "Failed to create \"" + role + "\", does it already exist?");
+            return 0;
+        }
+
         RoleManagerImpl.updateAndSaveRolesFile();
+        context.getSource().sendFeedback(systemMessage("Successfully created role \"" + role + "\"."));
         return 0;
     }
 }

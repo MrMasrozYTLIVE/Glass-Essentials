@@ -4,7 +4,9 @@ import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
+import net.glasslauncher.glassbrigadier.impl.permission.Role;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class HasPermission implements Predicate<GlassCommandSource> {
@@ -21,9 +23,9 @@ public class HasPermission implements Predicate<GlassCommandSource> {
      * @param positivePredicate the predicate that decides if this permission should be processed.
      * @return the predicate.
      */
-    public static <T> HasPermission permission(String nodePath, PermissionNode.IsValuePositivePredicate<T> positivePredicate) {
+    public static <T> HasPermission permission(String nodePath, PermissionNode.IsValuePositivePredicate<T> positivePredicate, Function<Object, T> valueLoadFunction, Function<T, Object> valueSaveFunction, Function<String, T> valueFromArgumentFunction) {
         GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
-        return new HasPermission(PermissionNode.register(nodePath, positivePredicate));
+        return new HasPermission(PermissionNode.register(nodePath, positivePredicate, valueLoadFunction, valueSaveFunction, valueFromArgumentFunction));
     }
 
     /**
@@ -33,29 +35,16 @@ public class HasPermission implements Predicate<GlassCommandSource> {
      */
     public static HasPermission booleanPermission(String nodePath) {
         GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
-        return new HasPermission(PermissionNode.register(nodePath, PermissionNode.BOOLEAN));
-    }
-
-    /**
-     * Create a predicate that requires the node path given.
-     * @param nodePath the node path that must be satisfied by the {@link GlassCommandSource}
-     * @return the predicate.
-     */
-    public static <T> HasPermission simpleNullablePermission(String nodePath) {
-        GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
-        return new HasPermission(PermissionNode.register(nodePath, PermissionNode.<T>notNullPositive()));
+        return new HasPermission(PermissionNode.registerBoolean(nodePath));
     }
 
     @Override
     public boolean test(GlassCommandSource commandSource) {
-        PermissionNodeInstance<?> instance = PermissionNodeInstance.ofExisting(node, commandSource);
         if (commandSource.satisfiesNode(null)) {
             return true;
         }
-        if (instance == null) {
-            GlassBrigadier.LOGGER.error("Permission " + node.getPath() + " has no instance!");
-            return false;
-        }
-        return commandSource.satisfiesNode(instance);
+
+        //noinspection unchecked REEEEEEEEEEEEEE JAVA TYPE ERASURE
+        return commandSource.getPermissions().stream().anyMatch(n -> ((PermissionNodeInstance<Object>) n).getNode().positivePredicate().isPositive((PermissionNodeInstance<Object>) n) && n.getNode().matches(node));
     }
 }

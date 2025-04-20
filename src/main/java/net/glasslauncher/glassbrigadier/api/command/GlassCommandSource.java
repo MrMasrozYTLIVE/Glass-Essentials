@@ -28,9 +28,7 @@ public interface GlassCommandSource {
 
     Set<PermissionNodeInstance<?>> getPermissions();
 
-    default boolean satisfiesNode(PermissionNodeInstance<?> nodeToCheck) {
-        return nodeToCheck.isSatisfiedBy(getPermissions());
-    }
+    boolean satisfiesNode(PermissionNodeInstance<?> nodeToCheck);
 
     Entity getEntity();
 
