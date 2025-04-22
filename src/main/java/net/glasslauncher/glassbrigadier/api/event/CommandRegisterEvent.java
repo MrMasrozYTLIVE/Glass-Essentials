@@ -9,7 +9,6 @@ import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.mine_diver.unsafeevents.Event;
 import net.mine_diver.unsafeevents.event.EventPhases;
-import net.modificationstation.stationapi.api.StationAPI;
 
 /**
  * Use this like any other StationAPI event, and use {@link CommandRegisterEvent#register(CommandProvider)} to register commands.

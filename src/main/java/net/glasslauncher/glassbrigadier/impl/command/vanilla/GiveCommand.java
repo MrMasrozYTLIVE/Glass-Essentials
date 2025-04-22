@@ -19,7 +19,6 @@ import static net.glasslauncher.glassbrigadier.api.argument.itemid.ItemIdArgumen
 import static net.glasslauncher.glassbrigadier.api.argument.itemid.ItemIdArgumentType.itemId;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.entity;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class GiveCommand implements CommandProvider {
 

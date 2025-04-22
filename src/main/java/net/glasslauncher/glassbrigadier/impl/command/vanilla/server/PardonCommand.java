@@ -14,7 +14,6 @@ import net.modificationstation.stationapi.api.util.Formatting;
 
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class PardonCommand implements CommandProvider {
     @Override

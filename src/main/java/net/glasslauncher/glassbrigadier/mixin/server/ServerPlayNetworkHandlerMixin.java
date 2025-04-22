@@ -8,7 +8,6 @@ import net.glasslauncher.glassbrigadier.impl.permission.UserPermissionManagerImp
 import net.minecraft.network.packet.play.ChatMessagePacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

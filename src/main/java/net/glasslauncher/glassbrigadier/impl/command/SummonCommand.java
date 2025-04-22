@@ -1,9 +1,7 @@
 package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinate;
 import net.glasslauncher.glassbrigadier.api.argument.entityid.EntityType;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
@@ -18,7 +16,6 @@ import static net.glasslauncher.glassbrigadier.api.argument.coordinate.Coordinat
 import static net.glasslauncher.glassbrigadier.api.argument.entityid.EntityTypeArgumentType.entityType;
 import static net.glasslauncher.glassbrigadier.api.argument.entityid.EntityTypeArgumentType.getEntityType;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SummonCommand implements CommandProvider {
     @Override

@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
-import static net.glasslauncher.glassbrigadier.GlassBrigadier.*;
+import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemBulletPointPrefix;
+import static net.glasslauncher.glassbrigadier.GlassBrigadier.systemMessagePrefix;
+import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.getRole;
 import static net.glasslauncher.glassbrigadier.api.argument.role.RoleArgumentType.role;
-import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.*;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
 public class PermissionsCommand implements CommandProvider {

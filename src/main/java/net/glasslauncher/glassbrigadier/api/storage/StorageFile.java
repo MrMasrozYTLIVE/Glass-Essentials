@@ -10,7 +10,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 // Yoinked from GCAPI cause this is just so convenient.
 public class StorageFile extends YamlFile {

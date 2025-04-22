@@ -11,7 +11,6 @@ import net.minecraft.world.ServerWorld;
 import net.modificationstation.stationapi.api.util.Formatting;
 
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class SaveOffCommand implements CommandProvider {
     @Override

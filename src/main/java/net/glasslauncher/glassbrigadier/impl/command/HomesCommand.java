@@ -2,22 +2,20 @@ package net.glasslauncher.glassbrigadier.impl.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
-import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.modificationstation.stationapi.api.util.Formatting;
 import org.simpleyaml.configuration.ConfigurationSection;
-import org.simpleyaml.configuration.MemorySection;
 
 import java.util.ArrayList;
 
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static net.glasslauncher.glassbrigadier.GlassBrigadier.*;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.modificationstation.stationapi.api.util.Formatting.*;
+import static net.modificationstation.stationapi.api.util.Formatting.GOLD;
+import static net.modificationstation.stationapi.api.util.Formatting.RED;
 
 public class HomesCommand implements CommandProvider {
     @Override

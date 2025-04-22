@@ -7,13 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.AlphaWorldStorage;
-import net.minecraft.world.storage.RegionWorldStorage;
 import net.modificationstation.stationapi.api.registry.DimensionRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
 
 import java.io.File;
-import java.util.Properties;
 
 public class StorageUtils {
 

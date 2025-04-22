@@ -4,7 +4,6 @@ import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
-import net.glasslauncher.glassbrigadier.impl.permission.Role;
 
 import java.util.function.Function;
 import java.util.function.Predicate;

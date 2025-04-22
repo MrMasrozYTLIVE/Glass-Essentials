@@ -10,7 +10,6 @@ import net.minecraft.server.MinecraftServer;
 import net.modificationstation.stationapi.api.util.Formatting;
 
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class StopCommand implements CommandProvider {
     @Override

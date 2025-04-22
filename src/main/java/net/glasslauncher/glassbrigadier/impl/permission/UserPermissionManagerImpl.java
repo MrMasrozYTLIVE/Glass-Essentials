@@ -1,10 +1,10 @@
 package net.glasslauncher.glassbrigadier.impl.permission;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
-import net.glasslauncher.glassbrigadier.api.permission.PermissionNode;
 import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,7 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import org.simpleyaml.configuration.ConfigurationSection;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class UserPermissionManagerImpl {

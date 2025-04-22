@@ -10,7 +10,6 @@ import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class MeCommand implements CommandProvider {
 
