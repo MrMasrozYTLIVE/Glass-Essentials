@@ -1,5 +1,7 @@
 package net.glasslauncher.glassbrigadier.api.storage;
 
+import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.comments.format.YamlCommentFormat;
 import org.simpleyaml.configuration.file.YamlFile;
 import org.simpleyaml.configuration.implementation.api.QuoteStyle;
@@ -8,6 +10,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 // Yoinked from GCAPI cause this is just so convenient.
 public class StorageFile extends YamlFile {
@@ -45,6 +48,14 @@ public class StorageFile extends YamlFile {
 
     public <T extends Enum<?>> void setEnum(String key, T value) {
         set(key, value.ordinal());
+    }
+
+    public @NotNull ConfigurationSection getNotNullSection(String path) {
+        ConfigurationSection section = getConfigurationSection(path);
+        if (section == null) {
+            return createSection(path);
+        }
+        return section;
     }
 
     // This should be safe enough if the map's already pre-filtered... right?

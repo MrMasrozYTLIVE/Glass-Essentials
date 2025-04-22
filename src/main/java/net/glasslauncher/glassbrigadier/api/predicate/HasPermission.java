@@ -20,7 +20,7 @@ public class HasPermission implements Predicate<GlassCommandSource> {
     /**
      * Create a predicate that requires the node path given.
      * @param nodePath the node path that must be satisfied by the {@link GlassCommandSource}
-     * @param positivePredicate the predicate that decides if this permission should be processed.
+     * @param positivePredicate the predicate that decides if this permission should be processed and/or considered true.
      * @return the predicate.
      */
     public static <T> HasPermission permission(String nodePath, PermissionNode.IsValuePositivePredicate<T> positivePredicate, Function<Object, T> valueLoadFunction, Function<T, Object> valueSaveFunction, Function<String, T> valueFromArgumentFunction) {

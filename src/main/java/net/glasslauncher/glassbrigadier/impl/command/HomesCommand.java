@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.api.storage.player.PlayerStorageFile;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.modificationstation.stationapi.api.util.Formatting;
@@ -16,55 +17,52 @@ import java.util.ArrayList;
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static net.glasslauncher.glassbrigadier.GlassBrigadier.*;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.modificationstation.stationapi.api.util.Formatting.*;
 
-public class WarpsCommand implements CommandProvider {
+public class HomesCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        return GlassArgumentBuilder.literal("warps")
-                .requires(booleanPermission("command.warps"))
-                .executes(this::listFirstWarps)
+        return GlassArgumentBuilder.literal("homes")
+                .requires(booleanPermission("command.homes"))
+                .executes(this::listFirstHomes)
                 .then(GlassArgumentBuilder.argument("page", integer(0))
-                        .executes(this::listWarps)
+                        .executes(this::listHomes)
                 );
     }
 
-    public int listFirstWarps(CommandContext<GlassCommandSource> context) {
-        return showWarpPage(context, 1);
+    public int listFirstHomes(CommandContext<GlassCommandSource> context) {
+        return showHomesPage(context, 1);
     }
 
-    public int listWarps(CommandContext<GlassCommandSource> context) {
+    public int listHomes(CommandContext<GlassCommandSource> context) {
         int page = context.getArgument("page", Integer.class);
-        return showWarpPage(context, page);
+        return showHomesPage(context, page);
     }
 
-    public int showWarpPage(CommandContext<GlassCommandSource> context, int page) {
-        WorldModStorageFile serverStorage = WorldModStorageFile.of(GlassBrigadier.NAMESPACE.id("warps"));
-        ConfigurationSection warpStorage = serverStorage.getConfigurationSection("warps");
+    public int showHomesPage(CommandContext<GlassCommandSource> context, int page) {
+        PlayerStorageFile playerStorage = PlayerStorageFile.of(context.getSource().getPlayer());
+        ConfigurationSection homeStorage = playerStorage.getNotNullSection("homes");
 
-        if (warpStorage == null || warpStorage.isEmpty()) {
-            context.getSource().sendFeedback(Formatting.RED + "This server has no warps.");
+        if (homeStorage.isEmpty()) {
+            context.getSource().sendFeedback(Formatting.RED + "You have no homes.");
             return 0;
         }
 
-        int maxPages = (int) Math.ceil(warpStorage.size() / 9d);
+        int maxPages = (int) Math.ceil(homeStorage.size() / 9d);
 
         if (page > maxPages) {
             context.getSource().sendFeedback(RED + "There are only " + GOLD + maxPages + RED + " pages.");
             return 0;
         }
 
-        ArrayList<String> keys = new ArrayList<>(warpStorage.getKeys(false));
+        ArrayList<String> keys = new ArrayList<>(homeStorage.getKeys(false));
 
-        context.getSource().sendFeedback(systemMessage("Showing warps page " + RED + page + systemMessageColor() + " of " + RED + maxPages + systemMessageColor() + "."));
+        context.getSource().sendFeedback(systemMessage("Showing homes page " + RED + page + systemMessageColor() + " of " + RED + maxPages + systemMessageColor() + "."));
         int startIndex = (page - 1) * 9;
         for (int i = startIndex; i < keys.size() && i < startIndex + 9; ++i) {
-            ConfigurationSection warp = (ConfigurationSection) warpStorage.get(keys.get(i));
-
-            context.getSource().sendFeedback(systemBulletPoint(" " + keys.get(i) + GRAY + ": " + warp.get("description", "")));
+            context.getSource().sendFeedback(systemBulletPoint(" " + keys.get(i)));
         }
 
-        return warpStorage.size();
+        return homeStorage.size();
     }
 }

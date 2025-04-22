@@ -9,6 +9,7 @@ import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.modificationstation.stationapi.api.util.Formatting;
+import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.MemorySection;
 
 import java.util.List;
@@ -41,10 +42,10 @@ public class HomeCommand implements CommandProvider {
 
     public void home(CommandContext<GlassCommandSource> context, String name) {
         PlayerStorageFile playerStorage = context.getSource().getStorage();
-        MemorySection homes = (MemorySection) playerStorage.get("homes", playerStorage.createSection("homes"));
+        ConfigurationSection homes = playerStorage.getNotNullSection("homes");
         List<Double> homeLoc = homes.getDoubleList(name);
 
-        if (homeLoc == null) {
+        if (homeLoc == null || homeLoc.isEmpty()) {
             context.getSource().sendFeedback(Formatting.RED + "No home named \"" + name + "\".");
             return;
         }

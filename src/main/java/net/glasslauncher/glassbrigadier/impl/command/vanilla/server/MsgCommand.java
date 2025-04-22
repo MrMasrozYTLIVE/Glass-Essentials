@@ -11,12 +11,13 @@ import net.minecraft.network.packet.play.ChatMessagePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.util.Formatting;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.entity;
 import static net.glasslauncher.glassbrigadier.api.argument.playerselector.TargetSelectorArgumentType.getPlayers;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 
 public class MsgCommand implements CommandProvider {
 
@@ -40,9 +41,11 @@ public class MsgCommand implements CommandProvider {
                 return;
             }
 
-            String message =  context.getSource().getSourceName() + " whispers: " + getString(context, "message");
+            String messageArg = getString(context, "message");
+            String message = Formatting.GRAY + context.getSource().getSourceName() + " whispers: " + messageArg;
             GlassBrigadier.LOGGER.info(message);
-            PacketHelper.sendTo(playerEntity, new ChatMessagePacket("§7" + message));
+            playerEntity.sendMessage(message);
+            context.getSource().sendFeedback("You -> " + playerEntity.name + ": " + messageArg);
         });
         return 0;
     }

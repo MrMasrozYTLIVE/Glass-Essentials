@@ -16,44 +16,37 @@ import java.util.ArrayList;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
 import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
-public class SetHomeCommand implements CommandProvider {
+public class DelHomeCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        HasPermission hasPermission = booleanPermission("command.sethome");
-        return GlassArgumentBuilder.literal("sethome")
+        HasPermission hasPermission = booleanPermission("command.delhome");
+        return GlassArgumentBuilder.literal("delhome")
                 .requires(source -> isPlayer().test(source) && hasPermission.test(source))
-                .executes(this::setHome)
                 .then(GlassArgumentBuilder.argument("name", word())
-                        .executes(this::setHomeNamed)
+                        .executes(this::delHome)
                 );
     }
 
-    public int setHomeNamed(CommandContext<GlassCommandSource> context) {
-        setHome(context, context.getArgument("name", String.class));
-        return 0;
-    }
-
-    public int setHome(CommandContext<GlassCommandSource> context) {
-        setHome(context, "home");
-        return 0;
-    }
-
-    public void setHome(CommandContext<GlassCommandSource> context, String name) {
+    public int delHome(CommandContext<GlassCommandSource> context) {
+        String name = context.getArgument("name", String.class);
         PlayerStorageFile playerStorage = context.getSource().getStorage();
         ConfigurationSection homes = playerStorage.getNotNullSection("homes");
 
-        Vec3d position = context.getSource().getPosition();
-        homes.set(name, new ArrayList<Double>() {{add(position.x); add(position.y); add(position.z);}});
-        playerStorage.set("homes", homes);
+        if (!homes.contains(name)) {
+            context.getSource().sendFeedback("No such home \"" + name + "\".");
+            return 0;
+        }
+
+        homes.remove(name);
         try {
             playerStorage.save();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        context.getSource().sendFeedback("Set home \"" + name + "\".");
+        context.getSource().sendFeedback("Removed home \"" + name + "\".");
+        return 0;
     }
 }

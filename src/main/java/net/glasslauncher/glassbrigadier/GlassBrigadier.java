@@ -84,8 +84,11 @@ public class GlassBrigadier {
         event.register(new SetTileCommand());
         event.register(new SummonCommand());
         event.register(new SetHomeCommand());
+        event.register(new DelHomeCommand());
         event.register(new HomeCommand());
+        event.register(new HomesCommand());
         event.register(new SetWarpCommand());
+        event.register(new DelWarpCommand());
         event.register(new WarpCommand());
         event.register(new WarpsCommand());
     }

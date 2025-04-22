@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
+import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassCommandBuilder;
 import net.modificationstation.stationapi.api.util.Formatting;
 
@@ -18,8 +19,9 @@ public class SayCommand implements CommandProvider {
     public LiteralArgumentBuilder<GlassCommandSource> get() {
         return GlassCommandBuilder.literal("say", "Say a message as the server.")
                 .requires(booleanPermission("command.say"))
-                .then(RequiredArgumentBuilder.argument("message", greedyString()))
-                .executes(this::say);
+                .then(GlassArgumentBuilder.argument("message", greedyString())
+                        .executes(this::say)
+                );
     }
 
     public int say(CommandContext<GlassCommandSource> context) {

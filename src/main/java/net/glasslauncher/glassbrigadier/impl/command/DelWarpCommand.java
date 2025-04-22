@@ -5,10 +5,10 @@ import com.mojang.brigadier.context.CommandContext;
 import net.glasslauncher.glassbrigadier.GlassBrigadier;
 import net.glasslauncher.glassbrigadier.api.command.CommandProvider;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
-import net.glasslauncher.glassbrigadier.api.predicate.HasPermission;
 import net.glasslauncher.glassbrigadier.api.storage.world.WorldModStorageFile;
 import net.glasslauncher.glassbrigadier.impl.argument.GlassArgumentBuilder;
 import net.minecraft.util.math.Vec3d;
+import net.modificationstation.stationapi.api.util.Formatting;
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.MemorySection;
 
@@ -19,42 +19,29 @@ import java.util.HashMap;
 import static com.mojang.brigadier.arguments.StringArgumentType.greedyString;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.booleanPermission;
-import static net.glasslauncher.glassbrigadier.api.predicate.HasPermission.permission;
-import static net.glasslauncher.glassbrigadier.api.predicate.IsPlayer.isPlayer;
 
-public class SetWarpCommand implements CommandProvider {
+public class DelWarpCommand implements CommandProvider {
     @Override
     public LiteralArgumentBuilder<GlassCommandSource> get() {
-        HasPermission hasPermission = booleanPermission("command.setwarp");
-        return GlassArgumentBuilder.literal("setwarp")
-                .requires(source -> isPlayer().test(source) && hasPermission.test(source))
+        return GlassArgumentBuilder.literal("delwarp")
+                .requires(booleanPermission("command.delwarp"))
                 .then(GlassArgumentBuilder.argument("name", word())
-                        .executes(this::setWarp)
-                        .then(GlassArgumentBuilder.argument("description", greedyString())
-                                .executes(this::setWarpWithDesc)
-                        )
+                        .executes(this::delWarp)
                 );
     }
 
-    public int setWarp(CommandContext<GlassCommandSource> context) {
-        return setWarp(context, null);
-    }
-
-    public int setWarpWithDesc(CommandContext<GlassCommandSource> context) {
-        return setWarp(context, context.getArgument("description", String.class));
-    }
-
-    public int setWarp(CommandContext<GlassCommandSource> context, String description) {
+    public int delWarp(CommandContext<GlassCommandSource> context) {
         String name = context.getArgument("name", String.class);
 
         WorldModStorageFile serverStorage = WorldModStorageFile.of(GlassBrigadier.NAMESPACE.id("warps"));
         ConfigurationSection warps = serverStorage.getNotNullSection("warps");
 
-        Vec3d position = context.getSource().getPosition();
+        if (!warps.contains(name)) {
+            context.getSource().sendFeedback(Formatting.RED + "No warp named \"" + name + "\".");
+            return 0;
+        }
 
-        ConfigurationSection warp = warps.createSection(name, new HashMap<>());
-        warp.set("location", new ArrayList<Double>() {{add(position.x); add(position.y); add(position.z);}});
-        warp.set("description", description);
+        warps.remove(name);
 
         try {
             serverStorage.save();
@@ -62,7 +49,7 @@ public class SetWarpCommand implements CommandProvider {
             throw new RuntimeException(e);
         }
 
-        context.getSource().sendFeedback("Set warp \"" + name + "\".");
+        context.getSource().sendFeedback("Deleted warp \"" + name + "\".");
         return 0;
     }
 }
