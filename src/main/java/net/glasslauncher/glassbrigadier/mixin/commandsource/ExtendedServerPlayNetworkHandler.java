@@ -18,19 +18,20 @@ import org.spongepowered.asm.mixin.Shadow;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(ServerPlayNetworkHandler.class)
-public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSource {
+public class ExtendedServerPlayNetworkHandler implements GlassCommandSource {
 
     @Shadow public ServerPlayerEntity player;
 
     @Shadow public MinecraftServer server;
 
-    @Shadow public abstract String getName();
+    @Shadow public String getName() { throw new AssertionError(); }
 
-    @Shadow public abstract void sendMessage(String message);
+    @Shadow public void sendMessage(String message) {}
 
     @Override
     public String getSourceName() {
@@ -111,5 +112,10 @@ public abstract class ExtendedServerPlayNetworkHandler implements GlassCommandSo
     public PlayerStorageFile getStorage() {
         //noinspection DataFlowIssue If you're null then something real bad happened.
         return PlayerStorageFile.of(getPlayer());
+    }
+
+    @Override
+    public boolean isOp() {
+        return server.playerManager.isOperator(Objects.requireNonNull(getPlayer()).name);
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.registry.DimensionRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
+import net.modificationstation.stationapi.api.util.Util;
 import org.lwjgl.util.vector.Vector2f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,13 +25,13 @@ import java.util.Set;
 // I'm pretty certain this is never ever used, but hey.
 @SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(DedicatedServerGui.class)
-public abstract class ExtendedDedicatedServerGUI implements GlassCommandSource {
+public class ExtendedDedicatedServerGUI implements GlassCommandSource {
 
     @Shadow private MinecraftServer server;
 
-    @Shadow public abstract String getName();
+    @Shadow public String getName() { throw new AssertionError(); }
 
-    @Shadow public abstract void sendMessage(String message);
+    @Shadow public void sendMessage(String message) {};
 
     @Override public String getSourceName() {
         return getName();
@@ -100,5 +101,10 @@ public abstract class ExtendedDedicatedServerGUI implements GlassCommandSource {
     @Override
     public PlayerStorageFile getStorage() {
         return null;
+    }
+
+    @Override
+    public boolean isOp() {
+        return true;
     }
 }

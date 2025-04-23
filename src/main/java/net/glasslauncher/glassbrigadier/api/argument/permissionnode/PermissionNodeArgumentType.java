@@ -34,7 +34,7 @@ public class PermissionNodeArgumentType implements ArgumentType<PermissionNode<?
         String id = StringReaderUtils.readPermissionNode(reader);
         PermissionNode<?> node = PermissionNode.ofExisting(id);
         if (node == null) {
-            throw new CommandSyntaxException(NODE_EXCEPTION, new LiteralMessage("Node \"" + id + "\" not found!"));
+            node = PermissionNode.arbitraryBooleanNode(id);
         }
         return node;
     }

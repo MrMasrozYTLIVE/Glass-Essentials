@@ -71,7 +71,7 @@ public class RoleManagerImpl {
             //noinspection unchecked
             Map<String, Object> permissions = (Map<String, Object>) roleObj.get("permissions");
             Set<PermissionNodeInstance<?>> permissionNodeMap = new HashSet<>();
-            permissions.forEach((key, value) -> permissionNodeMap.add(PermissionNodeInstance.ofAndSetValue(PermissionNode.ofExisting(key), role, value)));
+            permissions.forEach((key, value) -> permissionNodeMap.add(PermissionNodeInstance.ofAndSetValue(PermissionNode.ofExistingOrArbitrary(key), role, value)));
             role.setPermissions(permissionNodeMap);
             addRole(role);
         });

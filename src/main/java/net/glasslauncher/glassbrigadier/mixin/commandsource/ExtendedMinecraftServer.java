@@ -24,15 +24,15 @@ import java.util.Set;
 
 @SuppressWarnings("AddedMixinMembersNamePattern")
 @Mixin(MinecraftServer.class)
-public abstract class ExtendedMinecraftServer implements GlassCommandSource {
+public class ExtendedMinecraftServer implements GlassCommandSource {
 
     @Shadow public PlayerManager playerManager;
 
-    @Shadow public abstract ServerWorld getWorld(int dimensionId);
+    @Shadow public ServerWorld getWorld(int dimensionId) { throw new AssertionError(); }
 
-    @Shadow public abstract void sendMessage(String message);
+    @Shadow public void sendMessage(String message) {}
 
-    @Shadow public abstract String getName();
+    @Shadow public String getName() {throw new AssertionError(); }
 
     @Override
     public void sendFeedback(String message) {
@@ -104,5 +104,10 @@ public abstract class ExtendedMinecraftServer implements GlassCommandSource {
     @Override
     public @Nullable PlayerStorageFile getStorage() {
         return null;
+    }
+
+    @Override
+    public boolean isOp() {
+        return true;
     }
 }

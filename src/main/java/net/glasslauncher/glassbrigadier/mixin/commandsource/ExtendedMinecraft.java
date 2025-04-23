@@ -25,8 +25,6 @@ public class ExtendedMinecraft implements GlassCommandSource {
 
     @Shadow public ClientPlayerEntity player;
 
-    @Shadow public InGameHud inGameHud;
-
     @Override
     public void sendFeedback(String message) {
         PlayerEntity playerEntity = getPlayer();
@@ -125,5 +123,10 @@ public class ExtendedMinecraft implements GlassCommandSource {
     @Override
     public PlayerStorageFile getStorage() {
         return PlayerStorageFile.of(getPlayer());
+    }
+
+    @Override
+    public boolean isOp() {
+        return true;
     }
 }

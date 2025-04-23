@@ -8,37 +8,41 @@ import net.glasslauncher.glassbrigadier.api.permission.PermissionNodeInstance;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class HasPermission implements Predicate<GlassCommandSource> {
+public class HasPlayerPermission implements Predicate<GlassCommandSource> {
 
     private final PermissionNode<?> node;
 
-    private HasPermission(PermissionNode<?> node) {
+    private HasPlayerPermission(PermissionNode<?> node) {
         this.node = node;
     }
 
     /**
-     * Create a predicate that requires the node path given.
+     * Create a predicate that requires the source is a player, and has the node path given.
      * @param nodePath the node path that must be satisfied by the {@link GlassCommandSource}
      * @param positivePredicate the predicate that decides if this permission should be processed and/or considered true.
      * @return the predicate.
      */
-    public static <T> HasPermission permission(String nodePath, PermissionNode.IsValuePositivePredicate<T> positivePredicate, Function<Object, T> valueLoadFunction, Function<T, Object> valueSaveFunction, Function<String, T> valueFromArgumentFunction) {
+    public static <T> HasPlayerPermission playerPermission(String nodePath, PermissionNode.IsValuePositivePredicate<T> positivePredicate, Function<Object, T> valueLoadFunction, Function<T, Object> valueSaveFunction, Function<String, T> valueFromArgumentFunction) {
         GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
-        return new HasPermission(PermissionNode.register(nodePath, positivePredicate, valueLoadFunction, valueSaveFunction, valueFromArgumentFunction));
+        return new HasPlayerPermission(PermissionNode.register(nodePath, positivePredicate, valueLoadFunction, valueSaveFunction, valueFromArgumentFunction));
     }
 
     /**
-     * Create a predicate that requires the node path given.
+     * Create a predicate that requires the source is a player, and has the node path given.
      * @param nodePath the node path that must be satisfied by the {@link GlassCommandSource}
      * @return the predicate.
      */
-    public static HasPermission booleanPermission(String nodePath) {
+    public static HasPlayerPermission booleanPlayerPermission(String nodePath) {
         GlassBrigadier.ALL_PERMISSIONS.add(nodePath);
-        return new HasPermission(PermissionNode.registerBoolean(nodePath));
+        return new HasPlayerPermission(PermissionNode.registerBoolean(nodePath));
     }
 
     @Override
     public boolean test(GlassCommandSource commandSource) {
+        if (commandSource.getPlayer() == null) {
+            return false;
+        }
+
         if (commandSource.isOp()) {
             return true;
         }

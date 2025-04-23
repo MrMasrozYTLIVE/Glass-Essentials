@@ -54,4 +54,6 @@ public interface GlassCommandSource {
 
     @Nullable
     PlayerStorageFile getStorage();
+
+    boolean isOp();
 }
