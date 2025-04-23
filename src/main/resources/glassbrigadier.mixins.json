@@ -15,8 +15,8 @@
     "server.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
-    "client.ChatScreenMixin",
     "client.MinecraftMixin",
+    "client.chatscreenextension.ChatScreenMixin",
     "client.vanillajank.ExtendTextRenderer",
     "client.vanillajank.FixFuckedLinebreaks",
     "client.vanillajank.MakeClientPlayerSendMessages",
