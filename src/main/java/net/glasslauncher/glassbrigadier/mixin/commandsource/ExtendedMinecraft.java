@@ -11,7 +11,7 @@ import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.lwjgl.util.vector.Vector2f;
+import net.modificationstation.stationapi.api.util.math.Vector2f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
