@@ -23,10 +23,31 @@ public abstract class ServerPlayNetworkHandlerMixin implements GlassCommandSourc
     @Unique
     private String originalMessage;
 
+    @Unique
+    private boolean execVanilla = false;
+
+    @ModifyVariable(method = "handleCommand", at = @At(value = "HEAD", ordinal = 0), argsOnly = true)
+    String checkForVE(String value) {
+        if (value.startsWith("executevanilla ")) {
+            execVanilla = true;
+            return value.substring(15);
+        }
+        else if (value.startsWith("ev ")) {
+            execVanilla = true;
+            return value.substring(3);
+        }
+        return value;
+    }
+
     @Inject(method = "handleCommand", at = @At(value = "HEAD"), cancellable = true)
     void hijackCommands(String message, CallbackInfo ci) {
+        String commandWithoutSlash = message.substring(1);
+        if (execVanilla) {
+            execVanilla = false;
+            return;
+        }
         try {
-            GlassBrigadier.dispatcher.execute(message.substring(1), this);
+            GlassBrigadier.dispatcher.execute(commandWithoutSlash, this);
         } catch (CommandSyntaxException e) {
             this.sendFeedback(e.getMessage());
         }

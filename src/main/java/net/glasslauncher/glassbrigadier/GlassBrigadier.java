@@ -7,6 +7,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.glassbrigadier.api.command.GlassCommandSource;
 import net.glasslauncher.glassbrigadier.api.event.CommandRegisterEvent;
 import net.glasslauncher.glassbrigadier.impl.command.*;
+import net.glasslauncher.glassbrigadier.impl.command.server.ExecuteVanillaCommand;
 import net.glasslauncher.glassbrigadier.impl.command.server.PermissionsCommand;
 import net.glasslauncher.glassbrigadier.impl.command.server.RoleCommand;
 import net.glasslauncher.glassbrigadier.impl.command.server.TpaCommand;
@@ -77,6 +78,7 @@ public class GlassBrigadier {
         event.register(new SaveOnCommand());
         event.register(new SaveAllCommand());
         event.register(new StopCommand());
+        event.register(new ExecuteVanillaCommand());
     }
 
     @EventListener
